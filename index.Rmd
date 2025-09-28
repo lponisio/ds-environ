@@ -18,3 +18,14 @@ This book accompanies the Fall 2025 course **BI 410/510L - Data Science for the 
 ## Acknolwedgements 
 
 In the spirit of open science, many of these lessons were inspired by other courses, including [Carl Boettiger](https://www.carlboettiger.info/) (Lab 2, Climate change), [Chris Paciorek](https://www.stat.berkeley.edu/users/paciorek/)(regular expressions, debugging) [Software carpentry](https://software-carpentry.org/) (Spatial labs, git). 
+
+```{r lab_setup, include=FALSE}
+knitr::opts_chunk$set(error = TRUE, warning = TRUE, message = TRUE)
+suppressPackageStartupMessages({
+  install.packages("tidyverse", quietly = TRUE, repos = "http://cran.us.r-project.org")
+  install.packages("igraph", quietly = TRUE,repos = "http://cran.us.r-project.org")
+  install.packages("bipartite", quietly = TRUE, repos = "http://cran.us.r-project.org")
+  install.packages("networks3D", quietly = TRUE, repos = "http://cran.us.r-project.org")
+  install.packages("vegan", quietly = TRUE, repos = "http://cran.us.r-project.org")
+  install.packages("stringr", quietly = TRUE, repos = "http://cran.us.r-project.org")
+})
