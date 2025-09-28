@@ -25,7 +25,7 @@ suppressPackageStartupMessages({
   install.packages("tidyverse", quietly = TRUE, repos = "http://cran.us.r-project.org")
   install.packages("igraph", quietly = TRUE,repos = "http://cran.us.r-project.org")
   install.packages("bipartite", quietly = TRUE, repos = "http://cran.us.r-project.org")
-  install.packages("networks3D", quietly = TRUE, repos = "http://cran.us.r-project.org")
+  install.packages("networkD3", quietly = TRUE, repos = "http://cran.us.r-project.org")
   install.packages("vegan", quietly = TRUE, repos = "http://cran.us.r-project.org")
   install.packages("stringr", quietly = TRUE, repos = "http://cran.us.r-project.org")
 })
