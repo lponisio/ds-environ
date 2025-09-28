@@ -1,0 +1,531 @@
+# Ecological networks
+
+```{r demo_setup, include=FALSE}
+knitr::opts_chunk$set(error = TRUE, warning = TRUE, message = TRUE)
+suppressPackageStartupMessages({
+  if (requireNamespace("tidyverse", quietly = TRUE)) library(tidyverse)
+  if (requireNamespace("igraph", quietly = TRUE)) library(igraph)
+   if (requireNamespace("bipartite", quietly = TRUE)) library(bipartite)
+   if (requireNamespace("vegan", quietly = TRUE)) library(vegan)
+   if (requireNamespace("networkD3", quietly = TRUE)) library(networkD3)
+})
+
+net_data <- function(...) file.path("data", ...)
+```
+
+## Lecture summary
+
+### Learning objectives
+By the end of this chapter you will be able to:
+
+- Explain how empirical interaction data become network (matrix) representations.
+- Define key linear‐algebra concepts (vectors, matrices) and compute matrix and vector–matrix products.
+- Distinguish common ecological network types (e.g., food webs, host–parasitoid, plant–pollinator; uni‑ vs. bipartite; weighted vs. binary; directed vs. undirected).
+- Describe how networks also arise from dynamic systems models (e.g., generalized Lotka–Volterra), and how Jacobians encode interaction strengths 
+- Summarize important network‑level properties (size, connectance, nestedness NODF, modularity \(Q\), specialization \(H_2'\), redundancy, complementarity).
+- Compare null‑model families (equiprobable/probabilistic vs. constrained marginals) and explain why they are needed for cross‑network standardization 
+- Quantify species roles using centrality (degree, betweenness, closeness, eigenvector), species strength, and specialization \(d'\)
+
+### Linear‑algebra essentials for ecological networks
+
+**Vectors** are ordered lists of numbers. We write a row vector as
+\(\mathbf{x} = (x_1, x_2, \dots, x_S)\) and a column vector as
+\(\mathbf{x} = (x_1, x_2, \dots, x_S)^\top\).
+
+**Matrices** are rectangular arrays of numbers with \(S\) rows and \(T\) columns, e.g., an interaction (adjacency) matrix \(\mathbf{A} = [a_{ij}]\).
+Typical encodings:
+
+- **Binary**: \(a_{ij}\in\{0,1\}\) indicates presence/absence of an interaction.
+- **Weighted**: \(a_{ij}\ge 0\) is an interaction frequency or strength.
+
+**Matrix multiplication** \( \mathbf{A}_{S\times T}\mathbf{B}_{T\times U} \to \mathbf{C}_{S\times U} \)
+
+**Goal:** compute \( \mathbf{C} = \mathbf{A}\mathbf{B} \).  
+**Shape check:** inner dimensions must match (here both are \(T\)). Result has shape \(S\times U\).
+
+**Recipe (for one entry \(c_{iu}\)):**
+
+1. Pick **row \(i\)** from \(\mathbf{A}\).
+2. Pick **column \(u\)** from \(\mathbf{B}\).
+3. Multiply entries **pairwise** across the \(T\) positions.
+4. **Sum** those \(T\) products:  
+   \[
+   c_{iu} = \sum_{j=1}^{T} a_{ij}\, b_{ju}.
+   \]
+5. Repeat for all rows \(i=1,\dots,S\) and columns \(u=1,\dots,U\).
+
+**Interpretation:**
+
+- Column view: each column of \(\mathbf{C}\) is a **linear combination of the columns of \(\mathbf{A}\)** with weights from the corresponding column of \(\mathbf{B}\).  
+  \(\ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{C}_{\cdot u} = \mathbf{A}\, \mathbf{b}_{\cdot u}\).
+- Row view: each row of \(\mathbf{C}\) is a **linear combination of the rows of \(\mathbf{B}\)** with weights from the corresponding row of \(\mathbf{A}\).  
+  \(\ \ \ \ \ \ \ \ \ \ \ \ \ \mathbf{C}_{i \cdot} = \mathbf{a}_{i \cdot}\, \mathbf{B}\).
+
+**Worked example (tiny):**
+
+\[
+\mathbf{A}=
+\begin{bmatrix}
+1 & 2 & 0\\
+3 & -1 & 4
+\end{bmatrix}_{2\times 3},\quad
+\mathbf{B}=
+\begin{bmatrix}
+2 & 1\\
+0 & -1\\
+5 & 2
+\end{bmatrix}_{3\times 2}.
+\]
+
+Compute \( \mathbf{C}=\mathbf{A}\mathbf{B} \) (result is \(2\times 2\)):
+
+- \(c_{11} = 1\cdot 2 + 2\cdot 0 + 0\cdot 5 = 2\)  
+- \(c_{12} = 1\cdot 1 + 2\cdot(-1) + 0\cdot 2 = -1\)  
+- \(c_{21} = 3\cdot 2 + (-1)\cdot 0 + 4\cdot 5 = 26\)  
+- \(c_{22} = 3\cdot 1 + (-1)\cdot(-1) + 4\cdot 2 = 12\)
+
+\[
+\Rightarrow\ 
+\mathbf{C}=
+\begin{bmatrix}
+2 & -1\\
+26 & 12
+\end{bmatrix}.
+\]
+
+**Matrix multiplication in R**
+```{r}
+A <- matrix(c(1,2,0,
+              3,-1,4), nrow = 2, byrow = TRUE)
+B <- matrix(c(2,1,
+              0,-1,
+              5,2), nrow = 3, byrow = TRUE)
+A %*% B
+
+```
+
+**Using `sweep()` for fast row/column operations**
+
+`sweep(x, MARGIN, STATS, FUN)` applies a vector (`STATS`) across **rows** (`MARGIN = 1`) or **columns** (`MARGIN = 2`) of a matrix/data frame using a function (`FUN`, default `"-"`).
+
+We’ll use a mini **site × species** abundance table:
+
+```{r}
+
+# Mini site × species abundance matrix
+X <- matrix(c(
+  5, 3, 2, 0,   # Site 1
+  0, 4, 6, 1,   # Site 2
+  2, 1, 7, 3    # Site 3
+), nrow = 3, byrow = TRUE,
+dimnames = list(paste0("Site", 1:3),
+                c("Bee_A","Bee_B","Bee_C","Bee_D")))
+X
+```
+
+**Column operations (species across sites)**
+```{r}
+col_means <- colMeans(X)
+col_sds   <- apply(X, 2, sd)
+
+# Center columns: subtract each species’ mean across sites
+X_col_centered <- sweep(X, MARGIN = 2, STATS = col_means, FUN = "-")
+
+# Z-score columns: (X - mean) / sd
+X_z <- sweep(X, 2, col_means, "-")
+X_z <- sweep(X_z, 2, col_sds, "/")
+X_z
+```
+
+**Row operations (sites across species)**
+```{r}
+row_means <- rowMeans(X)
+row_sums  <- rowSums(X)
+
+# Center rows: subtract each site’s mean abundance
+X_row_centered <- sweep(X, MARGIN = 1, STATS = row_means, FUN = "-")
+
+# Row proportions: divide each row by its row sum (compositional)
+# will only with safe if no zero-sum rows)
+
+X_prop <- sweep(X, MARGIN = 1, STATS = row_sums, FUN = "/")
+X_prop
+```
+
+**Column weights example (apply species weights to each row)**
+```{r}
+w <- c(Bee_A = 1.0, Bee_B = 0.5, Bee_C = 1.5, Bee_D = 2.0)
+X_weighted <- sweep(X, MARGIN = 2, STATS = w, FUN = "*")
+row_scores <- rowSums(X_weighted)
+
+X_weighted
+row_scores
+```
+## In-class challenge: Matrix & vector multiplication with plant–pollinator data
+
+We’ll use a **plant × pollinator** visitation matrix `V` (rows = plants, columns = pollinators). You’ll compute:
+- a matrix–vector product (expected seeds per plant),
+- row/column reweighting via diagonal matrices,
+- plant–plant and pollinator–pollinator overlaps via matrix–matrix products, and
+- effectiveness-weighted visits.
+
+### In-class challenge: Matrix & vector multiplication with plant–pollinator data
+
+We'll use a **plant × pollinator** visitation matrix `V` (rows = plants, columns = pollinators). You'll compute:
+
+- a matrix–vector product (expected seeds per plant)
+- row/column reweighting via diagonal matrices
+- plant–plant and pollinator–pollinator overlaps via matrix–matrix products
+- effectiveness-weighted visits.
+
+```{r challenge-mv-setup}
+# Data: counts of visits observed during a standardized survey period 
+plants      <- c("Lupine","Sunflower","Sage")
+pollinators <- c("Bombus","Apis","Halictus","Osmia")
+
+V <- matrix(c(
+  12,  7,  3,  4,   # Lupine
+   5, 19,  8,  2,   # Sunflower
+   9,  4, 11,  6    # Sage
+), nrow = length(plants), byrow = TRUE,
+dimnames = list(plants, pollinators))
+
+# Per-visit pollination effectiveness (relative seeds per visit) for each pollinator
+a <- c(Bombus = 1.8, Apis = 1.2, Halictus = 0.6, Osmia = 1.0)
+
+# Row multipliers: change in floral display/attractiveness for each plant (next day)
+row_mult <- c(Lupine = 1.10, Sunflower = 0.90, Sage = 1.00)
+
+# Column multipliers: change in pollinator activity (next day)
+col_mult <- c(Bombus = 0.80, Apis = 1.20, Halictus = 1.00, Osmia = 1.10)
+
+V
+```
+
+**Q1. Dimensions & conformability (1 min)**
+
+- What are the dimensions of `V`?  
+- What are the dimensions of `a` (treat it as a **column** vector)?  
+- Is `V %*% a` conformable? What will be the shape of the result?
+
+*Hint:* \((S\times T)(T\times 1) \to (S\times 1)\).
+
+```{r challenge-mv-q1, eval=FALSE}
+dim(V)
+length(a)     # number of pollinators (T)
+# Conformability check: ncol(V) == length(a)
+ncol(V) == length(a)
+```
+
+---
+
+**Q2. Expected seeds per plant (matrix–vector product) (3–4 min)**
+
+Assume **linearity** of contributions by visits:
+\[\mathbf{s} \;=\; V \, \mathbf{a},\]
+where \(V\) is plants×pollinators and \(\mathbf{a}\) is per-visit effectiveness (pollinators×1).
+
+```{r challenge-mv-q2, eval=FALSE}
+# Ensure 'a' is aligned to V's columns by name
+a <- a[colnames(V)]
+s <- V %*% a  # plants × 1
+s
+
+# Which pollinator contributes most to Sunflower’s expected seeds?
+(V["Sunflower", ] * a)
+```
+
+**Q3. Plant co-visitation overlap (matrix–matrix product) (4 min)**
+
+Compute **plant × plant** overlap:
+\[\,
+\mathbf{C}_{\text{plants}} \;=\; V\,V^\top.
+\]
+Entry \(c_{ij}\) is the total number of visits that plants \(i\) and \(j\) share across pollinators (diagonal = total visits per plant).
+
+```{r challenge-mv-q3a, eval=FALSE}
+C_plants <- V %*% t(V)
+C_plants
+# Which plant pair shares the most pollinator effort (largest off-diagonal)?
+```
+
+---
+
+**Other examples in networks:**
+
+- Multiplying an **adjacency matrix** \(\mathbf{A}\) by a vector of **species abundances** \(\mathbf{N}\) yields linear combinations of partner contributions.
+- \(\mathbf{A}\mathbf{1}\) (where \(\mathbf{1}\) is a vector of ones) gives **row sums** (e.g., consumer breadth “generality”), and \(\mathbf{1}^\top\mathbf{A}\) gives **column sums** (resource breadth “vulnerability”) in bipartite mutualisms [@dormann2009].
+- The **two‑step reach** between nodes is encoded by \(\mathbf{A}^2\) (paths of length 2).
+- In our lab we will multiple occurrence body sizes and occurrence matrices to build foodwebs for different time periods. 
+
+---
+
+
+### From data to networks
+
+**Empirical construction**
+
+1. **Define nodes and edges**: species (or morphospecies) are nodes; an edge represents a recorded interaction (e.g., visit, predation event, parasitism).  
+2. **Sampling design**: standardized time/area, repeated censuses to reduce detection bias; record identity and (ideally) frequency/weight of interactions [@delmas2019].  
+3. **Matrix assembly**: unipartite (e.g., predator–prey, directed) or bipartite (e.g., plant–pollinator). Binary vs. quantitative matrices.  
+4. **Data sources**: curated repositories (e.g., **Web of Life**, **Mangal**) provide matrices + metadata and programmatic access [@weboflife; @rmangal2019].
+
+**Common network types**
+
+- **Food webs (trophic)**: unipartite, directed edges from resource \(\to\) consumer [@pascualdunne2006; @may1972].
+- **Mutualisms** (pollination, seed dispersal): bipartite, typically undirected and weighted [@bascompte2003; @delmas2019].
+- **Antagonistic bipartite**: host–parasitoid, plant–herbivore.  
+- **Parasite–host, disease**: may be multilayer (hosts–vectors–pathogens).
+- **Multilayer/temporal**: replicate layers across sites/seasons.
+
+**Networks from dynamic systems models**
+
+Many community models define **interaction strengths** explicitly. In **generalized Lotka–Volterra (GLV)** models,
+\[\frac{dN_i}{dt} = r_i N_i + \sum_{j} \alpha_{ij} N_i N_j,\]
+where \(\alpha_{ij}\) is the per‑capita effect of species \(j\) on \(i\). The **Jacobian** at equilibrium,
+\(\mathbf{J} = [\partial f_i / \partial N_j]\), encodes local stability and can be interpreted as a **weighted, signed network** [@may1972; @allesina2012].
+
+- **Food webs**: \(\alpha_{ij}<0\) if \(j\) consumes \(i\); \(\alpha_{ji}>0\) for the consumer’s gain.  
+- **Mutualisms**: \(\alpha_{ij},\alpha_{ji}>0\) (can be saturating).  
+- **Competition**: \(\alpha_{ij},\alpha_{ji}<0\).
+
+Stability depends on **size**, **connectance**, **mean/variance** of \(\alpha_{ij}\), and the **sign structure** (e.g., predator–prey increases stability relative to random interactions) [@may1972; @allesina2012].
+
+
+---
+
+### Core network properties (formulas, intuition, tools)
+
+Let \(S\) be number of species (nodes) and \(L\) number of realized links.
+
+- **Size & density**: In bipartite networks with \(S_\mathrm{plants}\times S_\mathrm{animals}\) possible links, **connectance**
+  \(C = L/(S_\mathrm{plants}\,S_\mathrm{animals})\). In directed unipartite graphs, \(C = L/[S(S-1)]\) [@may1972].
+- **Degree distributions**: number of partners per species; in bipartite networks these are “generality” (rows) and “vulnerability” (cols) [@dormann2009].
+- **Weighted counterparts**: **species strength** is the sum of a species’ dependence across partners; a meaningful complexity measure in mutualistic webs [@bascompte2006science].
+- **Nestedness (NODF)**: specialists interact with subsets of generalists’ partners; computed via NODF (based on overlap and decreasing fill) [@almeidaneto2008; @ulrich2009].
+- **Modularity (\(Q\))**: extent to which species form groups (modules) with dense internal links and sparse external links [@newman2006; @olesen2007].
+- **Specialization \(H_2'\)** (network‑level): standardized interaction diversity; robust to unequal sampling [@bluthgen2006].
+- **Redundancy & complementarity**: complementary pollinators visit **different** plants (functional complementarity), while redundancy captures **overlap** among species' functions; both relate to stability of ecosystem functions [@devoto2012; @magrach2021; @ponisio2020].
+
+**Nestedness (NODF)**
+
+NODF combines **paired overlap** and **decreasing fill** across ordered rows/columns [@almeidaneto2008]. Values range 0–100. Implementations: `bipartite::nested(web, method = "NODF"), `vegan::nestedtemp`.
+
+**Modularity \(Q\)**
+
+For a given partition of nodes into modules, modularity compares within‑module weight to a randomized expectation [@newman2006]:
+\[ Q = \frac{1}{2m}\sum_{ij} \left(A_{ij} - \frac{k_i k_j}{2m}\right)\delta(g_i,g_j),\]
+with \(m=\) total weight, \(k_i=\) node strength, and \(\delta\) equal to 1 if \(i\) and \(j\) share a module.
+Pollination networks are often modular [@olesen2007]. Tools: `bipartite::computeModules`, `igraph::cluster_*`.
+
+**Specialization \(H_2'\) (network) and \(d'\) (species)**
+
+Information‑theoretic indices that standardize interaction diversity against marginals [@bluthgen2006]. In `bipartite`: `H2fun`
+
+**Connectance**
+
+\(C = L/M\) where \(M\) is the maximum possible links (see above). High \(C\) indicates dense interaction structure [@may1972]. Scales with network size (number of species) so can be easily misinterpreted when comparing the connectance of networks of different sizes. 
+
+**Species roles**
+
+- **Degree centrality**: number of unique partners
+- **Betweenness centrality**: fraction of shortest paths that pass through a species (potential “bridges”) [@freeman1979].
+- **Closeness centrality**: inverse of distances to all others (fast access) [@freeman1979].
+- **Eigenvector centrality**: high if connected to other central species.
+- **Species strength** (weighted degree by dependence) gauges importance as a mutualistic provider/consumer [@bascompte2006science].
+**d'** recipocal specialization, similar to H2 but for a species [@bluthgen2006]. 
+
+`bipartite::specieslevel`  can calculate about every metric you can imagine,  see `?bipartite::specieslevel`. 
+
+### Demo: Building networks and characterizing their structure
+
+```{r}
+## Example: load a Web-of-Life matrix shipped with bipartite, "Safariland" is pollination web was published by Vázquez and Simberloff (2003).
+data(Safariland)
+net <- Safariland # too hard to spell... 
+net
+
+```
+
+```{r}
+# Basic size and connectance
+S_row <- nrow(net); S_col <- ncol(net); L <- sum(net > 0)
+connectance <- L/(S_row*S_col)
+
+# A few descriptors 
+networklevel(net, index=c("connectance","H2","nestedness","modularity"))
+```
+
+
+```{r}
+## Some species level metrics, notice the output is a list with the higher and lower levels as elements.
+
+specieslevel(net, index=c("species strength","d", "degree", "betweenness", "closeness"))
+```
+### Null models for fair comparisons
+
+Because many metrics scale with **network size**, **fill**, and **sampling**, compare observed metrics to **null expectations** generated by randomization [@dormann2009; @ulrich2009].
+
+#### Families of null models
+
+1. **Equiprobable / probabilistic**: each cell has the same probability of being 1 (binary) or a probability proportional to row/column totals. Good for testing strong structure but can inflate Type I error (probability of false positives) with heterogeneous marginals [@gotelli2000].
+2. **Constrained marginals**: preserve row and/or column totals to mimic sampling and abundance effects.  
+   - **Fixed–Fixed (FF)**: preserve both row and column sums via **swap**, **trial‑swap**, **curveball** algorithms [@miklos2004; @strona2014].  
+   - **Fixed–Equiprobable (FE)** / **Equiprobable–Fixed (EF)**: preserve one margin, randomize the other [@ulrich2007].
+
+#### Demo: Null models
+
+```{r}
+# NODF standardized with constrained nulls
+obs <- networklevel(net, index="nestedness")
+
+set.seed(1)
+# vegan's oecosimu framework with quasiswap (fixed row & column sums)
+null_fun <- function(x) vegan::nestedtemp(x, "NODF")$statistic
+oecosimu(net>0, null_fun,
+         method = "quasiswap", nsimul = 1000)  # Miklós & Podani 2004
+```
+
+Report **z‑scores** or **p‑values** based on the null distribution; when comparing many networks, use the same null model family for consistency [@dormann2009].
+
+
+### Demo: Calculating network metrics (pollination)
+
+```{r}
+data(Safariland)
+net <- Safariland
+
+# Selected metrics
+networklevel(net, index=c("connectance","H2","nestedness","modularity"))
+
+# Species roles
+specieslevel(net, index=c("degree","d"))
+
+# Null-model standardized nestedness
+
+oecosimu(net, function(x) nestedtemp(x,"NODF")$statistic,
+         method="quasiswap", nsimul=999)
+```
+
+Interpretation tips: high \(H_2'\) means **specialized** interactions; high NODF indicates **nested** structure; high \(Q\) implies **modules** (compartments).
+
+### Demo: Create a graph from OBA data, visualize it
+Let's load in our OBA data and make a network for all the bumble bees in Oregon. We will need to subset the data, then keep only the bee and plant species columns. 
+
+```{r, load-oba}
+oba <- read.csv("data/OBA_2018-2023.csv")
+str(oba)
+```
+
+The entire network would be difficult to visualize, so let's subset the data to just bumble bees. We need to extract only the columns that are relevant for the bee-plant interactions. The column "Associated.plant" has the floral species a bee was caught visiting, if it was caught on a flower.
+
+```{r, subset-obs}
+bumbles <- oba[oba$Genus == "Bombus", ]
+bumbles$GenusSpecies <-  paste(bumbles$Genus, bumbles$Species)
+bumbles <- bumbles[, c("GenusSpecies", "Associated.plant")]
+colnames(bumbles) <- c("GenusSpecies", "PlantGenusSpecies")
+head(bumbles)
+```
+
+There are a lot of blank rows from associated taxa for individuals not caught on a flower. We cannot do anything with those so we will just drop them. 
+
+```{r, subset-obs-2}
+bumbles <- bumbles[bumbles$PlantGenusSpecies != "",]
+sort(unique(bumbles$PlantGenusSpecies))
+```
+
+Ugg, there are a lot of weird name add ones that will cause inconsistencies when we make the network because any unique name will be considered a unique node. Next week we will learn how to clean these out using regular expressions. For these week we will just drop them...
+
+```{r, grep}
+really.bad.plant.name <- "Daucus carota (Queen Anne\x92s lace), chicory, field bindweed, field pea and dandelion"
+bumbles <- bumbles[bumbles$PlantGenusSpecies != really.bad.plant.name,]
+bad.plant.names <- grepl("\\(|,", bumbles$PlantGenusSpecies)
+
+bumbles <- bumbles[!bad.plant.names,]
+```
+
+
+We can explore the species in our network. These will be the vertices. 
+```{r, explore}
+table(bumbles$GenusSpecies)
+table(bumbles$PlantGenusSpecies)
+```
+We have a variety of options for converting of data (which is basically an edge list) into a graph. One is to sum up our interactions but bee-plant combinations to make an bipartite adjacency matrix. Then convert that matrix to a igraph object. 
+
+```{r, make-adj-1}
+### 1. sum up interactions and take a look
+bumbles_adj <- table(bumbles)
+### write to a file
+save(bumbles_adj, file="bumbles_adj_mat.Rdata")
+dim(bumbles_adj)
+bumbles_adj[1:5, 1:5] 
+```
+
+```{r, make-adj-2}
+### 2. convert to igraph bipartite adjacency matrix 
+g_bumbles <- graph_from_biadjacency_matrix(bumbles_adj, 
+                                           weighted =TRUE) 
+g_bumbles
+```
+
+To use the 'forceNetwork' function we did for Le Mis, we need to convert our graph into a dataframe. Luckily there is a function 'igraph_to_networkD3' to convert from graph objects to what the network3d package wants. That function also wants a each vertex assigned to a group. We have a variety of options on how to assign groups, one is to look for modules or compartments in the network. 
+
+```{r, plot-oba}
+### find modules
+mod_bumbles <- cluster_walktrap(g_bumbles)
+### assign vertices to modules
+groups <- membership(mod_bumbles)
+
+### convert to a network 3d object
+g_bumbles_net3d <- igraph_to_networkD3(g_bumbles, group=groups, 
+                                       what = "both")
+### plot the bumble-plant network
+forceNetwork(Links = g_bumbles_net3d$links,
+             Nodes = g_bumbles_net3d$nodes,
+            Source = "source", Target = "target",
+            Value = "value",  NodeID = "name",
+             Group = "group", 
+            opacity = 0.8, zoom=TRUE, opacityNoHover = 0.9)
+```
+
+We can also use a flow-like visualization plot. 
+
+```{r, plot-oba-2}
+
+sankeyNetwork(Links = g_bumbles_net3d$links,
+             Nodes = g_bumbles_net3d$nodes,
+            Source = "source", Target = "target",
+            Value = "value",  NodeID = "name", 
+            nodePadding = 0, height = 5000)
+```
+
+### In class: Visualization challange 1.
+
+Choose a different genus of bees and repeat the steps above to make a network. 
+
+### In class: Visualization challange 2. 
+How could we use graph attributes to create informative network visualizations? Set some attributes and use them to plot your network.
+Consider using static network plots instead of network3D, see this [turorial](https://yunranchen.github.io/intro-net-r/advanced-network-visualization.html#visualization-for-static-network) for examples.  
+
+
+```{r, plot-oba-challange}
+
+```
+
+
+
+### Further reading & software
+
+- **Reviews/guides**: @delmas2019; @bascompte2007; @landi2018.  
+- **R packages**: *bipartite* [@dormann2009; @bipartite2025], *igraph* [@igraph2025], *vegan* for null models [@vegan2025].  
+- **Data portals**: Web of Life [@weboflife], Mangal [@rmangal2019].
+
+
+```{r child="readings/06-reading.Rmd", echo=FALSE, error=TRUE}
+```
+
+
+```{r child="labs/06-lab-foodwebs_student.Rmd", echo=FALSE, error=TRUE}
+```
+
+### References

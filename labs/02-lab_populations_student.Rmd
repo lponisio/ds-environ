@@ -1,0 +1,769 @@
+## Lab: Programming Key Concepts
+
+```{r lab2_setup_guard, include=FALSE}
+if (!exists("a")) a <- 2
+if (!exists("b")) b <- 3
+if (!exists("c")) c <- "hello"
+if (!exists("r")) r <- 0.6
+if (!exists("K")) K <- 100
+if (!exists("n0")) n0 <- 10
+knitr::opts_chunk$set(error = TRUE, warning = TRUE, message = TRUE)
+```
+```{r lab_setup, include=FALSE}
+knitr::opts_chunk$set(comment = NA)
+```
+
+### Lesson Overview
+
+The goals of this modules is to refine your knowledge of the basic, core concepts of programming that transcend languages, how they fit together, and how you can use them to become a better scientist. We will practice these concepts by modeling the logistic growth of a population. 
+
+**Conservation/ecology Topics**
+
+- Simulate population dynamics under logistic growth, and how a catastrophes alter those dynamics. 
+
+**Computational Topics**
+
+
+By the end of this R lesson, you will be able to:
+
+-  Gain familiarity with the 6 of the 7 core elements shared by all
+    programming languages.
+-  Use R to write simple functions that use these core elements.
+-  Make and save simple plots using basic plots.
+
+We encourage you to make liberal use of your fellow students, GE, and professor as we proceed through these modules. We will work in pairs. 
+
+### Review: The Seven Core Concepts
+
+As noted by Greg Wilson (the founder of Software Carpentry), every
+programming language shares seven core elements:
+
+1.  Individual things (the number 2, the character 'hello')
+2.  Commands that operate on things (the + symbol, the `length` function)
+3.  Groups of things (R vectors, matrices, lists, dataframes, and arrays)
+4.  Ways to repeat yourself (for and while loops, apply functions)
+5.  Ways to make choices (if and try statements)
+6.  Ways to create chunks (functions, objects/classes, and packages)
+7.  Ways to combine chunks (piping) (for next week)
+
+### Starting with RStudio
+
+To open RStudio, click on the RStudio icon in the Applications (if you
+are on a Mac) or in your Programs if you are on Windows.
+
+There are four windows in RStudio that we will refer to throughout the
+workshop
+
+1. *The R Script*: Typically the upper left hand corner of RSutdio.
+   This is where you write R code that you can save and reuse later.
+2. *The R Console*: Typically in the lower left hand corner. This is
+   where you execute R code.
+3. *The R Environment*: Typically in the upper right hand corner. This
+   is where you can see defined variables.
+4. *R "Information"*: Typically in the lower right hand corner. This
+   is where you see plots, help and other R information.
+
+For all the work in this class we will be typing code in the R
+script and then executing it in the R console.  For simple commands
+(e.g. `2 + 2`) this may seem stupid, but writing in a script will help
+all of your work be reproducible! Think of the script as your lab
+notebook.
+
+**TIP**: Some helpful R studio shortcuts
+1. Run the current line of selection
+   - Windows: `Ctrl-Enter`
+   - Mac: `Command-Enter`
+2. Source the entire script
+  - Windows: `Ctrl-Shift-Enter`
+  - Mac: `Command-Shift-Enter`
+
+###  Individual things
+
+The most basic component of any programming language are "things",
+also called variables or objects.
+
+The most common basic "things" in R are numerics, characters,
+logicals, and some special objects of various types (e.g. lists,
+dataframes, etc.). We'll meet many of these as we go through the
+lesson.
+
+```{r}
+# A numeric
+2
+
+# A character
+"hello"
+```
+
+###  Assignment statements 
+Things can be stored as variables using `<-`.  `=` also works, but R
+programmers are picky about `<-` sometimes called "carrot". 
+
+```{r}
+a <- 2
+b <- "hello"
+c <- TRUE  # This is case sensitive
+
+# Print the different variables
+a
+b
+c
+```
+
+We can figure out the type of these things using the `class` function
+```{r}
+class(a)
+class(b)
+class(c)
+```
+    
+### Question 1: Population dynamics
+
+Logistic growth of a population: Throughout this lesson, we will successively build towards calculating the logistic growth of a population of bees in a meadow (or some less exciting vertebrate, if you prefer).
+
+A commonly used discrete time equation for logistic population growth is
+
+ $$n(t + 1) = n(t) + r*n(t) [1 - n(t) / K]$$
+
+where n(t) is the population size at time t, r is the net per capita growth rate, and K is the carrying capacity of the habitat.
+
+To get started, write R expressions that do the following:
+
+- 1a. Create variables for `r`, `K`, and `n0`, setting these equal to 0.6, 100, and 10, respectively.
+
+```{r}
+# your code here
+```
+
+###  Commands that operate on things
+
+Just storing data in variables isn't much use to us. Right away, we'd like to start performing operations and manipulations on data and variables.
+
+There are three very common means of performing an operation on a
+thing.
+
+**Use an operator 
+
+All of the basic math operators work like you think they should for
+numbers. They can also do some useful operations on other things, like characters.
+
+```{r}
+# Standard math operators work as expected on numbers
+a <- 2
+b <- 3
+a + b  # Addition
+a * b  # Multiplication
+a ^ b  # Powers
+a / b  # Division
+
+1:10
+```
+
+**Use a function
+
+A function is a block of code with a specific input(s) and output. There are thousands of functions that operate on things.
+```{r}
+class(3.3)
+round(3.3)
+as.integer(3.3)
+paste("3.3 rounded is", round(3.3))  # Paste together characters and integers
+```
+
+To find out what a function does, type the `?` before the function
+name.
+
+```{r}
+?round
+round(4.567, digits=1)
+```
+
+> **Tip**: Sometimes the R help can be pretty unhelpful.  The best
+> option then (or maybe before you even use the R help, is to Google
+> it!). Here are a list of sites that we find very helpful:
+
+> 
+>   1. [Stack Overflow](http://stackoverflow.com/)
+>   2. [R for Data Science](http://r4ds.had.co.nz/)
+
+Many useful functions are in external packages and you need to install
+them and load them into the R environment.  For example, what if we
+wanted to figure out how to do a negative binomial regression in R?
+
+```{r}
+# Install the package (students: uncomment to install locally)
+# install.packages("lme4")
+if (requireNamespace("lme4", quietly = TRUE)) {
+  library(lme4)
+  if (interactive()) try(utils::help("glmer.nb", package = "lme4"), silent = TRUE)
+} else {
+  message("Package 'lme4' is not installed; skipping this optional demo.")
+}
+
+```
+
+Hmmm, that probably didn't work for you because the function lives in an external package called `lme4`.  We need to install package and then load the package.
+
+```{r}
+# Install the package (students: uncomment to install locally)
+# install.packages("lme4")
+if (requireNamespace("lme4", quietly = TRUE)) {
+  library(lme4)
+  if (interactive()) try(utils::help("glmer.nb", package = "lme4"), silent = TRUE)
+} else {
+  message("Package 'lme4' is not installed; skipping this optional demo.")
+}
+
+```
+
+There are thousands of R packages with many useful functions and
+datasets!  That is one of the huge advantages of R, everyone can
+contribute.
+
+###  Question 2: Using operators and functions
+
+- 2a. Create the variable `n1` (n at t=1) and calculate it's value using the logistic growth equation Do the same for `n2` and `n3`.
+
+ n(t + 1) = n(t) + r*n(t) [1 - n(t) / K]
+
+```{r}
+# your code here
+```
+
+- 2b. Check the type of `n2` - what is it?
+
+```{r}
+# your code here
+```
+
+- 2c. Modify your calculations for `n1`, `n2` and `n3` so that these values are rounded to the nearest integer (so no decimal places). If you have forgotten the name of the function that rounds numbers, try googling it (or look back at the lecture demo above). If you are unsure of the arguments to the function, check the help file using ?
+
+```{r}
+# your code here
+```
+    
+###  Groups of things
+**Vectors 1D** 
+We can create groups of things with functions. A simple group is a vector, similar to a column of data.
+
+```{r}
+week.days <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+week.days
+test.scores <- c(99.9, 100, 98.7, 20)
+test.scores
+```
+
+**Matrices 2D**
+
+All elements must be the same class. Matrices are great for storing the results of simulations (like what we will be doing today).
+
+```{r}
+parasite.screenings <- matrix(sample(0:1, 100, replace=TRUE), nrow=10, ncol=10)
+parasite.screenings
+```
+
+**Dataframes 2D**
+
+Dataframes can have columns of different classes. We will not be using dataframes today, but most data is stored in dataframes because data for a project is not either all numeric or characters.
+
+```{r}
+# data frames
+bee.surveys <- data.frame(species = c("Bombus occidenalis", "Apis melifera"), 
+                          ORnative = c("yes", "no"), 
+                          bodysize = c(3.1, 2.1)
+)
+
+bee.surveys$ORnative
+class(bee.surveys$ORnative)
+
+bee.surveys[, 3]
+class(bee.surveys$bodysize)
+```
+
+**Lists, N-dimensional**
+
+Lists can have components of different dimensions and classes. Dataframes are special lists where all the components are vectors with the same length. We will not be using these today but they may be relevant for your final projects because they are so flexible. 
+
+```{r}
+# lists 
+all.bee.data <- list(parasites = parasite.screenings, 
+                  bee.surveys)
+
+
+all.bee.data$parasites
+
+```
+
+You can create an empty vector with `vector()`. (By default the mode
+is `logical`, but that can be changed to any class of thing you need). 
+
+```{r}
+# Empty vector with a type and length
+vector("character", length = 10)
+```
+
+You can add elements to vectors as well using `c()`
+
+```{r}
+# Make an empty vector
+x <- vector("numeric", 1)
+
+# Add 2 to x
+x <- c(x, 2)
+x
+
+# Make a numeric vector with numbers 1 - 10
+y <- 1:10  
+y
+
+# Add y to x
+z <- c(x, y)
+z
+```
+    
+You can then look at specific things in the vector by specifying the *index*
+
+```{r}
+# Look at the first thing. Index 1
+z[1]
+
+# Look at the 2-5 things. Indices 2 - 5
+z[2:5]
+
+# Look at the last thing. Index 11
+z[11]
+```
+
+You can also make vectors of number sequences
+
+```{r}
+# Sequence of 1 through 10
+a <- 1:10
+a
+
+# Sequence from 0 to 10 with 25 equally spaced elements
+b <- seq(0, 10, length=25)
+b
+```
+
+###  Question 3: Storing and indexing data
+
+- 3a.  Create a vector where `n0`, `n1`, `n2` and `n3` are stored, instead of as separate individual variables by creating an empty vector using the syntax `n <- vector("numeric", 4)`, and then assigning each index. You could get the same result using `c()`, but practice using `vector()` and indexing instead.
+
+```{r}
+# your code here
+```
+
+- 3b. Get the first and last values in the vector, calculate their ratio, and print out "Grew by a factor of" followed by the result.
+
+```{r}
+# your code here
+```
+
+- 3c. Extract the last value of your n vector in two different ways: first, by using the index for the last item in the vector, and second, with out "hard coding" the index and instead using a function to work out the index for the last element.  HINT: the `length()` function may be useful.
+
+```{r}
+# your code here
+```
+
+###  Comparisons and Booleans
+**Comparison operators** 
+Comparison (also called logical) operators compare two things. This amounts to asking R a question
+
+1. `x > y`: R, is x greater than y?
+2. `x == y`: R, is x the same as y?
+3. `x <= y`: R, is x less than or equal to y?
+4. `x & y`: R, are both x and y `TRUE`?
+5. `x | y`: R, is either x or y `TRUE`?
+
+R will either answer `TRUE` or `FALSE`
+
+```{r}
+(1 > 3)
+a <- (1 > 3)
+(3 == 3)
+b <- (3 == 3)
+
+a
+class(a)
+b
+
+### adding questions together
+a | b
+a & b
+```
+
+You can also use comparisons to subset vectors or matrices. This is called logical indexing.  For example, let's get an vector that only contains values greater than 2
+
+```{r}
+# Vector logical indexing 
+z <- c(1, 2, 3, 4)
+z
+y <- z[z > 2]
+y
+
+# Matrix logical indexing
+m <- matrix(1:10, nrow=2, ncol=5)
+m
+m2 <- m[m > 2]
+m2
+```
+
+**Aggregating comparisons**
+
+```{r}
+parasite.screenings[1, ] ==1
+sum(parasite.screenings[1, ] ==1)
+
+```
+
+###  Question 4: Storing data and logical indexing
+
+- 4a.  Pre-allocate an vector called n containing 100 blank space (i.e. 0s) as if we were going to fill in 100 time steps. 
+
+```{r}
+# your code here
+```
+
+- 4b. Imagine that each discrete time step actually represents 1 day. Create an vector `t` storing 100 time step from 2 to 100. For example, `t[1]` should be 2 `t[2]` should be 3, etc.
+
+```{r}
+# your code here
+```
+
+- 4c. Use the logistic growth equation to fill in the first 5 elements of n by hand. Assume the initial population size at t=1 is 10. 
+
+Logistic growth equation:
+n(t + 1) = n(t) + r*n(t)[1 - n(t) / K]
+
+```{r}
+# your code here
+```
+
+Rather painful! Hard to imagine we could fill in the rest without making a mistake with our indexing. In the next Question of the lab we will learn how to repeat ourselves without copy-pasting like in the above.
+
+- 4d. Use logical indexing to extract the value of `n` corresponding to a `t` of 3.
+
+```{r}
+# your code here
+```
+
+### Control statements - for (repeating yourself)
+
+In this section and the next, we really start to take advantage of the power of programming languages to do things for us automatically.
+
+We start here with ways to repeat yourself. For loops in R are useful when you want to cycle over all of the items in a collection (such as all of the elements of a vector). 
+
+```{r}
+word <- c("o", "x", "y", "g", "e", "n")
+
+for(char in word){
+    print(paste(char, "*"))
+}
+```
+
+What is the value of char?
+
+```{r}
+char
+```
+
+You can sum a collection of numbers with a loop (though this could be more quickly done using a `sum()`, but just for example purposes.
+
+```{r}
+# Sum all of the values in a collection using a for loop
+numlist <- c(1, 4, 77, 3)
+
+total <- 0
+for(num in numlist){
+  total <- total + num
+}
+
+total
+```
+    
+We often want to loop over indexes of collections
+
+```{r}
+wordlist <- c('hi', 'hello', 'bye')
+wordrange <- 1:length(wordlist)
+wordrange
+
+for(i in wordrange){
+  print(wordlist[i])
+}
+```
+    
+Once we start looping through large numbers of values it is often better to plot the data.  We will cover this in much more detail next week, but here is a quick example.
+
+```{r}
+library(ggplot2) # install this if needed
+x <- 1:100
+y <- x^2
+
+### column bind the two vectors together
+z <- cbind(x, y)
+
+### More on plotting next week! :) 
+ggplot(z, aes(x=x, y=y)) + geom_line()
+
+```
+
+###  Question 5: Using loops to repeat calculations
+
+Exciting next step, let's get smart about our calculations of `nt`. Building on what you did in Question 5, do the following:
+
+- 5a. Write a for loop to fill in the values of `nt` for 100 time steps.  Loop over the values of the t, and use each step vector to index the vector `n`. (Why does the t vector start at 2 and not at 1?)
+
+```{r}
+# your code here
+```
+
+- 5b. Plot the vector `n`. HINT: You will want t to start at 1 for the plot so it can include n(1) which we set above but did not include in the for loop because you need to start with an initial population before growing logistically. 
+
+```{r}
+# your code here
+```
+
+- 5c. Play around with the values of `r` and `K` and see how it changes the plot. What happens if you set `r` to 1.9?
+
+```{r}
+# your code here
+```
+
+- 5d. What happens if you set `r` to 3?
+
+```{r}
+# your code here
+```
+
+
+### Control statements - if (making choices)
+Often we want to check if a condition is `TRUE` and take one action if it is, and another action if the condition is `FALSE`. We can achieve this in R with an if statement.
+
+You can use any expression that returns a boolean value (`TRUE` or `FALSE`) in an if statement. 
+
+**if and else** 
+```{r}
+num <- 42
+if(num > 100){
+    print('greater')
+}else{
+    print('not greater')
+}
+print('done')
+```
+
+Conditional statements don’t have to include an else. If there isn’t one, R simply does nothing if the test is FALSE. 
+
+```{r}
+num <- 107
+print('before conditional...')
+if(num > 100){
+    print(paste(num,' is greater than 100'))
+}
+print('...after conditional')
+```
+
+We can also chain several tests together using else if{}
+The following R code uses else if to print the sign of a number.
+
+```{r}
+num <- 42
+
+if(num > 0){
+    print(paste(num, 'is positive'))
+} else if(num == 0){
+    print(paste(num, 'is zero'))
+}else{
+    print(paste(num, 'is negative'))
+}
+print('all done')
+
+```
+
+We can also combine tests using and and (&) or (|). and is only true if both Questions are TRUE:
+
+```{r}
+num1 <- 1
+num2 <- -1
+if(num1 > 0 & num2 >= 0){
+    print('both Questions are true')
+}else{
+    print('at least one Question is false')
+}
+```
+
+Or TRUE if one or the other Question is TRUE:
+
+```{r}
+num1 <- 1
+if(num1 < 0 | num1 >= 0){
+    print('at least one test is true')
+}
+```
+
+###  Question 6: Making the model stochastic with an if statement
+
+Let's introduce some element of randomness into our logistic growth model to better represent nature. We'll model a simple "catastrophe" process, in which a catastrophe happens in 10% of the time steps that reduces the population back down to the size at n0. For example, the bees in our meadow have some probability of being sprayed by herbicide that drifts from nearby timber plantations which would kill individuals directly and through starvation (no flowers left). Build on your code from Question 4 into the box below, and do the following:
+
+
+- 6a. Create a variable called `cata`, for catastrophe, that will be `TRUE` if a catastrophe has occurred, and `FALSE` if it hasn't. A simple way to do this is to generate a random number using `runif(1)` (draw from a uniform 0,1 distribution once, see ?runif), which will give you a random number between 0 and 1. Check whether this number is less than 0.1 - this check will be `TRUE` 10% of the time.
+
+```{r}
+# your code here
+```
+
+- 6b. Using your logical variable `cata`, add an if statement to your for loop that checks whether `cata` is true in each time step.  If it is true, set the population back to the size at n[0]. Otherwise, perform the usual logistic growth calculation.
+HINT: `cata` will need to be within the for loop so it change values each iteration.
+
+```{r}
+# your code here
+```
+
+- 6c. Plot your results. Run the code again to see a different growth trajectory.
+
+```{r}
+# your code here
+```
+
+d. Now that you have the vector `n`, count the number of time steps in which the population was above 50. Although you can do this with a for loop (loop through each value of `nt`, check if it is > 50, and if so increment a counter), you can do this in one line with a simple logical operation. HINT: If you take the sum of a logical vector (using `sum()`), it will give you the number of `TRUE` values (since a `TRUE` is considered to be a 1, and False is a 0).
+
+```{r}
+# your code here
+```
+
+###  Creating chunks
+**Writing functions**
+One way to write a program is to simply string together commands, like the ones described above, in a long file, and then to run that file to generate your results. This may work, but it can be cognitively difficult to follow the logic of programs written in this style. Also, it does not allow you to reuse your code easily - for example, what if we wanted to run our logistic growth model for several different choices of initial parameters?
+
+The most important ways to "chunk" code into more manageable pieces is to create functions and then to gather these functions into modules, and eventually packages The R packages that you download from CRAN essentially contain collections of functions, though they also contain datasets and high level chunks called objects. Below we will discuss how to create functions in R. Functions are good for making code more **reusable**, **readable**, and **maintainable**.
+
+We can create a function to do whatever we like. We need to give it a same, define its inputs (arguments) and its outputs (return expression). 
+
+```{r}
+spread <- function(x){
+  out <- max(x) - min(x)
+  return(out)
+}
+
+spread(seq(1:100))
+```
+
+Another example: 
+```{r}
+fahr_to_celsius <- function(temp) {
+  celsius <- (temp - 32) * (5 / 9)
+  return(celsius)
+}
+```
+
+A function has a few crucial Questions
+
+1. A name (`fahr_to_celsius`)
+2. Arguments (`temp`)
+3. A return value (`celsius`).  One feature unique to R is that the return statement is not required. R automatically returns whichever variable is on the last line of the body of the function. But, is it makes it much easier to understand a function if a return statement is defined explicitly so its best practice to include one.
+
+Next, we get to use the function. You pass in *arguments* to the function. 
+    
+```{r}
+# Freezing point of water
+fahr_to_celsius(32)
+
+# Boiling point of water
+fahr_to_celsius(212)
+```
+
+You **always** want to document your function to describe what it does.  You can do that with comments. Use full sentences and describe the inputs and outputs.
+
+```{r}
+fahr_to_celsius <- function(temp) {
+  # Function argument temp (numeric) in Fahrenheit  and converts 
+  # it to Celsius (numeric).
+  celsius <- (temp - 32) * (5 / 9)
+  return(celsius)
+}
+```
+
+Functions can also have default parameters, which don't need to be passed as arguments when the function is called. Beginning with a function with no defaults:
+
+```{r}
+    say_hello <- function(time, people){
+        # Function takes two character inputs and returns a pleasant greeting.
+        return(paste('Good', time, people))
+    }
+    say_hello('afternoon', 'friends')
+```
+
+What happens when you try this
+
+```{r}
+# say_hello('afternoon')
+```
+
+You must pass in two arguments because that is how you defined the function! If we were writing a function many people might use, we would want to check the inputs were correct (known as "defensive programming") instead of letting R throw an error. 
+Let's now give `people` a default value.  In the example below, people will now have the value of `world` unless we explicitly specify otherwise.
+
+```{r}
+say_hello <- function(time, people='world'){
+  # Function returns a pleasant greeting
+  return(paste('Good', time, people))
+}
+
+# Default is returned
+say_hello('afternoon')
+
+say_hello('afternoon', 'students')
+```
+
+###  Question 7: Creating a logistic growth function
+
+- 7a. Finally, let's turn our logistic growth model into a function that we can use over and over again.  Let's start with writing a function to calculate n(t+1). It should take n(t), r, and K as agrguments and return n(t+1). 
+
+Reminder of the logistic growth equation:
+ n(t + 1) = n(t) + r*n(t) [1 - n(t) / K]
+ 
+```{r}
+# your code here
+```
+ 
+- 7b. Create function called `logistic_growth` that takes four arguments: `r`, `K`, `n0`, `p` (the probability of a catastrophe), and nsteps (the length of the t vector). Make `p` a default argument with a default value of 0.1. Have your function recreate your answer for question 7b above (simulate a catastrophe, grow the population if no catastrope occurs). Have your function return the `n` and `t`  matrix.
+ 
+- 7c. Write a nice comment describing what your function does. In addition, use comments with full sentences to describe the intention of each section of code. 
+
+```{r}
+# your code here
+```
+
+- 7d. Call your function with different values of the parameters to make sure it works.
+
+Store the returned results and make a plot from it.
+
+```{r}
+# your code here
+```
+
+- 7e. Explore different values of p and see how it changes the trajectory. Describe what happens.
+ANSWER: .... 
+
+### Question 8 (Extra credit or graduate students)
+
+** Analyze and simulate a discrete-time predator–prey system.
+1) simulate dynamics for two parameter sets,
+2) visualize trajectories in time 
+
+We use logistic prey growth, a linear functional response, and linear predator mortality:
+\[
+\begin{aligned}
+N_{t+1} &= N_t + r\,N_t\left(1-\frac{N_t}{K}\right) - a\,N_t P_t,\\
+P_{t+1} &= P_t + e\,a\,N_t P_t - m\,P_t,
+\end{aligned}
+\]
+where \(N_t\) = prey abundance, \(P_t\) = predator abundance, and parameters \(r,K,a,e,m>0\).
+
+### Simulate & visualize (baseline)
+
+- 8a: Use the parameter set below and initial conditions \(N_0=100,\;P_0=20\). Simulate for \(T=200\) steps. Make a time-series plot of \(N_t\) and \(P_t\)
+
+- 8b: Repeat the simulation with **higher predator mortality** \(m=0.28\) (others unchanged). Compare the dynamics to part (a) including the visualization. 
+
+- 8c: What phenomenon of predator-prey dynamics does this illustrate? 
