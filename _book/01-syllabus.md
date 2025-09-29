@@ -33,45 +33,58 @@ Primary outside class materials: This book, *R for Data Science* (Grolemund & Wi
 ## Weekly Topics and Readings
 
 
-| Week|Programming                       |Ecology               |
-|----:|:---------------------------------|:---------------------|
-|    1|Intro to R & programming concepts |Reproducible science  |
-|    2|Data wrangling & visualization    |NOAA climate data     |
-|    3|Joins & simulation                |Hedgerow biodiversity |
-|    4|Version control (Git)             |Decolonizing ecology  |
-|    5|Networks & linear algebra         |Ancient food webs     |
-|    6|Regular expressions               |Oregon Bee Atlas data |
-|    7|Spatial data I                    |Species occurrences   |
-|    8|Spatial data II                   |Fire severity maps    |
-|    9|Debugging techniques              |Project polish        |
-|   10|Final project + poster session    |Poster presentations  |
+| Week|Programming                              |Ecology               |
+|----:|:----------------------------------------|:---------------------|
+|    1|Intro to R & programming concepts part 1 |Datacamp catch up     |
+|    2|Intro to R & programming concepts part 2 |Reproducible science  |
+|    3|Data wrangling & visualization           |NOAA climate data     |
+|    4|Joins & simulation                       |Hedgerow biodiversity |
+|    5|Version control (Git)                    |Decolonizing ecology  |
+|    6|Networks & linear algebra                |Ancient food webs     |
+|    7|Regular expressions                      |Oregon Bee Atlas data |
+|    8|Spatial data I                           |Species occurrences   |
+|    9|Spatial data II                          |Fire severity maps    |
+|   10|Final project + poster session           |Poster presentations  |
 
 
 ## Assignments and Grading
 
-- **Lab assignments**: Weekly programming practice (40%)
-- **Article summaries**: Critical reading (7%)
-- **Quizzes**: Concepts & code logic (10%)
-- **Final project**: Reproducible analysis + poster (35%)
-- **Participation**: Polls + lab attendance (3%)
-- **Grads/EC**: Grad challenge questions, new skill demo
+- **Lab assignments**: These programming assignments are designed to develop the skills you learn in class. Assignments will typically include designing and implementing code and interpreting code and figures. Comfort in the R environment comes with regular use, so each week includes an assignment to reinforce the concepts in class. Upload the PDF on Canvas to turn in the assignment, and after the week focusing on learning to use version control (week 5), push your assignment to GitHub. 0.5 points of each 5 point assignment are from lab attendance. (due TH the week after they have been assigned in lab)
+- **Article summaries**: A prompt for a summary or reflection will be posted every other week (or so) to prepare for our discussions on Wednesdays. (due before class W).
+- **Weekly quizzes**: These quizzes will include selecting what code will achieve a certain goal and conceptual topics in the tutorials/readings. Quizzes are done during lab, no time limit, closed book.
+- **Participation**: Regular class attendance and participation.
+- **Data camp tutorials**: Each week there will be interactive tutorials that cover the programming topics we cover in class. The lab assignments are more advanced, so practicing with topics ahead of the lab is key to being able to engage in the labs. Besides in the first week where we will do these tutorials in lab and they are due at 11:45pm, the rest are due before lab starts (2pm Friday).
+- **Final project**: The class's focal experience is working collaboratively on creating the deliverable requested by our project partner, the Oregon Bee Atlas (OBA), or data collected by the students (i.e., capstone or thesis data). Undergrads will work in pairs, and grads will work solo. Final write-up is due during finals week.
 
 ## Policies
-- Weekly assignments due Thurs midnight  
-- Late penalty: 10%/day  
-- AI tools: tutor only, not for final writing  
-- Inclusivity: Everyone is welcome and supported
+- Extensions given for emergency granted by LP (not the GE)
+- Late penalty: 10% per day  
+- AI tools: tutor only (for programming and writing), not for final writing. You must understand all code and be able to explain it to me. If you cannot, I will give the assignment back, and have you re do it with a 10% penalty per day (+ 10% off the top).  
 
 ## Final Project
 Work with real Oregon Bee Atlas or capstone data. Deliverables:
 
-- Topic + workflow proposal
-- Annotated bibliography
-- Reproducible report (RMarkdown + GitHub)
-- Poster presentation
+- Topic identification
+- Discuss the topic with LP during office hours.
+- Annotated bibliography.
+- Proposed workflow
+- Written report of requested analysis visualizations, including reproducible code deposited on Github.
+- Poster presentation at class symposium.
 
-Graduate students add:
+**Graduate students** (500-level) have additional requirements:
 
-- Independent work (no pairs)
-- Best statistical method required
-- Additional new skill programming demo
+- Challenge questions: Most lab programming assignment will include 1-2 challenge problems for graduate students. Undergraduates can complete these questions for extra credit.
+
+- Final project: graduate students do not work in pairs, so are expected to spend twice the amount of time. In addition:
+a) The introduction of the written project must be at the level that you would send to your committee.
+b) The hypothesis test must include the best available statistical test using simulation, traditional statistics (linear models, generalized linear models, etc.), or machine learning. Please come to office hours if unsure of what analytic approach to take.
+c) The final project must include a programming skill that builds on or is not covered by this class that is relevant to the student’s thesis. For example:
+- Conducting and visualizing a PCoA
+- Creating a shiny ap.
+- Creating interactive plots to explore the data
+- Advanced spatial analysis
+- Downloading climate data from PRISM
+- A bioinformatics pipeline in BASH
+- Creating a Docker container for your project
+
+New programming skill demo: For the above new programming skill, create a RMarkdown demo that introduces the new skill, and then three challenge problems formatted in a similar way to our lab assignments. The demo should be approximately 45 minutes if delivered, and the challenge problems should be sufficiently complex to take 20 minutes each to solve.
