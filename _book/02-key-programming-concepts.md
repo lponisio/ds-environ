@@ -95,10 +95,548 @@ R emerged from statistics; Python from computer science. Both are open-source an
 An annoying difference Python users will struggle with at first: in R, the syntax for calling a **function** and a **method** looks the same (because most things are functions), whereas Python distinguishes `data.plot` from `plot(data)`. 
 
 
+## Demo: Programming Key Concepts part 1 (week 1)
 
-## Demo: Exponential Population Growth 
+### Starting with RStudio
 
-> **Learning goals (today)**  
+To open RStudio, click on the RStudio icon in the Applications (if you
+are on a Mac) or in your Programs if you are on Windows.
+
+There are four windows in RStudio that we will refer to throughout the
+workshop
+
+1. *The R Script*: Typically the upper left hand corner of RSutdio.
+   This is where you write R code that you can save and reuse later.
+2. *The R Console*: Typically in the lower left hand corner. This is
+   where you execute R code.
+3. *The R Environment*: Typically in the upper right hand corner. This
+   is where you can see defined variables.
+4. *R "Information"*: Typically in the lower right hand corner. This
+   is where you see plots, help and other R information.
+
+For all the work in this class we will be typing code in the R
+script and then executing it in the R console.  For simple commands
+(e.g. `2 + 2`) this may seem over the top, but writing in a script will help all of your work be reproducible! Think of the script as your lab
+notebook.
+
+**TIP**: Some helpful R studio shortcuts
+1. Run the current line of selection
+   - Windows: `Ctrl-Enter`
+   - Mac: `Command-Enter`
+2. Source the entire script
+  - Windows: `Ctrl-Shift-Enter`
+  - Mac: `Command-Shift-Enter`
+
+###  Individual things
+
+The most basic component of any programming language are "things",
+also called variables or objects.
+
+The most common basic "things" in R are numerics, characters,
+logicals, and some special objects of various types (e.g. lists,
+dataframes, etc.). We'll meet many of these as we go through the
+lesson.
+
+
+```
+## [1] 2
+```
+
+```
+## [1] "hello"
+```
+
+###  Assignment statements 
+Things can be stored as variables using `<-`.  `=` also works, but R
+programmers are picky about `<-` sometimes called "carrot". 
+
+
+```
+## [1] 2
+```
+
+```
+## [1] "hello"
+```
+
+```
+## [1] TRUE
+```
+
+We can figure out the type of these things using the `class` function
+
+```
+## [1] "numeric"
+```
+
+```
+## [1] "character"
+```
+
+```
+## [1] "logical"
+```
+    
+###  Commands that operate on things
+
+Just storing data in variables isn't much use to us. Right away, we'd like to start performing operations and manipulations on data and variables.
+
+There are three very common means of performing an operation on a
+thing.
+
+**Use an operator** 
+
+All of the basic math operators work like you think they should for
+numbers. They can also do some useful operations on other things, like characters.
+
+
+```
+## [1] 5
+```
+
+```
+## [1] 6
+```
+
+```
+## [1] 8
+```
+
+```
+## [1] 0.6666667
+```
+
+```
+##  [1]  1  2  3  4  5  6  7  8  9 10
+```
+
+**Use a function**
+
+A function is a block of code with a specific input(s) and output. There are thousands of functions that operate on things.
+
+```
+## [1] "numeric"
+```
+
+```
+## [1] 3
+```
+
+```
+## [1] 3
+```
+
+```
+## [1] "3.3 rounded is 3"
+```
+
+To find out what a function does, type the `?` before the function
+name.
+
+
+```
+## [1] 4.6
+```
+
+> **Tip**: Sometimes the R help can be pretty unhelpful.  The best
+> option then (or maybe before you even use the R help, is to Google
+> it!). Here are a list of sites that we find very helpful:
+
+> 
+>   1. [Stack Overflow](http://stackoverflow.com/)
+>   2. [R for Data Science](http://r4ds.had.co.nz/)
+
+Many useful functions are in external packages and you need to install
+them and load them into the R environment.  For example, what if we
+wanted to figure out how to do a negative binomial regression in R?
+
+
+
+Hmmm, that probably didn't work for you because the function lives in an external package called `lme4`.  We need to install package and then load the package.
+
+
+```
+## Error in contrib.url(repos, "source"): trying to use CRAN without setting a mirror
+```
+
+```
+## No documentation for 'glmer.nb' in specified packages and libraries:
+## you could try '??glmer.nb'
+```
+
+There are thousands of R packages with many useful functions and
+datasets!  That is one of the huge advantages of R, everyone can
+contribute.
+
+###  Groups of things
+**Vectors 1D** 
+We can create groups of things with functions. A simple group is a vector, similar to a column of data.
+
+
+```
+## [1] "Monday"    "Tuesday"   "Wednesday" "Thursday"  "Friday"
+```
+
+```
+## [1]  99.9 100.0  98.7  20.0
+```
+
+**Matrices 2D**
+
+All elements must be the same class. Matrices are great for storing the results of simulations (like what we will be doing today).
+
+
+```
+##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+##  [1,]    0    1    0    1    1    1    0    1    1     0
+##  [2,]    0    1    0    0    1    0    1    0    1     0
+##  [3,]    1    1    1    0    1    0    0    1    0     1
+##  [4,]    0    1    0    0    0    0    1    0    1     1
+##  [5,]    0    1    1    0    0    0    0    1    1     1
+##  [6,]    0    0    0    0    1    1    1    1    0     1
+##  [7,]    1    0    0    0    1    0    0    0    0     1
+##  [8,]    0    0    1    0    1    0    0    0    1     1
+##  [9,]    1    0    0    1    0    0    0    1    0     0
+## [10,]    0    1    1    1    0    1    0    0    0     0
+```
+
+**Dataframes 2D**
+
+Dataframes can have columns of different classes. We will not be using dataframes today, but most data is stored in dataframes because data for a project is not either all numeric or characters.
+
+
+```
+## [1] "yes" "no"
+```
+
+```
+## [1] "character"
+```
+
+```
+## [1] 3.1 2.1
+```
+
+```
+## [1] "numeric"
+```
+
+**Lists, N-dimensional**
+
+Lists can have components of different dimensions and classes. Dataframes are special lists where all the components are vectors with the same length. We will not be using these today but they may be relevant for your final projects because they are so flexible. 
+
+
+```
+##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+##  [1,]    0    1    0    1    1    1    0    1    1     0
+##  [2,]    0    1    0    0    1    0    1    0    1     0
+##  [3,]    1    1    1    0    1    0    0    1    0     1
+##  [4,]    0    1    0    0    0    0    1    0    1     1
+##  [5,]    0    1    1    0    0    0    0    1    1     1
+##  [6,]    0    0    0    0    1    1    1    1    0     1
+##  [7,]    1    0    0    0    1    0    0    0    0     1
+##  [8,]    0    0    1    0    1    0    0    0    1     1
+##  [9,]    1    0    0    1    0    0    0    1    0     0
+## [10,]    0    1    1    1    0    1    0    0    0     0
+```
+
+You can create an empty vector with `vector()`. (By default the mode
+is `logical`, but that can be changed to any class of thing you need). 
+
+
+```
+##  [1] "" "" "" "" "" "" "" "" "" ""
+```
+
+You can add elements to vectors as well using `c()`
+
+
+```
+## [1] 0 2
+```
+
+```
+##  [1]  1  2  3  4  5  6  7  8  9 10
+```
+
+```
+##  [1]  0  2  1  2  3  4  5  6  7  8  9 10
+```
+    
+You can then look at specific things in the vector by specifying the *index*
+
+
+```
+## [1] 0
+```
+
+```
+## [1] 2 1 2 3
+```
+
+```
+## [1] 9
+```
+
+You can also make vectors of number sequences
+
+
+```
+##  [1]  1  2  3  4  5  6  7  8  9 10
+```
+
+```
+##  [1]  0.0000000  0.4166667  0.8333333  1.2500000  1.6666667  2.0833333
+##  [7]  2.5000000  2.9166667  3.3333333  3.7500000  4.1666667  4.5833333
+## [13]  5.0000000  5.4166667  5.8333333  6.2500000  6.6666667  7.0833333
+## [19]  7.5000000  7.9166667  8.3333333  8.7500000  9.1666667  9.5833333
+## [25] 10.0000000
+```
+
+###  Comparisons and Booleans
+**Comparison operators** 
+Comparison (also called logical) operators compare two things. This amounts to asking R a question
+
+1. `x > y`: R, is x greater than y?
+2. `x == y`: R, is x the same as y?
+3. `x <= y`: R, is x less than or equal to y?
+4. `x & y`: R, are both x and y `TRUE`?
+5. `x | y`: R, is either x or y `TRUE`?
+
+R will either answer `TRUE` or `FALSE`
+
+
+```
+## [1] FALSE
+```
+
+```
+## [1] TRUE
+```
+
+```
+## [1] FALSE
+```
+
+```
+## [1] "logical"
+```
+
+```
+## [1] TRUE
+```
+
+```
+## [1] TRUE
+```
+
+```
+## [1] FALSE
+```
+
+You can also use comparisons to subset vectors or matrices. This is called logical indexing.  For example, let's get an vector that only contains values greater than 2
+
+
+```
+## [1] 1 2 3 4
+```
+
+```
+## [1] 3 4
+```
+
+```
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    3    5    7    9
+## [2,]    2    4    6    8   10
+```
+
+```
+## [1]  3  4  5  6  7  8  9 10
+```
+
+**Aggregating comparisons**
+
+
+```
+##  [1] FALSE  TRUE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE
+```
+
+```
+## [1] 6
+```
+
+### Control statements - for (repeating yourself)
+
+In this section and the next, we really start to take advantage of the power of programming languages to do things for us automatically.
+
+We start here with ways to repeat yourself. For loops in R are useful when you want to cycle over all of the items in a collection (such as all of the elements of a vector). 
+
+
+```
+## [1] "o *"
+## [1] "x *"
+## [1] "y *"
+## [1] "g *"
+## [1] "e *"
+## [1] "n *"
+```
+
+What is the value of char?
+
+
+```
+## [1] "n"
+```
+
+You can sum a collection of numbers with a loop (though this could be more quickly done using a `sum()`, but just for example purposes.
+
+
+```
+## [1] 85
+```
+    
+We often want to loop over indexes of collections
+
+
+```
+## [1] 1 2 3
+```
+
+```
+## [1] "hi"
+## [1] "hello"
+## [1] "bye"
+```
+    
+Once we start looping through large numbers of values it is often better to plot the data.  We will cover this in much more detail next week, but here is a quick example.
+
+
+```
+## Error in ggplot(z, aes(x = x, y = y)): could not find function "ggplot"
+```
+
+### Control statements - if (making choices)
+Often we want to check if a condition is `TRUE` and take one action if it is, and another action if the condition is `FALSE`. We can achieve this in R with an if statement.
+
+You can use any expression that returns a boolean value (`TRUE` or `FALSE`) in an if statement. 
+
+**if and else** 
+
+```
+## [1] "not greater"
+```
+
+```
+## [1] "done"
+```
+
+Conditional statements don’t have to include an else. If there isn’t one, R simply does nothing if the test is FALSE. 
+
+
+```
+## [1] "before conditional..."
+```
+
+```
+## [1] "107  is greater than 100"
+```
+
+```
+## [1] "...after conditional"
+```
+
+We can also chain several tests together using else if{}
+The following R code uses else if to print the sign of a number.
+
+
+```
+## [1] "42 is positive"
+```
+
+```
+## [1] "all done"
+```
+
+We can also combine tests using and and (&) or (|). and is only true if both Questions are TRUE:
+
+
+```
+## [1] "at least one Question is false"
+```
+
+Or TRUE if one or the other Question is TRUE:
+
+
+```
+## [1] "at least one test is true"
+```
+
+###  Creating chunks
+**Writing functions**
+One way to write a program is to simply string together commands, like the ones described above, in a long file, and then to run that file to generate your results. This may work, but it can be cognitively difficult to follow the logic of programs written in this style. Also, it does not allow you to reuse your code easily - for example, what if we wanted to run our logistic growth model for several different choices of initial parameters?
+
+The most important ways to "chunk" code into more manageable pieces is to create functions and then to gather these functions into modules, and eventually packages The R packages that you download from CRAN essentially contain collections of functions, though they also contain datasets and high level chunks called objects. Below we will discuss how to create functions in R. Functions are good for making code more **reusable**, **readable**, and **maintainable**.
+
+We can create a function to do whatever we like. We need to give it a same, define its inputs (arguments) and its outputs (return expression). 
+
+
+```
+## [1] 99
+```
+
+Another example: 
+
+
+A function has a few crucial parts:
+
+1. A name (`fahr_to_celsius`)
+2. Arguments (`temp`)
+3. A return value (`celsius`).  One feature unique to R is that the return statement is not required. R automatically returns whichever variable is on the last line of the body of the function. But, is it makes it much easier to understand a function if a return statement is defined explicitly so its best practice to include one.
+
+Next, we get to use the function. You pass in *arguments* to the function. 
+    
+
+```
+## [1] 0
+```
+
+```
+## [1] 100
+```
+
+You **always** want to document your function to describe what it does.  You can do that with comments. Use full sentences and describe the inputs and outputs.
+
+
+
+Functions can also have default parameters, which don't need to be passed as arguments when the function is called. Beginning with a function with no defaults:
+
+
+```
+## [1] "Good afternoon friends"
+```
+
+What happens when you try this
+
+
+
+You must pass in two arguments because that is how you defined the function! If we were writing a function many people might use, we would want to check the inputs were correct (known as "defensive programming") instead of letting R throw an error. 
+Let's now give `people` a default value.  In the example below, people will now have the value of `world` unless we explicitly specify otherwise.
+
+
+```
+## [1] "Good afternoon world"
+```
+
+```
+## [1] "Good afternoon students"
+```
+
+
+
+## Demo: Exponential Population Growth (week 2)
+
+> **Learning goals**  
 > • Simulate **deterministic exponential growth**.  
 > • Explore how **initial size** \(N_0\) and **growth rate** \(r\) shape trajectories.  
 > • Compute **doubling time** \(T_d = \ln 2 / r\) and **time to reach a threshold**.  
@@ -256,30 +794,7 @@ programming language shares seven core elements:
 6.  Ways to create chunks (functions, objects/classes, and packages)
 7.  Ways to combine chunks (piping) (for next week)
 
-### Starting with RStudio
-
-To open RStudio, click on the RStudio icon in the Applications (if you
-are on a Mac) or in your Programs if you are on Windows.
-
-There are four windows in RStudio that we will refer to throughout the
-workshop
-
-1. *The R Script*: Typically the upper left hand corner of RSutdio.
-   This is where you write R code that you can save and reuse later.
-2. *The R Console*: Typically in the lower left hand corner. This is
-   where you execute R code.
-3. *The R Environment*: Typically in the upper right hand corner. This
-   is where you can see defined variables.
-4. *R "Information"*: Typically in the lower right hand corner. This
-   is where you see plots, help and other R information.
-
-For all the work in this class we will be typing code in the R
-script and then executing it in the R console.  For simple commands
-(e.g. `2 + 2`) this may seem stupid, but writing in a script will help
-all of your work be reproducible! Think of the script as your lab
-notebook.
-
-**TIP**: Some helpful R studio shortcuts
+**TIP reminder**: Some helpful R studio shortcuts
 1. Run the current line of selection
    - Windows: `Ctrl-Enter`
    - Mac: `Command-Enter`
@@ -287,56 +802,7 @@ notebook.
   - Windows: `Ctrl-Shift-Enter`
   - Mac: `Command-Shift-Enter`
 
-###  Individual things
 
-The most basic component of any programming language are "things",
-also called variables or objects.
-
-The most common basic "things" in R are numerics, characters,
-logicals, and some special objects of various types (e.g. lists,
-dataframes, etc.). We'll meet many of these as we go through the
-lesson.
-
-
-```
-[1] 2
-```
-
-```
-[1] "hello"
-```
-
-###  Assignment statements 
-Things can be stored as variables using `<-`.  `=` also works, but R
-programmers are picky about `<-` sometimes called "carrot". 
-
-
-```
-[1] 2
-```
-
-```
-[1] "hello"
-```
-
-```
-[1] TRUE
-```
-
-We can figure out the type of these things using the `class` function
-
-```
-[1] "numeric"
-```
-
-```
-[1] "character"
-```
-
-```
-[1] "logical"
-```
-    
 ### Question 1: Population dynamics
 
 Logistic growth of a population: Throughout this lesson, we will successively build towards calculating the logistic growth of a population of bees in a meadow (or some less exciting vertebrate, if you prefer).
@@ -352,92 +818,6 @@ To get started, write R expressions that do the following:
 - 1a. Create variables for `r`, `K`, and `n0`, setting these equal to 0.6, 100, and 10, respectively.
 
 
-
-###  Commands that operate on things
-
-Just storing data in variables isn't much use to us. Right away, we'd like to start performing operations and manipulations on data and variables.
-
-There are three very common means of performing an operation on a
-thing.
-
-**Use an operator 
-
-All of the basic math operators work like you think they should for
-numbers. They can also do some useful operations on other things, like characters.
-
-
-```
-[1] 5
-```
-
-```
-[1] 6
-```
-
-```
-[1] 8
-```
-
-```
-[1] 0.6666667
-```
-
-```
- [1]  1  2  3  4  5  6  7  8  9 10
-```
-
-**Use a function
-
-A function is a block of code with a specific input(s) and output. There are thousands of functions that operate on things.
-
-```
-[1] "numeric"
-```
-
-```
-[1] 3
-```
-
-```
-[1] 3
-```
-
-```
-[1] "3.3 rounded is 3"
-```
-
-To find out what a function does, type the `?` before the function
-name.
-
-
-```
-[1] 4.6
-```
-
-> **Tip**: Sometimes the R help can be pretty unhelpful.  The best
-> option then (or maybe before you even use the R help, is to Google
-> it!). Here are a list of sites that we find very helpful:
-
-> 
->   1. [Stack Overflow](http://stackoverflow.com/)
->   2. [R for Data Science](http://r4ds.had.co.nz/)
-
-Many useful functions are in external packages and you need to install
-them and load them into the R environment.  For example, what if we
-wanted to figure out how to do a negative binomial regression in R?
-
-
-```
-Loading required package: Matrix
-```
-
-Hmmm, that probably didn't work for you because the function lives in an external package called `lme4`.  We need to install package and then load the package.
-
-
-
-There are thousands of R packages with many useful functions and
-datasets!  That is one of the huge advantages of R, everyone can
-contribute.
 
 ###  Question 2: Using operators and functions
 
@@ -455,131 +835,6 @@ contribute.
 
 
     
-###  Groups of things
-**Vectors 1D** 
-We can create groups of things with functions. A simple group is a vector, similar to a column of data.
-
-
-```
-[1] "Monday"    "Tuesday"   "Wednesday" "Thursday"  "Friday"   
-```
-
-```
-[1]  99.9 100.0  98.7  20.0
-```
-
-**Matrices 2D**
-
-All elements must be the same class. Matrices are great for storing the results of simulations (like what we will be doing today).
-
-
-```
-      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
- [1,]    0    0    0    1    1    1    0    1    1     0
- [2,]    1    0    0    1    1    0    1    1    1     0
- [3,]    0    0    0    0    0    1    1    0    0     1
- [4,]    0    0    0    1    1    1    1    0    0     1
- [5,]    1    0    0    0    1    0    1    0    0     0
- [6,]    0    1    0    0    1    0    1    1    1     0
- [7,]    0    1    1    1    1    1    1    1    0     0
- [8,]    0    1    0    0    1    1    0    0    1     1
- [9,]    1    1    0    1    0    1    1    0    0     1
-[10,]    1    0    1    1    0    0    1    1    1     0
-```
-
-**Dataframes 2D**
-
-Dataframes can have columns of different classes. We will not be using dataframes today, but most data is stored in dataframes because data for a project is not either all numeric or characters.
-
-
-```
-[1] "yes" "no" 
-```
-
-```
-[1] "character"
-```
-
-```
-[1] 3.1 2.1
-```
-
-```
-[1] "numeric"
-```
-
-**Lists, N-dimensional**
-
-Lists can have components of different dimensions and classes. Dataframes are special lists where all the components are vectors with the same length. We will not be using these today but they may be relevant for your final projects because they are so flexible. 
-
-
-```
-      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
- [1,]    0    0    0    1    1    1    0    1    1     0
- [2,]    1    0    0    1    1    0    1    1    1     0
- [3,]    0    0    0    0    0    1    1    0    0     1
- [4,]    0    0    0    1    1    1    1    0    0     1
- [5,]    1    0    0    0    1    0    1    0    0     0
- [6,]    0    1    0    0    1    0    1    1    1     0
- [7,]    0    1    1    1    1    1    1    1    0     0
- [8,]    0    1    0    0    1    1    0    0    1     1
- [9,]    1    1    0    1    0    1    1    0    0     1
-[10,]    1    0    1    1    0    0    1    1    1     0
-```
-
-You can create an empty vector with `vector()`. (By default the mode
-is `logical`, but that can be changed to any class of thing you need). 
-
-
-```
- [1] "" "" "" "" "" "" "" "" "" ""
-```
-
-You can add elements to vectors as well using `c()`
-
-
-```
-[1] 0 2
-```
-
-```
- [1]  1  2  3  4  5  6  7  8  9 10
-```
-
-```
- [1]  0  2  1  2  3  4  5  6  7  8  9 10
-```
-    
-You can then look at specific things in the vector by specifying the *index*
-
-
-```
-[1] 0
-```
-
-```
-[1] 2 1 2 3
-```
-
-```
-[1] 9
-```
-
-You can also make vectors of number sequences
-
-
-```
- [1]  1  2  3  4  5  6  7  8  9 10
-```
-
-```
- [1]  0.0000000  0.4166667  0.8333333  1.2500000  1.6666667  2.0833333
- [7]  2.5000000  2.9166667  3.3333333  3.7500000  4.1666667  4.5833333
-[13]  5.0000000  5.4166667  5.8333333  6.2500000  6.6666667  7.0833333
-[19]  7.5000000  7.9166667  8.3333333  8.7500000  9.1666667  9.5833333
-[25] 10.0000000
-```
-
 ###  Question 3: Storing and indexing data
 
 - 3a.  Create a vector where `n0`, `n1`, `n2` and `n3` are stored, instead of as separate individual variables by creating an empty vector using the syntax `n <- vector("numeric", 4)`, and then assigning each index. You could get the same result using `c()`, but practice using `vector()` and indexing instead.
@@ -593,79 +848,6 @@ You can also make vectors of number sequences
 - 3c. Extract the last value of your n vector in two different ways: first, by using the index for the last item in the vector, and second, with out "hard coding" the index and instead using a function to work out the index for the last element.  HINT: the `length()` function may be useful.
 
 
-
-###  Comparisons and Booleans
-**Comparison operators** 
-Comparison (also called logical) operators compare two things. This amounts to asking R a question
-
-1. `x > y`: R, is x greater than y?
-2. `x == y`: R, is x the same as y?
-3. `x <= y`: R, is x less than or equal to y?
-4. `x & y`: R, are both x and y `TRUE`?
-5. `x | y`: R, is either x or y `TRUE`?
-
-R will either answer `TRUE` or `FALSE`
-
-
-```
-[1] FALSE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-```
-[1] "logical"
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] TRUE
-```
-
-```
-[1] FALSE
-```
-
-You can also use comparisons to subset vectors or matrices. This is called logical indexing.  For example, let's get an vector that only contains values greater than 2
-
-
-```
-[1] 1 2 3 4
-```
-
-```
-[1] 3 4
-```
-
-```
-     [,1] [,2] [,3] [,4] [,5]
-[1,]    1    3    5    7    9
-[2,]    2    4    6    8   10
-```
-
-```
-[1]  3  4  5  6  7  8  9 10
-```
-
-**Aggregating comparisons**
-
-
-```
- [1] FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE
-```
-
-```
-[1] 5
-```
 
 ###  Question 4: Storing data and logical indexing
 
@@ -690,53 +872,6 @@ Rather painful! Hard to imagine we could fill in the rest without making a mista
 
 
 
-### Control statements - for (repeating yourself)
-
-In this section and the next, we really start to take advantage of the power of programming languages to do things for us automatically.
-
-We start here with ways to repeat yourself. For loops in R are useful when you want to cycle over all of the items in a collection (such as all of the elements of a vector). 
-
-
-```
-[1] "o *"
-[1] "x *"
-[1] "y *"
-[1] "g *"
-[1] "e *"
-[1] "n *"
-```
-
-What is the value of char?
-
-
-```
-[1] "n"
-```
-
-You can sum a collection of numbers with a loop (though this could be more quickly done using a `sum()`, but just for example purposes.
-
-
-```
-[1] 85
-```
-    
-We often want to loop over indexes of collections
-
-
-```
-[1] 1 2 3
-```
-
-```
-[1] "hi"
-[1] "hello"
-[1] "bye"
-```
-    
-Once we start looping through large numbers of values it is often better to plot the data.  We will cover this in much more detail next week, but here is a quick example.
-
-<img src="02-key-programming-concepts_files/figure-html/unnamed-chunk-50-1.png" width="672" />
-
 ###  Question 5: Using loops to repeat calculations
 
 Exciting next step, let's get smart about our calculations of `nt`. Building on what you did in Question 5, do the following:
@@ -757,63 +892,6 @@ Exciting next step, let's get smart about our calculations of `nt`. Building on 
 
 
 
-
-### Control statements - if (making choices)
-Often we want to check if a condition is `TRUE` and take one action if it is, and another action if the condition is `FALSE`. We can achieve this in R with an if statement.
-
-You can use any expression that returns a boolean value (`TRUE` or `FALSE`) in an if statement. 
-
-**if and else** 
-
-```
-[1] "not greater"
-```
-
-```
-[1] "done"
-```
-
-Conditional statements don’t have to include an else. If there isn’t one, R simply does nothing if the test is FALSE. 
-
-
-```
-[1] "before conditional..."
-```
-
-```
-[1] "107  is greater than 100"
-```
-
-```
-[1] "...after conditional"
-```
-
-We can also chain several tests together using else if{}
-The following R code uses else if to print the sign of a number.
-
-
-```
-[1] "42 is positive"
-```
-
-```
-[1] "all done"
-```
-
-We can also combine tests using and and (&) or (|). and is only true if both Questions are TRUE:
-
-
-```
-[1] "at least one Question is false"
-```
-
-Or TRUE if one or the other Question is TRUE:
-
-
-```
-[1] "at least one test is true"
-```
-
 ###  Question 6: Making the model stochastic with an if statement
 
 Let's introduce some element of randomness into our logistic growth model to better represent nature. We'll model a simple "catastrophe" process, in which a catastrophe happens in 10% of the time steps that reduces the population back down to the size at n0. For example, the bees in our meadow have some probability of being sprayed by herbicide that drifts from nearby timber plantations which would kill individuals directly and through starvation (no flowers left). Build on your code from Question 4 into the box below, and do the following:
@@ -832,69 +910,9 @@ HINT: `cata` will need to be within the for loop so it change values each iterat
 
 
 
-d. Now that you have the vector `n`, count the number of time steps in which the population was above 50. Although you can do this with a for loop (loop through each value of `nt`, check if it is > 50, and if so increment a counter), you can do this in one line with a simple logical operation. HINT: If you take the sum of a logical vector (using `sum()`), it will give you the number of `TRUE` values (since a `TRUE` is considered to be a 1, and False is a 0).
+- 6d. Now that you have the vector `n`, count the number of time steps in which the population was above 50. Although you can do this with a for loop (loop through each value of `nt`, check if it is > 50, and if so increment a counter), you can do this in one line with a simple logical operation. HINT: If you take the sum of a logical vector (using `sum()`), it will give you the number of `TRUE` values (since a `TRUE` is considered to be a 1, and False is a 0).
 
 
-
-###  Creating chunks
-**Writing functions**
-One way to write a program is to simply string together commands, like the ones described above, in a long file, and then to run that file to generate your results. This may work, but it can be cognitively difficult to follow the logic of programs written in this style. Also, it does not allow you to reuse your code easily - for example, what if we wanted to run our logistic growth model for several different choices of initial parameters?
-
-The most important ways to "chunk" code into more manageable pieces is to create functions and then to gather these functions into modules, and eventually packages The R packages that you download from CRAN essentially contain collections of functions, though they also contain datasets and high level chunks called objects. Below we will discuss how to create functions in R. Functions are good for making code more **reusable**, **readable**, and **maintainable**.
-
-We can create a function to do whatever we like. We need to give it a same, define its inputs (arguments) and its outputs (return expression). 
-
-
-```
-[1] 99
-```
-
-Another example: 
-
-
-A function has a few crucial Questions
-
-1. A name (`fahr_to_celsius`)
-2. Arguments (`temp`)
-3. A return value (`celsius`).  One feature unique to R is that the return statement is not required. R automatically returns whichever variable is on the last line of the body of the function. But, is it makes it much easier to understand a function if a return statement is defined explicitly so its best practice to include one.
-
-Next, we get to use the function. You pass in *arguments* to the function. 
-    
-
-```
-[1] 0
-```
-
-```
-[1] 100
-```
-
-You **always** want to document your function to describe what it does.  You can do that with comments. Use full sentences and describe the inputs and outputs.
-
-
-
-Functions can also have default parameters, which don't need to be passed as arguments when the function is called. Beginning with a function with no defaults:
-
-
-```
-[1] "Good afternoon friends"
-```
-
-What happens when you try this
-
-
-
-You must pass in two arguments because that is how you defined the function! If we were writing a function many people might use, we would want to check the inputs were correct (known as "defensive programming") instead of letting R throw an error. 
-Let's now give `people` a default value.  In the example below, people will now have the value of `world` unless we explicitly specify otherwise.
-
-
-```
-[1] "Good afternoon world"
-```
-
-```
-[1] "Good afternoon students"
-```
 
 ###  Question 7: Creating a logistic growth function
 
@@ -922,7 +940,7 @@ ANSWER: ....
 
 ### Question 8 (Extra credit or graduate students)
 
-** Analyze and simulate a discrete-time predator–prey system.
+** Analyze and simulate a discrete-time predator–prey system.**
 1) simulate dynamics for two parameter sets,
 2) visualize trajectories in time 
 
@@ -934,8 +952,6 @@ P_{t+1} &= P_t + e\,a\,N_t P_t - m\,P_t,
 \end{aligned}
 \]
 where \(N_t\) = prey abundance, \(P_t\) = predator abundance, and parameters \(r,K,a,e,m>0\).
-
-### Simulate & visualize (baseline)
 
 - 8a: Use the parameter set below and initial conditions \(N_0=100,\;P_0=20\). Simulate for \(T=200\) steps. Make a time-series plot of \(N_t\) and \(P_t\)
 

@@ -507,7 +507,7 @@ networklevel(net, index=c("connectance","H2","nestedness","modularity"))
 
 ```
 ##  connectance modularity Q   nestedness           H2 
-##    0.1604938    0.4301558   19.9310086    0.8537307
+##    0.1604938    0.4301558   21.0236713    0.8537307
 ```
 
 
@@ -1446,9 +1446,9 @@ g_bumbles
 ```
 
 ```
-## IGRAPH 5fa8854 UNWB 249 481 -- 
+## IGRAPH 9d1be2d UNWB 249 481 -- 
 ## + attr: type (v/l), name (v/c), weight (e/n)
-## + edges from 5fa8854 (vertex names):
+## + edges from 9d1be2d (vertex names):
 ##  [1] Bombus          --Styrax japonicus     
 ##  [2] Bombus appositus--Bellardia viscosa    
 ##  [3] Bombus appositus--Rubus armeniacus     

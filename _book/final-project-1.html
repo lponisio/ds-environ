@@ -51,11 +51,18 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="libs/d3-4.9.1/d3.min.js"></script>
+<script src="libs/forceNetwork-binding-0.4.1/forceNetwork.js"></script>
+<script src="libs/sankey-1/sankey.js"></script>
+<script src="libs/sankeyNetwork-binding-0.4.1/sankeyNetwork.js"></script>
 
 
 <style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -65,7 +72,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -166,40 +173,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1.11" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#combining-steps-with-pipes"><i class="fa fa-check"></i><b>3.1.11</b> Combining steps with pipes</a></li>
 <li class="chapter" data-level="3.1.12" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#r-vs.-python-a-quick-orientation"><i class="fa fa-check"></i><b>3.1.12</b> R vs. Python: a quick orientation</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#demo-exponential-population-growth"><i class="fa fa-check"></i><b>3.2</b> Demo: Exponential Population Growth</a>
+<li class="chapter" data-level="3.2" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#demo-programming-key-concepts-part-1-week-1"><i class="fa fa-check"></i><b>3.2</b> Demo: Programming Key Concepts part 1 (week 1)</a>
 <ul>
-<li class="chapter" data-level="3.2.1" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#exponential-population-growth-model"><i class="fa fa-check"></i><b>3.2.1</b> Exponential population growth model</a></li>
-<li class="chapter" data-level="3.2.2" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#simulate-plot-a-single-scenario"><i class="fa fa-check"></i><b>3.2.2</b> Simulate &amp; plot a single scenario</a></li>
-<li class="chapter" data-level="3.2.3" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#compare-two-growth-rates"><i class="fa fa-check"></i><b>3.2.3</b> Compare two growth rates</a></li>
-<li class="chapter" data-level="3.2.4" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#in-class-challenge"><i class="fa fa-check"></i><b>3.2.4</b> In class challenge</a></li>
+<li class="chapter" data-level="3.2.1" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#starting-with-rstudio"><i class="fa fa-check"></i><b>3.2.1</b> Starting with RStudio</a></li>
+<li class="chapter" data-level="3.2.2" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#individual-things"><i class="fa fa-check"></i><b>3.2.2</b> Individual things</a></li>
+<li class="chapter" data-level="3.2.3" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#assignment-statements"><i class="fa fa-check"></i><b>3.2.3</b> Assignment statements</a></li>
+<li class="chapter" data-level="3.2.4" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#commands-that-operate-on-things"><i class="fa fa-check"></i><b>3.2.4</b> Commands that operate on things</a></li>
+<li class="chapter" data-level="3.2.5" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#groups-of-things"><i class="fa fa-check"></i><b>3.2.5</b> Groups of things</a></li>
+<li class="chapter" data-level="3.2.6" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#comparisons-and-booleans"><i class="fa fa-check"></i><b>3.2.6</b> Comparisons and Booleans</a></li>
+<li class="chapter" data-level="3.2.7" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#control-statements---for-repeating-yourself"><i class="fa fa-check"></i><b>3.2.7</b> Control statements - for (repeating yourself)</a></li>
+<li class="chapter" data-level="3.2.8" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#control-statements---if-making-choices"><i class="fa fa-check"></i><b>3.2.8</b> Control statements - if (making choices)</a></li>
+<li class="chapter" data-level="3.2.9" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#creating-chunks"><i class="fa fa-check"></i><b>3.2.9</b> Creating chunks</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#discussion-reflection-reproducible-research-alston-rick-2020"><i class="fa fa-check"></i><b>3.3</b> Discussion &amp; Reflection — Reproducible Research Alston &amp; Rick (2020)</a>
+<li class="chapter" data-level="3.3" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#demo-exponential-population-growth-week-2"><i class="fa fa-check"></i><b>3.3</b> Demo: Exponential Population Growth (week 2)</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#preclass-reflection-please-submit-short-answers-via-canvas"><i class="fa fa-check"></i><b>3.3.1</b> Pre‑class reflection (please submit short answers via canvas)</a></li>
-<li class="chapter" data-level="3.3.2" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#inclass-smallgroup-prompts"><i class="fa fa-check"></i><b>3.3.2</b> In‑class small‑group prompts</a></li>
+<li class="chapter" data-level="3.3.1" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#exponential-population-growth-model"><i class="fa fa-check"></i><b>3.3.1</b> Exponential population growth model</a></li>
+<li class="chapter" data-level="3.3.2" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#simulate-plot-a-single-scenario"><i class="fa fa-check"></i><b>3.3.2</b> Simulate &amp; plot a single scenario</a></li>
+<li class="chapter" data-level="3.3.3" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#compare-two-growth-rates"><i class="fa fa-check"></i><b>3.3.3</b> Compare two growth rates</a></li>
+<li class="chapter" data-level="3.3.4" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#in-class-challenge"><i class="fa fa-check"></i><b>3.3.4</b> In class challenge</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#lab-programming-key-concepts"><i class="fa fa-check"></i><b>3.4</b> Lab: Programming Key Concepts</a>
+<li class="chapter" data-level="3.4" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#discussion-reflection-reproducible-research-alston-rick-2020"><i class="fa fa-check"></i><b>3.4</b> Discussion &amp; Reflection — Reproducible Research Alston &amp; Rick (2020)</a>
 <ul>
-<li class="chapter" data-level="3.4.1" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#lesson-overview"><i class="fa fa-check"></i><b>3.4.1</b> Lesson Overview</a></li>
-<li class="chapter" data-level="3.4.2" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#review-the-seven-core-concepts"><i class="fa fa-check"></i><b>3.4.2</b> Review: The Seven Core Concepts</a></li>
-<li class="chapter" data-level="3.4.3" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#starting-with-rstudio"><i class="fa fa-check"></i><b>3.4.3</b> Starting with RStudio</a></li>
-<li class="chapter" data-level="3.4.4" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#individual-things"><i class="fa fa-check"></i><b>3.4.4</b> Individual things</a></li>
-<li class="chapter" data-level="3.4.5" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#assignment-statements"><i class="fa fa-check"></i><b>3.4.5</b> Assignment statements</a></li>
-<li class="chapter" data-level="3.4.6" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-1-population-dynamics"><i class="fa fa-check"></i><b>3.4.6</b> Question 1: Population dynamics</a></li>
-<li class="chapter" data-level="3.4.7" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#commands-that-operate-on-things"><i class="fa fa-check"></i><b>3.4.7</b> Commands that operate on things</a></li>
-<li class="chapter" data-level="3.4.8" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-2-using-operators-and-functions"><i class="fa fa-check"></i><b>3.4.8</b> Question 2: Using operators and functions</a></li>
-<li class="chapter" data-level="3.4.9" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#groups-of-things"><i class="fa fa-check"></i><b>3.4.9</b> Groups of things</a></li>
-<li class="chapter" data-level="3.4.10" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-3-storing-and-indexing-data"><i class="fa fa-check"></i><b>3.4.10</b> Question 3: Storing and indexing data</a></li>
-<li class="chapter" data-level="3.4.11" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#comparisons-and-booleans"><i class="fa fa-check"></i><b>3.4.11</b> Comparisons and Booleans</a></li>
-<li class="chapter" data-level="3.4.12" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-4-storing-data-and-logical-indexing"><i class="fa fa-check"></i><b>3.4.12</b> Question 4: Storing data and logical indexing</a></li>
-<li class="chapter" data-level="3.4.13" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#control-statements---for-repeating-yourself"><i class="fa fa-check"></i><b>3.4.13</b> Control statements - for (repeating yourself)</a></li>
-<li class="chapter" data-level="3.4.14" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-5-using-loops-to-repeat-calculations"><i class="fa fa-check"></i><b>3.4.14</b> Question 5: Using loops to repeat calculations</a></li>
-<li class="chapter" data-level="3.4.15" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#control-statements---if-making-choices"><i class="fa fa-check"></i><b>3.4.15</b> Control statements - if (making choices)</a></li>
-<li class="chapter" data-level="3.4.16" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-6-making-the-model-stochastic-with-an-if-statement"><i class="fa fa-check"></i><b>3.4.16</b> Question 6: Making the model stochastic with an if statement</a></li>
-<li class="chapter" data-level="3.4.17" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#creating-chunks"><i class="fa fa-check"></i><b>3.4.17</b> Creating chunks</a></li>
-<li class="chapter" data-level="3.4.18" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-7-creating-a-logistic-growth-function"><i class="fa fa-check"></i><b>3.4.18</b> Question 7: Creating a logistic growth function</a></li>
-<li class="chapter" data-level="3.4.19" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-8-extra-credit-or-graduate-students"><i class="fa fa-check"></i><b>3.4.19</b> Question 8 (Extra credit or graduate students)</a></li>
-<li class="chapter" data-level="3.4.20" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#simulate-visualize-baseline"><i class="fa fa-check"></i><b>3.4.20</b> Simulate &amp; visualize (baseline)</a></li>
+<li class="chapter" data-level="3.4.1" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#preclass-reflection-please-submit-short-answers-via-canvas"><i class="fa fa-check"></i><b>3.4.1</b> Pre‑class reflection (please submit short answers via canvas)</a></li>
+<li class="chapter" data-level="3.4.2" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#inclass-smallgroup-prompts"><i class="fa fa-check"></i><b>3.4.2</b> In‑class small‑group prompts</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#lab-programming-key-concepts"><i class="fa fa-check"></i><b>3.5</b> Lab: Programming Key Concepts</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#lesson-overview"><i class="fa fa-check"></i><b>3.5.1</b> Lesson Overview</a></li>
+<li class="chapter" data-level="3.5.2" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#review-the-seven-core-concepts"><i class="fa fa-check"></i><b>3.5.2</b> Review: The Seven Core Concepts</a></li>
+<li class="chapter" data-level="3.5.3" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-1-population-dynamics"><i class="fa fa-check"></i><b>3.5.3</b> Question 1: Population dynamics</a></li>
+<li class="chapter" data-level="3.5.4" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-2-using-operators-and-functions"><i class="fa fa-check"></i><b>3.5.4</b> Question 2: Using operators and functions</a></li>
+<li class="chapter" data-level="3.5.5" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-3-storing-and-indexing-data"><i class="fa fa-check"></i><b>3.5.5</b> Question 3: Storing and indexing data</a></li>
+<li class="chapter" data-level="3.5.6" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-4-storing-data-and-logical-indexing"><i class="fa fa-check"></i><b>3.5.6</b> Question 4: Storing data and logical indexing</a></li>
+<li class="chapter" data-level="3.5.7" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-5-using-loops-to-repeat-calculations"><i class="fa fa-check"></i><b>3.5.7</b> Question 5: Using loops to repeat calculations</a></li>
+<li class="chapter" data-level="3.5.8" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-6-making-the-model-stochastic-with-an-if-statement"><i class="fa fa-check"></i><b>3.5.8</b> Question 6: Making the model stochastic with an if statement</a></li>
+<li class="chapter" data-level="3.5.9" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-7-creating-a-logistic-growth-function"><i class="fa fa-check"></i><b>3.5.9</b> Question 7: Creating a logistic growth function</a></li>
+<li class="chapter" data-level="3.5.10" data-path="key-programming-concepts.html"><a href="key-programming-concepts.html#question-8-extra-credit-or-graduate-students"><i class="fa fa-check"></i><b>3.5.10</b> Question 8 (Extra credit or graduate students)</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="using-the-tidyverse-for-data-manipulation-and-visualization.html"><a href="using-the-tidyverse-for-data-manipulation-and-visualization.html"><i class="fa fa-check"></i><b>4</b> Using “The Tidyverse” for data manipulation and visualization</a>
@@ -257,16 +266,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.3" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#discussion-reflection-ponisio-et-al.-2016-on-farm-habitat-restoration-counters-biotic-homogenization-in-intensively-managed-agriculture"><i class="fa fa-check"></i><b>5.3</b> Discussion &amp; Reflection: Ponisio et al. (2016): On-farm habitat restoration counters biotic homogenization in intensively managed agriculture</a>
 <ul>
 <li class="chapter" data-level="5.3.1" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#preclass-reflection-please-submit-short-answers-via-canvas-2"><i class="fa fa-check"></i><b>5.3.1</b> Pre‑class reflection (please submit short answers via canvas)</a></li>
-<li class="chapter" data-level="5.3.2" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#lab-do-the-bees-at-hedgerows-and-weedy-field-margins-controls-have-the-same-distribution-of-traits"><i class="fa fa-check"></i><b>5.3.2</b> Lab: Do the bees at hedgerows and weedy field margins (controls) have the same distribution of traits?</a></li>
-<li class="chapter" data-level="5.3.3" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#question-1-practicing-the-data-subsetting-tools-from-dplyr"><i class="fa fa-check"></i><b>5.3.3</b> Question 1: Practicing the data subsetting tools from dplyr</a></li>
-<li class="chapter" data-level="5.3.4" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#question-2-joining-data"><i class="fa fa-check"></i><b>5.3.4</b> Question 2: Joining data</a></li>
-<li class="chapter" data-level="5.3.5" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#question-3-1"><i class="fa fa-check"></i><b>5.3.5</b> Question 3</a></li>
-<li class="chapter" data-level="5.3.6" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#lab-question-4"><i class="fa fa-check"></i><b>5.3.6</b> Lab Question 4</a></li>
-<li class="chapter" data-level="5.3.7" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#demo-do-the-bees-at-hedgerows-and-weedy-field-margins-controls-have-the-same-distribution-of-traits"><i class="fa fa-check"></i><b>5.3.7</b> Demo: Do the bees at hedgerows and weedy field margins (controls) have the same distribution of traits?</a></li>
-<li class="chapter" data-level="5.3.8" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#lab-question-5"><i class="fa fa-check"></i><b>5.3.8</b> Lab Question 5</a></li>
-<li class="chapter" data-level="5.3.9" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#question-6"><i class="fa fa-check"></i><b>5.3.9</b> Question 6</a></li>
-<li class="chapter" data-level="5.3.10" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#demo-interpreting-the-results"><i class="fa fa-check"></i><b>5.3.10</b> Demo: Interpreting the results</a></li>
-<li class="chapter" data-level="5.3.11" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#question-7"><i class="fa fa-check"></i><b>5.3.11</b> Question 7</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#lab-do-the-bees-at-hedgerows-and-weedy-field-margins-controls-have-the-same-distribution-of-traits"><i class="fa fa-check"></i><b>5.4</b> Lab: Do the bees at hedgerows and weedy field margins (controls) have the same distribution of traits?</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#question-1-practicing-the-data-subsetting-tools-from-dplyr"><i class="fa fa-check"></i><b>5.4.1</b> Question 1: Practicing the data subsetting tools from dplyr</a></li>
+<li class="chapter" data-level="5.4.2" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#demo-joining-data"><i class="fa fa-check"></i><b>5.4.2</b> Demo: Joining data</a></li>
+<li class="chapter" data-level="5.4.3" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#question-2-1"><i class="fa fa-check"></i><b>5.4.3</b> Question 2</a></li>
+<li class="chapter" data-level="5.4.4" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#lab-question-3"><i class="fa fa-check"></i><b>5.4.4</b> Lab Question 3</a></li>
+<li class="chapter" data-level="5.4.5" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#demo-do-the-bees-at-hedgerows-and-weedy-field-margins-controls-have-the-same-distribution-of-traits"><i class="fa fa-check"></i><b>5.4.5</b> Demo: Do the bees at hedgerows and weedy field margins (controls) have the same distribution of traits?</a></li>
+<li class="chapter" data-level="5.4.6" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#lab-question-4"><i class="fa fa-check"></i><b>5.4.6</b> Lab Question 4</a></li>
+<li class="chapter" data-level="5.4.7" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#question-5"><i class="fa fa-check"></i><b>5.4.7</b> Question 5</a></li>
+<li class="chapter" data-level="5.4.8" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#demo-interpreting-the-results"><i class="fa fa-check"></i><b>5.4.8</b> Demo: Interpreting the results</a></li>
+<li class="chapter" data-level="5.4.9" data-path="simulation-based-hypothesis-testing.html"><a href="simulation-based-hypothesis-testing.html#question-6"><i class="fa fa-check"></i><b>5.4.9</b> Question 6</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html"><i class="fa fa-check"></i><b>6</b> Version control and collaboration with git and github</a>
@@ -287,15 +298,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.1.12" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html#git-command-summary"><i class="fa fa-check"></i><b>6.1.12</b> git command summary</a></li>
 <li class="chapter" data-level="6.1.13" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html#i-cannot-push-my-commit"><i class="fa fa-check"></i><b>6.1.13</b> I cannot push my commit!?</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html#discussion-reflection-trisos-et-al.-2021-decoloniality-and-antioppressive-practices-for-a-more-ethical-ecology"><i class="fa fa-check"></i><b>6.2</b> ## Discussion &amp; Reflection: Trisos et al. (2021): Decoloniality and anti‑oppressive practices for a more ethical ecology</a>
+<li class="chapter" data-level="6.2" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html#discussion-reflection-trisos-et-al.-2021-decoloniality-and-antioppressive-practices-for-a-more-ethical-ecology"><i class="fa fa-check"></i><b>6.2</b> Discussion &amp; Reflection: Trisos et al. (2021): Decoloniality and anti‑oppressive practices for a more ethical ecology</a>
 <ul>
 <li class="chapter" data-level="6.2.1" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html#article-embedded"><i class="fa fa-check"></i><b>6.2.1</b> Article (embedded)</a></li>
-<li class="chapter" data-level="6.2.2" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html#discussion-questions-week-2"><i class="fa fa-check"></i><b>6.2.2</b> Discussion Questions (Week 2)</a></li>
+<li class="chapter" data-level="6.2.2" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html#individual-reflection-short-written-responses"><i class="fa fa-check"></i><b>6.2.2</b> Individual reflection (short written responses)</a></li>
 </ul></li>
-<li class="chapter" data-level="6.3" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html#lab-5-question-1"><i class="fa fa-check"></i><b>6.3</b> Lab 5 Question 1</a>
+<li class="chapter" data-level="6.3" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html#lab-git-and-github"><i class="fa fa-check"></i><b>6.3</b> Lab: Git and Github</a>
 <ul>
-<li class="chapter" data-level="6.3.1" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html#question-2a-partners"><i class="fa fa-check"></i><b>6.3.1</b> Question 2a (partners)</a></li>
-<li class="chapter" data-level="6.3.2" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html#question-2b-solo-project"><i class="fa fa-check"></i><b>6.3.2</b> Question 2b (solo project)</a></li>
+<li class="chapter" data-level="6.3.1" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html#question-1-1"><i class="fa fa-check"></i><b>6.3.1</b> Question 1</a></li>
+<li class="chapter" data-level="6.3.2" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html#question-2-2"><i class="fa fa-check"></i><b>6.3.2</b> Question 2</a></li>
+<li class="chapter" data-level="6.3.3" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html#question-3-v1-partners"><i class="fa fa-check"></i><b>6.3.3</b> Question 3 v1 (partners)</a></li>
+<li class="chapter" data-level="6.3.4" data-path="version-control-and-collaboration-with-git-and-github.html"><a href="version-control-and-collaboration-with-git-and-github.html#question-3-v2-solo-project"><i class="fa fa-check"></i><b>6.3.4</b> Question 3 v2 (solo project)</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="ecological-networks.html"><a href="ecological-networks.html"><i class="fa fa-check"></i><b>7</b> Ecological networks</a>
@@ -307,22 +320,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="ecological-networks.html"><a href="ecological-networks.html#in-class-challenge-matrix-vector-multiplication-with-plantpollinator-data"><i class="fa fa-check"></i><b>7.2</b> In-class challenge: Matrix &amp; vector multiplication with plant–pollinator data</a>
 <ul>
-<li class="chapter" data-level="7.2.1" data-path="ecological-networks.html"><a href="ecological-networks.html#from-data-to-networks"><i class="fa fa-check"></i><b>7.2.1</b> From data to networks</a></li>
-<li class="chapter" data-level="7.2.2" data-path="ecological-networks.html"><a href="ecological-networks.html#core-network-properties-formulas-intuition-tools"><i class="fa fa-check"></i><b>7.2.2</b> Core network properties (formulas, intuition, tools)</a></li>
-<li class="chapter" data-level="7.2.3" data-path="ecological-networks.html"><a href="ecological-networks.html#demo-building-networks-and-characterizing-their-structure"><i class="fa fa-check"></i><b>7.2.3</b> Demo: Building networks and characterizing their structure</a></li>
-<li class="chapter" data-level="7.2.4" data-path="ecological-networks.html"><a href="ecological-networks.html#null-models-for-fair-comparisons"><i class="fa fa-check"></i><b>7.2.4</b> Null models for fair comparisons</a></li>
-<li class="chapter" data-level="7.2.5" data-path="ecological-networks.html"><a href="ecological-networks.html#demo-calculating-network-metrics-pollination"><i class="fa fa-check"></i><b>7.2.5</b> Demo: Calculating network metrics (pollination)</a></li>
-<li class="chapter" data-level="7.2.6" data-path="ecological-networks.html"><a href="ecological-networks.html#demo-create-a-graph-from-oba-data-visualize-it"><i class="fa fa-check"></i><b>7.2.6</b> Demo: Create a graph from OBA data, visualize it</a></li>
-<li class="chapter" data-level="7.2.7" data-path="ecological-networks.html"><a href="ecological-networks.html#in-class-visualization-challange-1."><i class="fa fa-check"></i><b>7.2.7</b> In class: Visualization challange 1.</a></li>
-<li class="chapter" data-level="7.2.8" data-path="ecological-networks.html"><a href="ecological-networks.html#in-class-visualization-challange-2."><i class="fa fa-check"></i><b>7.2.8</b> In class: Visualization challange 2.</a></li>
-<li class="chapter" data-level="7.2.9" data-path="ecological-networks.html"><a href="ecological-networks.html#further-reading-software"><i class="fa fa-check"></i><b>7.2.9</b> Further reading &amp; software</a></li>
+<li class="chapter" data-level="7.2.1" data-path="ecological-networks.html"><a href="ecological-networks.html#in-class-challenge-matrix-vector-multiplication-with-plantpollinator-data-1"><i class="fa fa-check"></i><b>7.2.1</b> In-class challenge: Matrix &amp; vector multiplication with plant–pollinator data</a></li>
+<li class="chapter" data-level="7.2.2" data-path="ecological-networks.html"><a href="ecological-networks.html#from-data-to-networks"><i class="fa fa-check"></i><b>7.2.2</b> From data to networks</a></li>
+<li class="chapter" data-level="7.2.3" data-path="ecological-networks.html"><a href="ecological-networks.html#core-network-properties-formulas-intuition-tools"><i class="fa fa-check"></i><b>7.2.3</b> Core network properties (formulas, intuition, tools)</a></li>
+<li class="chapter" data-level="7.2.4" data-path="ecological-networks.html"><a href="ecological-networks.html#demo-building-networks-and-characterizing-their-structure"><i class="fa fa-check"></i><b>7.2.4</b> Demo: Building networks and characterizing their structure</a></li>
+<li class="chapter" data-level="7.2.5" data-path="ecological-networks.html"><a href="ecological-networks.html#null-models-for-fair-comparisons"><i class="fa fa-check"></i><b>7.2.5</b> Null models for fair comparisons</a></li>
+<li class="chapter" data-level="7.2.6" data-path="ecological-networks.html"><a href="ecological-networks.html#demo-calculating-network-metrics-pollination"><i class="fa fa-check"></i><b>7.2.6</b> Demo: Calculating network metrics (pollination)</a></li>
+<li class="chapter" data-level="7.2.7" data-path="ecological-networks.html"><a href="ecological-networks.html#demo-create-a-graph-from-oba-data-visualize-it"><i class="fa fa-check"></i><b>7.2.7</b> Demo: Create a graph from OBA data, visualize it</a></li>
+<li class="chapter" data-level="7.2.8" data-path="ecological-networks.html"><a href="ecological-networks.html#in-class-visualization-challange-1."><i class="fa fa-check"></i><b>7.2.8</b> In class: Visualization challange 1.</a></li>
+<li class="chapter" data-level="7.2.9" data-path="ecological-networks.html"><a href="ecological-networks.html#in-class-visualization-challange-2."><i class="fa fa-check"></i><b>7.2.9</b> In class: Visualization challange 2.</a></li>
+<li class="chapter" data-level="7.2.10" data-path="ecological-networks.html"><a href="ecological-networks.html#further-reading-software"><i class="fa fa-check"></i><b>7.2.10</b> Further reading &amp; software</a></li>
 </ul></li>
-<li class="chapter" data-level="7.3" data-path="ecological-networks.html"><a href="ecological-networks.html#yeakel-et-al.-2014-collapse-of-an-ecological-network-in-ancient-egypt"><i class="fa fa-check"></i><b>7.3</b> Yeakel et al. (2014): Collapse of an ecological network in Ancient Egypt</a>
+<li class="chapter" data-level="7.3" data-path="ecological-networks.html"><a href="ecological-networks.html#discussion-reflection-yeakel-et-al.-2014-collapse-of-an-ecological-network-in-ancient-egypt"><i class="fa fa-check"></i><b>7.3</b> Discussion &amp; Reflection: Yeakel et al. (2014): Collapse of an ecological network in Ancient Egypt</a>
 <ul>
 <li class="chapter" data-level="7.3.1" data-path="ecological-networks.html"><a href="ecological-networks.html#article-embedded-1"><i class="fa fa-check"></i><b>7.3.1</b> Article (embedded)</a></li>
-<li class="chapter" data-level="7.3.2" data-path="ecological-networks.html"><a href="ecological-networks.html#discussion-questions"><i class="fa fa-check"></i><b>7.3.2</b> Discussion Questions</a></li>
+<li class="chapter" data-level="7.3.2" data-path="ecological-networks.html"><a href="ecological-networks.html#reflection-and-in-class-discussion-questions"><i class="fa fa-check"></i><b>7.3.2</b> Reflection and in-class discussion Questions</a></li>
 </ul></li>
-<li class="chapter" data-level="7.4" data-path="ecological-networks.html"><a href="ecological-networks.html#lab-food-webs-network-measures-student-version"><i class="fa fa-check"></i><b>7.4</b> Lab — Food Webs &amp; Network Measures (Student Version)</a>
+<li class="chapter" data-level="7.4" data-path="ecological-networks.html"><a href="ecological-networks.html#lab-food-webs-network-measures-student-version"><i class="fa fa-check"></i><b>7.4</b> Lab: Food Webs &amp; Network Measures (Student Version)</a>
 <ul>
 <li class="chapter" data-level="7.4.1" data-path="ecological-networks.html"><a href="ecological-networks.html#lesson-overview-2"><i class="fa fa-check"></i><b>7.4.1</b> Lesson Overview</a></li>
 <li class="chapter" data-level="7.4.2" data-path="ecological-networks.html"><a href="ecological-networks.html#lab-question-1-creating-our-foodwebs-based-on-body-sizes."><i class="fa fa-check"></i><b>7.4.2</b> Lab question 1: Creating our foodwebs based on body sizes.</a></li>
@@ -352,12 +366,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.4" data-path="string-processing-debugging.html"><a href="string-processing-debugging.html#dicussion-reflection-debugging-in-r"><i class="fa fa-check"></i><b>8.4</b> Dicussion &amp; Reflection: Debugging in R</a>
 <ul>
 <li class="chapter" data-level="8.4.1" data-path="string-processing-debugging.html"><a href="string-processing-debugging.html#basic-debugging-strategies"><i class="fa fa-check"></i><b>8.4.1</b> 1) Basic debugging strategies</a></li>
-<li class="chapter" data-level="8.4.2" data-path="string-processing-debugging.html"><a href="string-processing-debugging.html#rs-interactive-debugging-tools"><i class="fa fa-check"></i><b>8.4.2</b> 2) R’s interactive debugging tools</a></li>
-<li class="chapter" data-level="8.4.3" data-path="string-processing-debugging.html"><a href="string-processing-debugging.html#some-common-causes-of-bugs"><i class="fa fa-check"></i><b>8.4.3</b> 3) Some common causes of bugs</a></li>
-<li class="chapter" data-level="8.4.4" data-path="string-processing-debugging.html"><a href="string-processing-debugging.html#tips-for-avoiding-bugs-and-catching-errors"><i class="fa fa-check"></i><b>8.4.4</b> 4) Tips for avoiding bugs and catching errors</a></li>
-<li class="chapter" data-level="8.4.5" data-path="string-processing-debugging.html"><a href="string-processing-debugging.html#how-to-get-help-online"><i class="fa fa-check"></i><b>8.4.5</b> 5) How to get help online</a></li>
+<li class="chapter" data-level="8.4.2" data-path="string-processing-debugging.html"><a href="string-processing-debugging.html#rs-interactive-debugging-tools"><i class="fa fa-check"></i><b>8.4.2</b> R’s interactive debugging tools</a></li>
+<li class="chapter" data-level="8.4.3" data-path="string-processing-debugging.html"><a href="string-processing-debugging.html#some-common-causes-of-bugs"><i class="fa fa-check"></i><b>8.4.3</b> Some common causes of bugs</a></li>
+<li class="chapter" data-level="8.4.4" data-path="string-processing-debugging.html"><a href="string-processing-debugging.html#tips-for-avoiding-bugs-and-catching-errors"><i class="fa fa-check"></i><b>8.4.4</b> Tips for avoiding bugs and catching errors</a></li>
+<li class="chapter" data-level="8.4.5" data-path="string-processing-debugging.html"><a href="string-processing-debugging.html#how-to-get-help-online"><i class="fa fa-check"></i><b>8.4.5</b> How to get help online</a></li>
 </ul></li>
-<li class="chapter" data-level="8.5" data-path="string-processing-debugging.html"><a href="string-processing-debugging.html#lab-regular-expressions-and-cleaning-oba-data-student-version"><i class="fa fa-check"></i><b>8.5</b> Lab — Regular expressions and cleaning OBA data (Student Version)</a>
+<li class="chapter" data-level="8.5" data-path="string-processing-debugging.html"><a href="string-processing-debugging.html#lab-regular-expressions-and-cleaning-oba-data-student-version"><i class="fa fa-check"></i><b>8.5</b> Lab: Regular expressions and cleaning OBA data (Student Version)</a>
 <ul>
 <li class="chapter" data-level="8.5.1" data-path="string-processing-debugging.html"><a href="string-processing-debugging.html#lesson-overview-3"><i class="fa fa-check"></i><b>8.5.1</b> Lesson Overview</a></li>
 <li class="chapter" data-level="8.5.2" data-path="string-processing-debugging.html"><a href="string-processing-debugging.html#lab-question-1-oregon-bee-atlas-data-exploration"><i class="fa fa-check"></i><b>8.5.2</b> Lab question 1: Oregon bee atlas data exploration</a></li>
@@ -459,11 +473,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="learning-objectives-6" class="section level3 hasAnchor" number="9.4.2">
 <h3><span class="header-section-number">9.4.2</span> Learning objectives<a href="final-project-1.html#learning-objectives-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>By completing this assignment you will be able to:
-- Locate and filter <strong>relevant</strong> scholarly sources for your topic.
-- <strong>Summarize</strong> methods, findings, and limitations clearly and concisely.
-- <strong>Evaluate</strong> credibility, generalizability, and relevance to your research question.
-- Track source <strong>provenance</strong> and manage citations reproducibly with a <code>.bib</code> file.</p>
+<p>By completing this assignment you will be able to:</p>
+<ul>
+<li>Locate and filter <strong>relevant</strong> scholarly sources for your topic.</li>
+<li><strong>Summarize</strong> methods, findings, and limitations clearly and concisely.</li>
+<li><strong>Evaluate</strong> credibility, generalizability, and relevance to your research question.</li>
+<li>Track source <strong>provenance</strong> and manage citations reproducibly with a <code>.bib</code> file.</li>
+</ul>
 </div>
 <div id="requirements" class="section level3 hasAnchor" number="9.4.3">
 <h3><span class="header-section-number">9.4.3</span> Requirements<a href="final-project-1.html#requirements" class="anchor-section" aria-label="Anchor link to header"></a></h3>

@@ -276,3 +276,15 @@ question-3-v2-solo-project
 in-class-challenge-matrix-vector-multiplication-with-plantpollinator-data-1
 discussion-reflection-yeakel-et-al.-2014-collapse-of-an-ecological-network-in-ancient-egypt
 reflection-and-in-class-discussion-questions
+demo-1-programming-key-concepts-part-1
+starting-with-rstudio-1
+individual-things-1
+assignment-statements-1
+commands-that-operate-on-things-1
+groups-of-things-1
+comparisons-and-booleans-1
+control-statements---for-repeating-yourself-1
+control-statements---if-making-choices-1
+creating-chunks-1
+demo-programming-key-concepts-part-1-week-1
+demo-exponential-population-growth-week-2

@@ -94,6 +94,9 @@ R emerged from statistics; Python from computer science. Both are open-source an
 
 An annoying difference Python users will struggle with at first: in R, the syntax for calling a **function** and a **method** looks the same (because most things are functions), whereas Python distinguishes `data.plot` from `plot(data)`. 
 
+```{r child="demos/01-demo-fundamentals.Rmd", echo=FALSE, error=TRUE}
+```
+
 ```{r child="demos/02-demo-exponential-growth.Rmd", echo=FALSE, error=TRUE}
 ```
 

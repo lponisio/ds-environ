@@ -1,7 +1,7 @@
 
-## Demo: Exponential Population Growth 
+## Demo: Exponential Population Growth (week 2)
 
-> **Learning goals (today)**  
+> **Learning goals**  
 > • Simulate **deterministic exponential growth**.  
 > • Explore how **initial size** \(N_0\) and **growth rate** \(r\) shape trajectories.  
 > • Compute **doubling time** \(T_d = \ln 2 / r\) and **time to reach a threshold**.  

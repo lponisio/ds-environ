@@ -88,3 +88,19 @@ c) The final project must include a programming skill that builds on or is not c
 - Creating a Docker container for your project
 
 New programming skill demo: For the above new programming skill, create a RMarkdown demo that introduces the new skill, and then three challenge problems formatted in a similar way to our lab assignments. The demo should be approximately 45 minutes if delivered, and the challenge problems should be sufficiently complex to take 20 minutes each to solve.
+
+
+**Getting help:**
+
+-Ask a friend/lab partner 
+- Google it (so many helpful data scientists out there)
+- Stack overflow
+- Okay to use AI as a tutor
+- Ask on discussion “help” channel 
+- Ask during lab
+- Come to the office hours held by LP and GE
+- UO Libraries Data Services 
+
+The Data Services Help Desk will be open for drop-in statistical and programming support 11:00am – 4:00pm M-F starting in October in their new location by Room 134 in Knight Library, just past the DREAM Lab. The Help Desk offers drop-in services and consultations by [appointment](https://uoregon.libcal.com/appointments/data_services) for statistics, R, Python, GIS software, information design, Git, Excel, Qualtrics, data management, Talapas support, and qualitative data analysis. 
+
+Students looking to connect may enjoy their biweekly Coffee & Code sessions over snacks. Our Data & AI Book Club this term is reading Co-Intelligence: Living and Working with AI by Ethan Mollick.

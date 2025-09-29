@@ -49,6 +49,7 @@ An **annotated bibliography** is a curated list of sources (journal articles, bo
 ### Learning objectives
 
 By completing this assignment you will be able to:
+
 - Locate and filter **relevant** scholarly sources for your topic.
 - **Summarize** methods, findings, and limitations clearly and concisely.
 - **Evaluate** credibility, generalizability, and relevance to your research question.
