@@ -1,0 +1,29 @@
+---
+title: "For Loops and Logical Indexing in R"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Example 1: Basic for loop to print values
+
+```{r}
+
+```
+
+## Example 2: Using a for loop to fill a vector
+
+```{r}
+
+```
+
+## Example 3: Using a for loop with an if-statement
+
+```{r}
+temps <- c(12, 18, 23, 5, 30)
+
+
+```
+
