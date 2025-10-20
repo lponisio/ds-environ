@@ -2,7 +2,7 @@
 
 ## Lecture summary
 
-This chapter introduces the Tidyverse as a coherent grammar for data—wrangling with dplyr (`filter()`, `select()`, `mutate()`, `summarise()`, `group_by()`), reshaping with tidyr (`pivot_longer()`, `pivot_wider()`), joining relational tables, and visualizing with `ggplot2`. We build readable pipelines with the pipe, emphasize tidy data principles, and handle factors, dates, and missing values thoughtfully. In lab, we apply these tools to climate indicators (Mauna Loa CO₂, global temperature, sea ice extent, Antarctic mass), cleaning and merging heterogeneous files, pivoting wide↔long, computing windowed averages, and producing plots that separate trend, seasonality, and noise. We will read Trisos et al., 2021 Decoloniality and anti-oppressive practices for a more ethical ecology, considering how equitable research practices inform our data workflows and collaboration.
+This chapter introduces the Tidyverse as a coherent grammar for data—wrangling with dplyr (`filter()`, `select()`, `mutate()`, `summarise()`, `group_by()`), reshaping with tidyr (`pivot_longer()`, `pivot_wider()`), joining relational tables, and visualizing with `ggplot2`. We build readable pipelines with the pipe, emphasize tidy data principles, and handle factors, dates, and missing values thoughtfully. In lab, we apply these tools to climate indicators (Mauna Loa CO₂, global temperature, sea ice extent, Antarctic mass), cleaning and merging heterogeneous files, pivoting wide↔long, computing windowed averages, and producing plots that separate trend, seasonality, and noise. We will read a best practice manual for writing code you and other people can read easily. 
 
 ### Learning Objectives
 

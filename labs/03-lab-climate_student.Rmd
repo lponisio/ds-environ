@@ -381,8 +381,8 @@ Isn't this fun?!
 
 #### Question 7: Rising Sea Levels?
 
-- [Data description](http://climate.nasa.gov/vital-signs/sea-level/)
-- [Raw data file](http://climate.nasa.gov/system/internal_resources/details/original/121_Global_Sea_Level_Data_File.txt)
+- [Data description](https://science.nasa.gov/earth/explore/earth-indicators/sea-leve/)
+- Raw data file: pre-downloaded as sealevel.txt
 
 - 7a. Describe the data set: what are the columns and units? 
 ANSWER:
