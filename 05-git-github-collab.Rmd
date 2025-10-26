@@ -16,6 +16,7 @@ In this lecture, we will cover a basic workflow using git and github. This chapt
 
 - Understand the benefits of an automated version control system.
 - Understand the basics of how automated version control systems work using git and github.
+- Learn basic BASH commands related to being able to use git
 
 We'll start by exploring how version control can be used
 to keep track of what one person did and when.
