@@ -203,7 +203,7 @@ Likely because:
 - Create branches for each person to work on, merge the branches with the main branch 
 - You can go back to previous commits (a important component of git). 
 
-## Introducing the shell
+### Introducing the shell
 
 **Getting Started: the Prompt**
 
