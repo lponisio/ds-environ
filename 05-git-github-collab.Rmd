@@ -1,6 +1,6 @@
 # Version control and collaboration with git and github
 
-Before we begin, make sure to install git and create an account on github (free), [instructions](https://swcarpentry.github.io/git-novice/)
+Before we begin, make sure to [install git](https://swcarpentry.github.io/git-novice/) and create an account on github (free).
 
 [Setup your ssh key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 
@@ -107,7 +107,7 @@ collaboration among different people.
 
 ---
 
-### A Simple Two-Person Workflow
+### A Simple Two-Person Git Workflow
 
 Suppose **Lauren** and **Rebecca** collaborate on the same project.
 
@@ -201,6 +201,204 @@ Likely because:
 
 - Create branches for each person to work on, merge the branches with the main branch 
 - You can go back to previous commits (a important component of git). 
+
+## Introducing the shell
+
+**Getting Started: the Prompt**
+
+When the shell is first opened, you are presented with a prompt, which means the shell is waiting for input.
+
+Example prompt:
+
+```bash
+$
+```
+
+Type a command after the prompt, then press Enter to run it.
+
+**Prompt**
+
+- Do **not** type the `$` itself — only the command that follows.
+- After you type a command, press Enter to execute it.
+- The prompt is followed by a cursor (often a blinking block, underscore, or pipe) that shows where your typing will appear.
+- Your prompt symbol may differ depending on configuration.
+
+**Prompt name**
+
+- Your prompt might include your username and the computer (host) name before the `$`.
+- Example:
+  
+```bash
+lponisio@UO-2007086 $
+```
+
+**File systems**
+
+- The part of the operating system responsible for managing files and directories is called the **file system**.
+- It organizes data into:
+  - **files**, which hold information
+  - **directories** (also called "folders"), which hold files or other directories
+- We’ll use shell commands to create, inspect, rename, and delete files and directories.
+
+**`pwd`: print working directory**
+
+Your "current working directory" is where you are right now.  
+Commands mostly read and write files in the current working directory (“here”), so knowing where you are matters.
+
+Use `pwd` ("print working directory") to show where you are:
+
+```bash
+$ pwd
+/Users/lponisio
+```
+
+This path is your home directory.
+
+**Home directory variation**
+
+- The home directory path looks different on different operating systems.
+  - macOS: `/Users/<name>`
+  - Linux: `/home/<name>`
+  - Windows: `C:\Users\<name>` (or sometimes `C:\Documents and Settings\<name>` on older Windows)
+- Examples in this lesson use macOS-style output. Linux and Windows output may differ slightly but are generally similar.
+
+**Directories and the root directory**
+
+- We know that our current working directory `/Users/lponisio` is stored inside `/Users` because `/Users` is the first part of its name.
+- `/Users` is stored inside the root directory `/` because its name begins with `/`.
+- `/` is the **root directory**, i.e. the top of the entire filesystem.
+
+**`ls`: list directory contents**
+
+We can see what's in the current directory with `ls`:
+
+```bash
+$ ls
+Applications Documents Library Music Public
+Desktop      Downloads Movies  Pictures
+```
+
+To classify the output, use the `-F` option:
+
+```bash
+$ ls -F
+Applications/ Documents/ Library/ Music/ Public/
+Desktop/      Downloads/ Movies/  Pictures/
+```
+
+`ls -F` markers:
+- a trailing `/` means "this is a directory"
+- `@` means a link
+- `*` means an executable
+
+Many shells also colorize output to distinguish files and directories.
+
+**Clearing your terminal**
+
+- If your screen gets cluttered, run:
+
+```bash
+clear
+```
+
+- You can still access previous commands using ↑ and ↓ to move through history, or by scrolling.
+
+**Exploring other directories with `cd` **
+
+Use `cd <directory>` to change your working directory.  
+This is like double-clicking a folder in a graphical interface.
+
+Example navigation into nested folders:
+
+```bash
+$ cd Desktop
+$ cd amazing_science
+$ cd data
+```
+
+Check where you ended up:
+
+```bash
+$ pwd
+Desktop/amazing_science/data
+```
+
+List what’s there:
+
+```bash
+$ ls -F
+life_changing_data.csv
+```
+
+`cd ..` moves you *up* one directory level (to the parent directory).
+
+** `pwd`, `ls`, and `cd` together**
+
+- These three (`pwd`, `ls`, `cd`) are the basic navigation tools.
+- `cd` with no argument returns you to your home directory:
+
+```bash
+$ cd
+$ pwd
+/Users/lponisio
+```
+
+- You can jump multiple levels at once:
+
+```bash
+$ cd Desktop/amazing_science/data
+```
+
+- Many shell commands do not print anything when they succeed.
+
+** Path shortcuts: `..`, `.`, `~`, and `-` **
+
+- `..` means "the parent directory" (the directory containing this one).
+- `.` means "the current directory".
+- `~` at the start of a path means "the current user's home directory".
+  - For user `lponisio`, `~/data` is equivalent to `/Users/lponisio/data`.
+- `cd -` jumps back to your previous directory (quick toggle).
+  - `cd ..` brings you "up"
+  - `cd -` brings you "back"
+
+** General syntax of a shell command**
+
+General pattern:
+
+```bash
+command [options] [arguments]
+```
+
+Example:
+
+```bash
+$ ls -F /
+```
+
+- `ls` is the command.
+- `-F` is an option (short options start with `-`, long options start with `--`).
+- `/` is an argument (what to operate on).
+
+Notes:
+- You can provide multiple options and multiple arguments.
+- Spaces matter: `ls -F` is not the same as `ls-F`.
+- Case matters: `-s` is different from `-S`.
+
+** Summary **
+
+- The file system manages information on disk.
+- Information is stored in **files**, which are stored in **directories** (folders).
+- Directories can store other directories, forming a *directory tree*.
+- `pwd` prints your current working directory.
+- `ls [path]` lists a specific file or directory; plain `ls` lists the current working directory.
+- `cd [path]` changes the current working directory.
+- Most commands take options that begin with `-`.
+- Directory names in a path are separated with `/` on Unix/macOS and `\` on Windows.
+- `/` alone is the root directory of the whole file system.
+- An **absolute path** starts at `/`.  
+- A **relative path** starts from where you are now.
+- `.` means "the current directory"; `..` means "the directory above the current one".
+
 
 ```{r child="readings/05-reading.Rmd", echo=FALSE, error=TRUE}
 ```
