@@ -43,9 +43,17 @@ co2_delta <- co2 %>%
       decade = floor(year / 10) * 10,
       month_name = month.abb[month]
     )
+```
 
+
+```{r construct-ab2}
 ### subset to the decades of interest (could also use filter) 
-co2_ab <- subset(co2_delta, decade %in% c(1960, 2010) & !is.na(delta))
+co2_ab <- co2_delta %>%
+  filter(decade == 2010 | decade == 1960) 
+
+## Base R option
+## co2_ab <- subset(co2_delta, decade %in% c(1960, 2010) & !is.na(delta))
+
 co2_ab$group <- ifelse(co2_ab$decade == 1960, "A_1960s", "B_2010s")
 table(co2_ab$group)
 ```
@@ -55,11 +63,19 @@ table(co2_ab$group)
 Our statistic: \(\Delta = \bar{\Delta}_{2010s} - \bar{\Delta}_{1960s}\). Positive values imply faster month‑to‑month increases in the 2010s.
 
 ```{r observed-effect}
-obs_means <- tapply(co2_ab$delta, co2_ab$group, mean, na.rm = TRUE)
+## calculate the mean delta by group
+obs_means <- co2_ab %>%
+  group_by(group) %>%
+  summarize(T_obs = mean(delta))
 
-T_obs <- obs_means["B_2010s"] - obs_means["A_1960s"]
-names(T_obs) <- "T_obs"
+T_obs <- obs_means$T_obs[obs_means$group == "B_2010s"] - obs_means$T_obs[obs_means$group == "A_1960s"]
 T_obs
+
+## base R option
+## obs_means <- tapply(co2_ab$delta, co2_ab$group, mean, na.rm = TRUE)
+
+## T_obs <- obs_means["B_2010s"] - obs_means["A_1960s"]
+## names(T_obs) <- "T_obs"
 ```
 
 ### Permutation test (two‑sided), **blocked by month**

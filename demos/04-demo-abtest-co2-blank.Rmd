@@ -43,11 +43,22 @@ co2_delta <- co2 %>%
       decade = floor(year / 10) * 10,
       month_name = month.abb[month]
     )
+glimpse(co2_delta)
 ```
 
 
 ```{r construct-ab2}
 ### subset to the decades of interest (use filter? base R?) 
+
+co2_ab <- co2_delta %>%
+  filter(decade == 2010 | decade == 1960) 
+
+## There should only be two, 2010 and 1960
+length(unique(co2_ab$decade)) == 2
+
+co2_ab$group <- ifelse(co2_ab$decade == 1960, "A_1960s", "B_2010s")
+
+table(co2_ab$group)
 
 ```
 
@@ -57,11 +68,14 @@ Our statistic: \(\Delta = \bar{\Delta}_{2010s} - \bar{\Delta}_{1960s}\). Positiv
 
 ```{r observed-effect}
 ## calculate the mean delta by group
-#obs_means <- 
-  
-#T_obs <- obs_means["B_2010s"] - obs_means["A_1960s"]
-#names(T_obs) <- "T_obs"
-#T_obs
+obs_means <- co2_ab %>%
+  group_by(group) %>%
+  summarize(T_obs = mean(delta))
+
+T_obs <- obs_means$T_obs[obs_means$group == "B_2010s"] - obs_means$T_obs[obs_means$group == "A_1960s"]
+                         
+names(T_obs) <- "T_obs"
+T_obs
 ```
 
 ### Permutation test (two‑sided), **blocked by month**
@@ -78,12 +92,12 @@ perm_once_blocked <- function(df) {
   mean(df$delta[gp == "B_2010s"]) - mean(df$delta[gp == "A_1960s"])
 }
 
-#nnull <- 5000
-#T_star <- 
+nnull <- 5000
+T_star <- replicate(nnull, perm_once_blocked(co2_ab))
 
 # Two-sided permutation p-value
-#p_perm <- 
-#p_perm
+p_perm <- mean(abs(T_star) >= abs(T_obs))
+p_perm
 ```
 
 #### Visualize the permutation null
