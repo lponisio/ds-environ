@@ -287,9 +287,9 @@ str_detect(strings, "\\\\")        ## R parser removes two \ to give \\; then in
 - Wickham (2019) *R for Data Science*, Chapters on Strings & Regular Expressions.  
 - RStudio cheatsheets: **Stringr**, **Regex**, **Debugging**.  
 
-```{r child="readings/07-reading.Rmd", echo=FALSE, error=TRUE}
+```{r child="readings/09-reading.Rmd", echo=FALSE, error=TRUE}
 ```
 
 
-```{r, child="labs/07-lab-string-processing_student.Rmd"}
+```{r, child="labs/09-lab-string-processing_student.Rmd"}
 ```
