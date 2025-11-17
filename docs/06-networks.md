@@ -373,7 +373,7 @@ Report **z‑scores** or **p‑values** based on the null distribution; when com
 
 ```
 ##  connectance modularity Q   nestedness           H2 
-##    0.1604938    0.4304096   21.0992327    0.8537307
+##    0.1604938    0.4300807   19.7967083    0.8537307
 ```
 
 ```
@@ -435,8 +435,8 @@ Report **z‑scores** or **p‑values** based on the null distribution; when com
 ## 
 ## alternative hypothesis: statistic is less or greater than simulated values
 ## 
-##             statistic    SES   mean   2.5%    50%  97.5% Pr(sim.)
-## temperature    21.106 1.1781 19.161 16.450 19.195 22.231    0.251
+##             statistic     SES   mean   2.5%    50%  97.5% Pr(sim.)
+## temperature    19.815 0.38592 19.195 16.489 19.333 22.242    0.793
 ```
 
 Interpretation tips: high \(H_2'\) means **specialized** interactions; high NODF indicates **nested** structure; high \(Q\) implies **modules** (compartments).
@@ -2269,9 +2269,9 @@ We have a variety of options for converting of data (which is basically an edge 
 
 
 ```
-## IGRAPH c59cfdb UNWB 851 2679 -- 
+## IGRAPH a32848a UNWB 851 2679 -- 
 ## + attr: type (v/l), name (v/c), weight (e/n)
-## + edges from c59cfdb (vertex names):
+## + edges from a32848a (vertex names):
 ##  [1] Bombus vosnesenskii  --Abelia Ã— grandiflora    
 ##  [2] Bombus vancouverensis--Abies grandis Ã— concolor
 ##  [3] Bombus vandykei      --Abies grandis Ã— concolor

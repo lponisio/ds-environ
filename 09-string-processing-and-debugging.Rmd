@@ -19,7 +19,7 @@ library(stringr)
 ```
 
 
-### String manipulation in base R
+**String manipulation in base R**
 
 A few of the basic R functions for manipulating strings are *paste*, *strsplit*, and *substring*. *paste* and *strsplit* are basically inverses of each other: *paste* concatenates together an arbitrary set of strings (or a vector, if using the *collapse*
 argument) with a user-specified separator character, while *strsplit* splits apart based on a delimiter/separator. *substring* splits apart the elements of a character vector based on fixed widths. *nchar* returns the number of characters in a string. Note that all of these operate in a vectorized fashion.
@@ -76,7 +76,7 @@ gregexpr("2016", dates)
 gsub("2016", "16", dates)
 ```
 
-### String manipulation using *stringr*
+**String manipulation using stringr**
 
 The *stringr* package wraps the various core string manipulation functions to provide a common interface. It also removes some of the clunkiness involved in some of the string operations with the base string functions, such as having to to call *gregexpr* and then *regmatches* to pull out the matched strings. For anything but very simple takss, I'd suggest using *stringr* functions in place of R's base string functions.
 
@@ -113,7 +113,7 @@ str_locate(dates, "20[^0][0-9]")
 
 The basic interface to *stringr* functions is `function(strings, pattern, [replacement])`. 
 
-### Regular expressions (regex/regexp)
+**Regular expressions (regex/regexp)**
 
 Regular expressions are a domain-specific language for finding patterns and are one of the key functionalities in scripting languages such as Perl and Python, as well as the UNIX utilities *sed*, *awk* and *grep*. 
 
@@ -166,13 +166,13 @@ Other useful special characters are:
 - `{VALUE}` matches the preceding character the number of times defined by VALUE; ranges, say, 1-6, can be specified with the syntax `{VALUE,VALUE}`, e.g. `\d{1,9}` will match any number between one and nine digits in length.
 - `|` means **or**.
 
-### General principles for working with regex
+**General principles for working with regex**
 
 The syntax is very concise, so it's helpful to break down individual regular expressions into the component parts to understand them.  Since regex are their own language, it's a good idea to build up a regex in pieces as a way of avoiding errors just as we would with any computer code. *str_detect* in R's *stringr* is particularly useful in seeing *what* was matched to help in understanding and learning regular expression syntax and debugging your regex. 
 
 The *grep*, *gregexpr* and *gsub* functions and their *stringr* analogs are more powerful when used with regular expressions. In the following examples, we'll illustrate usage of *stringr* functions, but  with their base R analogs as comments.
 
-### Working with patterns
+**Working with patterns**
 
 First let's see the use of character sets and character classes.
 
@@ -226,12 +226,12 @@ str_extract_all(text, pattern)
 ## regmatches(text, matches)
 ```
 
-## In class challenge 2: How would I extract an email address from an arbitrary text string?
+### In class challenge 2: How would I extract an email address from an arbitrary text string?
 
 ```{r, class-challenge-2}
 ```
 
-### Groups
+**Groups**
 
 - Parentheses () in a regular expression define a capturing group.
 
@@ -253,7 +253,7 @@ str_replace_all(text, "([0-9]+)", "_\\1_")
 
 In class challenge 3: Suppose a text string has dates in the form “Aug-3”, “May-9”, etc. and I want them in the form “3 Aug”, “9 May”, etc. How would I do this search/replace?
 
-### Other comments
+**Other comments**
 
 Regular expression can be used in a variety of places. E.g., to split by any number of white space characters
 
@@ -282,14 +282,7 @@ str_detect(strings, "\\\\")        ## R parser removes two \ to give \\; then in
 ```
 
 
-### Additional resources
+**Additional resources**
 
 - Wickham (2019) *R for Data Science*, Chapters on Strings & Regular Expressions.  
 - RStudio cheatsheets: **Stringr**, **Regex**, **Debugging**.  
-
-```{r child="readings/09-reading.Rmd", echo=FALSE, error=TRUE}
-```
-
-
-```{r, child="labs/09-lab-string-processing_student.Rmd"}
-```

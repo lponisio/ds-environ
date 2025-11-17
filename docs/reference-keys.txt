@@ -244,3 +244,13 @@ article-embedded-2
 in-class-discussion-prompts
 lab-spatial-data-1-oregon-fires-student-version
 fig:unnamed-chunk-7
+geospatial-data-i-data-types-rasters-and-vector-data-1
+in-class-challenge-1-crop-to-vector-points-extent
+in-class-challenge-2-extract-raster-height-values-for-plot-locations
+csv-to-sf-object
+in-class-challenge-4-import-plot-additional-points
+lab-spatial-data-2-working-with-oba-data-student-version
+lecture-summary-7
+learning-objectives-8
+geospatial-data-ii-vector-raster-integration
+inclass-smallgroup-prompts-in-pairs

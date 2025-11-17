@@ -13,6 +13,9 @@ library(dplyr)
 # Geospatial data I: data types (rasters and vector data)
 
 ##    Lecture summary 
+
+We will explore the properties of raster (M) and vetcor (W) and their properties and plot them. The readings is about shifts in fire severity in Oregon (Haldofsky et al. 2020) and we will visualize that change in our lab by plotting the fire severities of several recent wildfires. 
+
 ###   Learning Objectives
 
 For Monday, we will: 
@@ -478,6 +481,7 @@ ext(DTM_hill_harv)
 
 Notice in the output above that the `crs()` of `DTM_hill_UTMZ18N_harv` is now UTM. However, the extent values of `DTM_hillUTMZ18N_harv` are different from `DTM_hill_harv`.
 
+
 ### In class challange 1: Extent Change with CRS Change
 
 Why do you think the two extents differ?
@@ -540,6 +544,11 @@ field site using the `SJER_DSMhill_WGS84.tif` and `SJER_dsmCrop.tif` files.
 
 Reproject the data as necessary to make things line up!
 
+```{r}
+
+```
+
+
 
 **Answers**
 
@@ -564,12 +573,13 @@ DSM_hill_SJER_df <- as.data.frame(DSM_hill_UTMZ18N_SJER, xy = TRUE)
 ggplot() +
      geom_raster(data = DSM_hill_SJER_df, 
                  aes(x = x, y = y, 
-                   alpha = SJER_DSMhill_WGS84)
-                 ) +
+                  alpha = SJER_DSMhill_WGS84)
+     ) +
+                  
      geom_raster(data = DSM_SJER_df, 
              aes(x = x, y = y, 
                   fill = SJER_dsmCrop,
-                  alpha=0.8)
+                  alpha=0.5)
              ) + 
      scale_fill_gradientn(name = "Elevation", colors = terrain.colors(10))
 ```

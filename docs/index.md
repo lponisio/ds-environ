@@ -1,5 +1,5 @@
 ---
-title: Data Science for the Environment — Lecture Notes & Labs
+title: Data Science for the Environment
 author: Lauren Ponisio
 site: bookdown::bookdown_site
 documentclass: book

@@ -6,6 +6,9 @@
 # Geospatial data I: data types (rasters and vector data)
 
 ##    Lecture summary 
+
+We will explore the properties of raster (M) and vetcor (W) and their properties and plot them. The readings is about shifts in fire severity in Oregon (Haldofsky et al. 2020) and we will visualize that change in our lab by plotting the fire severities of several recent wildfires. 
+
 ###   Learning Objectives
 
 For Monday, we will: 
@@ -791,6 +794,7 @@ ext(DTM_hill_harv)
 
 Notice in the output above that the `crs()` of `DTM_hill_UTMZ18N_harv` is now UTM. However, the extent values of `DTM_hillUTMZ18N_harv` are different from `DTM_hill_harv`.
 
+
 ### In class challange 1: Extent Change with CRS Change
 
 Why do you think the two extents differ?
@@ -883,6 +887,9 @@ field site using the `SJER_DSMhill_WGS84.tif` and `SJER_dsmCrop.tif` files.
 Reproject the data as necessary to make things line up!
 
 
+
+
+
 **Answers**
 
 
@@ -907,12 +914,13 @@ DSM_hill_SJER_df <- as.data.frame(DSM_hill_UTMZ18N_SJER, xy = TRUE)
 ggplot() +
      geom_raster(data = DSM_hill_SJER_df, 
                  aes(x = x, y = y, 
-                   alpha = SJER_DSMhill_WGS84)
-                 ) +
+                  alpha = SJER_DSMhill_WGS84)
+     ) +
+                  
      geom_raster(data = DSM_SJER_df, 
              aes(x = x, y = y, 
                   fill = SJER_dsmCrop,
-                  alpha=0.8)
+                  alpha=0.5)
              ) + 
      scale_fill_gradientn(name = "Elevation", colors = terrain.colors(10))
 ```
@@ -1270,7 +1278,7 @@ ggplot() +
   coord_sf()
 ```
 
-<img src="07-geospatial-I_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+<img src="07-geospatial-I_files/figure-html/unnamed-chunk-25-1.png" width="672" />
 Next, let’s build a custom legend using the symbology (the colors and symbols) that we used to create the plot above. For example, it might be good if the lines were symbolized as lines. In the previous episode, you may have noticed that the default legend behavior for geom_sf is to draw a ‘patch’ for each legend entry. If you want the legend to draw lines or points, you need to add an instruction to the geom_sf call - in this case, show.legend = 'line'.
 
 
@@ -1284,7 +1292,7 @@ ggplot() +
   coord_sf()
 ```
 
-<img src="07-geospatial-I_files/figure-html/unnamed-chunk-25-1.png" width="672" />
+<img src="07-geospatial-I_files/figure-html/unnamed-chunk-26-1.png" width="672" />
 
 ### In class challange 3: Plot Polygon by Attribute
 Using the NEON-DS-Site-Layout-Files/HARV/PlotLocations_HARV.shp ESRI shapefile, create a map of study plot locations, with each point colored by the soil type (soilTypeOr). How many different soil types are there at this particular field site? Overlay this layer on top of the lines_harv layer (the roads). Create a custom legend that applies line symbols to lines and point symbols to the points.
@@ -1331,7 +1339,7 @@ ggplot() +
   coord_sf()
 ```
 
-<img src="07-geospatial-I_files/figure-html/unnamed-chunk-26-1.png" width="672" />
+<img src="07-geospatial-I_files/figure-html/unnamed-chunk-27-1.png" width="672" />
 
 
 
