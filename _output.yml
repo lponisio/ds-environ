@@ -1,4 +1,10 @@
 bookdown::gitbook:
+  css: assets/css/book-midnight.css
+  highlight: zenburn
   config:
     toc:
       collapse: subsection
+    fontsettings:
+      theme: night
+      family: sans
+      size: 2

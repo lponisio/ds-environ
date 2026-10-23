@@ -1,0 +1,6 @@
+# GitHub Pages landing page (Jekyll).
+# This does not change bookdown output; the book has its own CSS in _output.yml.
+title: Data Science for the Environment
+description: 'BI 410/510L · University of Oregon · Lauren Ponisio'
+theme: jekyll-theme-midnight
+show_downloads: false
