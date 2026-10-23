@@ -6,7 +6,6 @@ suppressPackageStartupMessages({
   if (requireNamespace("tidyverse", quietly = TRUE)) library(tidyverse)
   if (requireNamespace("igraph", quietly = TRUE)) library(igraph)
   if (requireNamespace("bipartite", quietly = TRUE)) library(bipartite)
-  if (requireNamespace("networks3D", quietly = TRUE)) library(bipartite)
 })
 net_data <- function(...) file.path("labs", "data", ...)
 ```

@@ -163,8 +163,11 @@ for(i in 1:nCats){
     sub <- data[data$cats == i, ] 
     fit <- try(
         lm(y ~ x, data = sub) )
-    if(!is(fit, "try-error")) 
+    if(!is(fit, "try-error")){ 
         params[i, ] = fit$coef
+    }else if (inherits(fit, "try-error")) {
+      browser()
+    }
 }
 ```
 
@@ -247,9 +250,9 @@ Add a breakpoint and re-run:
 good <- function(x) {
   browser()               # step in: n (next), c (continue)
   y <- x + 1
-  mean(y, na.rm = TRUE)
+  mean(y, na.rm=TRUE)
 }
-debugonce(good)
+
 good(c(1, 2, NA, 4))
 ```
 
@@ -258,6 +261,16 @@ While paused:
 - Inspect objects (ls(), str(x), class(x)), then step and re-inspect.
 - Change x in place and continue — what happens?
 - Remove the breakpoint and create a quick unit-style check that would have caught the bug earlier.
+
+
+```{r}
+good <- function(x) {          # step in: n (next), c (continue)
+  y <- x + 1
+  mean(y, na.rm=TRUE)
+}
+
+good(c(1, 2, NA, 4))
+```
 
 
 

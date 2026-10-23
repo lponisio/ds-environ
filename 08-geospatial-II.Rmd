@@ -204,7 +204,9 @@ of the Canopy Height Model information.
 
 
 ```{r}
-
+CHM_plots_HARVcrop <- crop(CHM_HARV, plot_locations_sp_HARV)
+ext(CHM_plots_HARVcrop )
+ext(plot_locations_sp_HARV)
 ```
 
 
@@ -392,6 +394,12 @@ mean_tree_height_tower
   multiple averages returned.
 
 ```{r}
+mean_tree_height_plots_HARV <- extract(x= CHM_HARV,
+                                       y = st_buffer(plot_locations_sp_HARV,
+                                                     dist=20),
+                                       mean)
+
+mean_tree_height_plots_HARV 
 
 ```
 
@@ -399,6 +407,7 @@ mean_tree_height_tower
 2) Create a plot showing the mean tree height of each area.
 
 ```{r}
+
 
 ```
 
@@ -602,6 +611,7 @@ First we will read in the new csv file and look at the data structure.
 newplot_locations_HARV <-
   read.csv("data/NEON-DS-Site-Layout-Files/HARV/HARV_2NewPhenPlots.csv")
 str(newplot_locations_HARV)
+
 ```
 
 2)

@@ -137,8 +137,10 @@ wanted to figure out how to do a negative binomial regression in R?
 
 Hmmm, that probably didn't work for you because the function lives in an external package called `lme4`.  We need to install package and then load the package.
 
-```{r}
-install.packages("lme4")
+```{r optional-lme4-install, eval=FALSE}
+# Run interactively ONCE (not as part of knitting the book):
+install.packages("lme4", repos = "https://cloud.r-project.org")
+library(lme4)
 ?glmer.nb
 ```
 
@@ -390,7 +392,7 @@ z <- cbind(x, y)
 
 ### More on plotting in two weeks :) 
 library(ggplot2)
-ggplot(z, aes(x=x, y=y)) + geom_line()
+ggplot(as.data.frame(z), aes(x=x, y=y)) + geom_line()
 
 ```
 

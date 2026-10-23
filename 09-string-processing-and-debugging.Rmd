@@ -286,3 +286,86 @@ str_detect(strings, "\\\\")        ## R parser removes two \ to give \\; then in
 
 - Wickham (2019) *R for Data Science*, Chapters on Strings & Regular Expressions.  
 - RStudio cheatsheets: **Stringr**, **Regex**, **Debugging**.  
+
+**Demo: Cleaning data**
+
+```{r}
+species <- c("Bombus spp.", "Bombus", "Bombus occidentalis",
+             "Osmia sp.", "Osmia Spp", "Lasioglossium sp.",
+             "spp", "Bombus sp", "Osmia sp. A")
+
+# Genus + (sp / spp / any capitalization, optional period)
+fix_sp_regex <- "(^\\s*[A-Za-z]+\\s+)[sS][pP]{1,2}\\.?\\s*$"
+
+species_clean <- str_replace_all(species, fix_sp_regex, "\\1spp.")
+species_clean
+```
+the replacement string "\\1sp." means:
+
+-  "\\1" → “insert whatever was matched by the first capturing group”
+- spp. → then literally add the characters spp. right after it
+
+```{r}
+# Step 1: if it's *only* some version of sp/spp (any caps, optional period) → make blank
+
+fix_sp_only_regex <-   "^\\s*[sS][pP]{1,2}\\.?\\s*$"
+
+species_clean <- str_replace_all(species_clean, fix_sp_only_regex, "")
+species_clean
+```
+
+```{r}
+# Step 2: if it's a single word (genus only) → add " spp."
+fix_genus_only_regex <-   "^\\s*([A-Za-z]+)\\s*$"
+
+species_clean <- str_replace_all(species_clean,
+                                 fix_genus_only_regex,
+                                 "\\1 spp.")
+
+species_clean
+```
+
+
+**Demo: Cleaning data solutions**
+
+```{r}
+
+species <- c("Bombus spp.", "Bombus", "Bombus occidentalis",
+             "Osmia sp.", "Osmia Spp", "Lasioglossium sp.",
+             "spp", "Bombus sp", "Osmia sp. A")
+
+# Genus + (sp / spp / any capitalization, optional period)
+fix_sp_regex <- "(^\\s*[A-Za-z]+\\s+)[sS][pP]{1,2}\\.?\\s*$"
+
+species_clean <- str_replace_all(species, fix_sp_regex, "\\1spp.")
+
+species_clean
+```
+the replacement string "\\1sp." means:
+
+-  "\\1" → “insert whatever was matched by the first capturing group”
+- spp. → then literally add the characters sp. right after it
+
+```{r}
+# Step 1: if it's *only* some version of sp/spp (any caps, optional period) → make blank
+
+fix_sp_only_regex <-   "^\\s*[sS][pP]{1,2}\\.?\\s*$"
+
+species_step1 <- str_replace_all(species,
+                                 fix_sp_only_regex,
+                                 ""
+)
+
+# Step 2: if it's a single word (genus only) → add " spp."
+fix_genus_only_regex <-   "^\\s*([A-Za-z]+)\\s*$"
+
+species_clean <- str_replace_all(
+  species_step1,
+  fix_genus_only_regex,
+  "\\1 spp."
+)
+
+species_clean
+```
+
+

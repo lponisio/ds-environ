@@ -18,7 +18,7 @@ By the end of this chapter, you will be able to:
 
 ```{r co2_shared_setup, include=FALSE}
 # Shared CO2 data for demos (uses the same file and parsing as the lab)
-if (!exists("data_dir")) data_dir <- "data"
+if (!exists("data_dir")) data_dir <- "labs/data"
 if (!exists("path_data")) path_data <- function(...) file.path(data_dir, ...)
 
 co2_path <- path_data("co2_mm_mlo.txt")
@@ -38,7 +38,7 @@ if (has_co2) {
     co2_tbl <- co2_raw
   }
 } else {
-  message("Demo 1 note: ", co2_path, " is missing. Place lab data in a 'data/' folder next to this Rmd.")
+  message("Demo 1 note: ", co2_path, " is missing. The included file should be at labs/data/co2_mm_mlo.txt.")
 }
 
 has_tidyverse <- requireNamespace("tidyverse", quietly = TRUE)

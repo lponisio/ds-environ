@@ -99,15 +99,15 @@ Functional diversity: is the variation in organisms’ functional traits within 
 
 - **Functional divergence (FDiv)** — degree to which abundances lie toward trait extremes [@Villeger2008].  
 
-![High FDiv](fig/funcDiv/Fdiv_high.png){width=65%}
+![High FDiv](fig/funcDiv/FDiv_high.png){width=65%}
 
-![Low FDiv](fig/funcDiv/Fdiv_low.png){width=65%}
+![Low FDiv](fig/funcDiv/FDiv_low.png){width=65%}
 
 - **Functional dispersion (FDis)** / **Rao’s Q** — mean distance of individuals/species to the trait centroid [@Laliberte2010; @Rao1982]. Can be thought of as Functional richness but standardized for species richness.
 
 ![High FDis](fig/funcDiv/Fdis_high.png){width=65%}
 
-![Low FDis](fig/funcDiv/Fdis_low.png){width=65%}
+![Low FDis](fig/funcDiv/FDis_low.png){width=65%}
 
 **Interpretation guide** 
 

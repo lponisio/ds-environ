@@ -1,44 +1,16 @@
-options(timeout = max(300, getOption('timeout')))
-## file structure
-
-if (! file.exists("data/NEON-DS-Site-Layout-Files")) {
-    dest <- tempfile()
-    download.file("https://ndownloader.figshare.com/files/3708751", dest,
-                  mode = "wb")
-    unzip(dest, exdir = "data")
+# Preflight for the geospatial lessons. Data is provided separately.
+# This file is sourced by chapters 07 and 08 during rendering.
+# Do not install packages or download datasets here.
+needed <- c(
+  "data/NEON-DS-Site-Layout-Files/HARV/HarClip_UTMZ18.shp",
+  "data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp",
+  "data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif",
+  "data/NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif"
+)
+missing <- needed[!file.exists(needed)]
+if (length(missing)) {
+  stop("Geospatial lesson data are missing. Restore the original top-level data/ ",
+       "folder (including its NEON subdirectories) before building. Missing:\n - ",
+       paste(missing, collapse = "\n - "), call. = FALSE)
 }
-
-if (! file.exists("data/NEON-DS-Airborne-Remote-Sensing")) {
-    dest <- tempfile()
-    download.file("https://ndownloader.figshare.com/files/3701578", dest,
-                  mode = "wb")
-    unzip(dest, exdir = "data")
-}
-
-if (! file.exists("data/NEON-DS-Met-Time-Series")) {
-    dest <- tempfile()
-    download.file("https://ndownloader.figshare.com/files/3701572", dest,
-                  mode = "wb")
-    unzip(dest, exdir = "data")
-}
-
-if (! file.exists("data/NEON-DS-Landsat-NDVI")) {
-    dest <- tempfile()
-    download.file("https://ndownloader.figshare.com/files/4933582", dest,
-                  mode = "wb")
-    unzip(dest, exdir = "data")
-}
-
-if (! file.exists("data/Global/Boundaries/ne_110m_graticules_all")) {
-    dest <- tempfile()
-    download.file("https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/physical/ne_110m_graticules_all.zip",
-                  dest, mode = "wb")
-    unzip(dest, exdir = "data/Global/Boundaries/ne_110m_graticules_all")
-}
-
-if (! file.exists("data/Global/Boundaries/ne_110m_land")) {
-    dest <- tempfile()
-    download.file("https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/physical/ne_110m_land.zip",
-                  dest, mode = "wb")
-    unzip(dest, exdir = "data/Global/Boundaries/ne_110m_land")
-}
+rm(needed, missing)

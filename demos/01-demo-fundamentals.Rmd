@@ -131,8 +131,10 @@ wanted to figure out how to do a negative binomial regression in R?
 
 Hmmm, that probably didn't work for you because the function lives in an external package called `lme4`.  We need to install package and then load the package.
 
-```{r}
-install.packages("lme4")
+```{r optional-lme4-install, eval=FALSE}
+# Run interactively ONCE (not as part of knitting the book):
+install.packages("lme4", repos = "https://cloud.r-project.org")
+library(lme4)
 ?glmer.nb
 ```
 
@@ -351,7 +353,7 @@ y <- x^2
 z <- cbind(x, y)
 
 ### More on plotting in two weeks :) 
-ggplot(z, aes(x=x, y=y)) + geom_line()
+ggplot2::ggplot(as.data.frame(z), ggplot2::aes(x=x, y=y)) + ggplot2::geom_line()
 
 ```
 
@@ -455,10 +457,10 @@ Next, we get to use the function. You pass in *arguments* to the function.
     
 ```{r}
 # Freezing point of water
-fahr_to_celsius(32)
+convert_fahr_to_celsius(32)
 
 # Boiling point of water
-fahr_to_celsius(212)
+convert_fahr_to_celsius(212)
 ```
 
 You **always** want to document your function to describe what it does.  You can do that with comments. Use full sentences and describe the inputs and outputs.

@@ -133,4 +133,4 @@ legend("topleft", legend = c(paste("r =", r1), paste("r =", r2)),
 
 ```
 
-![R₀ illustration](demos/figures/r0.png){width=60%}
+![R₀ illustration](../fig/r0.png){width=60%}
