@@ -27,10 +27,11 @@ has_co2 <- file.exists(co2_path)
 if (has_co2) {
   # Read like the lab does (comment header + sentinel -9.99 -> NA)
   co2_raw <- read.table(co2_path, header = FALSE, comment.char = "#")
-  names(co2_raw) <- c("year", "month", "decimal_date", "average", "interpolated",
-                      "trend", "stdev_days", "uncertainty_average")
+  names(co2_raw) <- c("year", "month", "decimal_date", "average", "deseasonalized",
+                      "n_days", "stdev_days", "uncertainty_average")
+  # NOAA uses negative sentinel values for missing CO₂ readings.
   co2_raw$average[co2_raw$average < 0] <- NA
-  co2_raw$interpolated[co2_raw$interpolated < 0] <- NA
+  co2_raw$deseasonalized[co2_raw$deseasonalized < 0] <- NA
   co2_raw$date <- as.Date(sprintf("%d-%02d-01", co2_raw$year, co2_raw$month))
   if (requireNamespace("tibble", quietly = TRUE)) {
     co2_tbl <- tibble::as_tibble(co2_raw)
@@ -57,8 +58,8 @@ The **tidyverse** is a family of packages for modern data science in R. Loading 
 Core verbs from **dplyr** operate on tibbles and return new tibbles.
 *What we’re doing.* Below we practice core dplyr verbs on the **CO₂** monthly series:
 
-- `select()`/**`rename()`** to keep/rename a minimal set of columns, rename some
-- `filter()`/`arrange()` to restrict to years post‑2000 months and find the highest 5 values
+- `select()`/`rename()` to keep columns and give them clearer names
+- `filter()`/`arrange()` to examine months since 2000 and find the five highest values
 - `mutate()` to add derived features we’ll use later.
 
 ```{r}
@@ -69,7 +70,7 @@ co2_sub <- co2_tbl %>%
 ```
 
 ```{r}
-# Filter to 200+ with valid values; list the 5 highest months
+# Filter to 2000+ with valid values; list the 5 highest months
 co2_top <- co2_sub %>%
   dplyr::filter(year >= 2000, !is.na(avg_ppm)) %>%
   dplyr::arrange(dplyr::desc(avg_ppm)) %>%
@@ -80,7 +81,7 @@ co2_top
 
 ```{r}
 # Add derived columns: month name, monthly change, and decade
-# R has a built in constant month.abb vector of the abbreviated month names.
+# R has a built-in month.abb vector of abbreviated month names.
 
 co2_enriched <- co2_sub %>%
   dplyr::mutate(
@@ -95,13 +96,14 @@ head(co2_enriched)
 
 #### Reshaping Data with tidyr — From Wide to Long and Back
 
-Go from wide → long to make a tidy “series” column
+Go from wide → long to make a tidy “series” column.
+
 Why: Most plotting and grouped summaries are easier when all measurements live in a single value column with a label telling you which measurement it is.
 ```{r}
 co2_long <- co2_tbl %>%
-  select(date, year, month, average, interpolated, trend) %>%
+  select(date, year, month, average, deseasonalized) %>%
   pivot_longer(
-    c(average, interpolated, trend),
+    c(average, deseasonalized),
     names_to  = "series",
     values_to = "ppmv"
   )
@@ -109,10 +111,11 @@ co2_long <- co2_tbl %>%
 head(co2_long)
 
 ```
-What this did: Stacked average, interpolated, and trend into one column ppmv, with a companion label series telling you which it was on each row.
+What this did: Stacked monthly average and deseasonalized CO₂ into one column `ppmv`, with a companion `series` column identifying each measurement. Notice that `n_days` in the NOAA file is a count of measurement days, *not* a third CO₂ series.
 
-Next, summarize by year, then long → wide for easy comparison
-Why: Sometimes you want one column per series so you can compare or compute differences directly (e.g., average - trend).
+Next, summarize by year, then long → wide for easy comparison.
+
+Why: Sometimes you want one column per series so you can compare or compute differences directly (e.g., average - deseasonalized).
 
 ```{r}
 co2_yearly_wide <- co2_long %>%
@@ -120,7 +123,7 @@ co2_yearly_wide <- co2_long %>%
   group_by(year, series) %>%
   summarize(mean_ppm = mean(ppmv), .groups = "drop") %>%
   pivot_wider(
-    names_from  = series,      # columns: average, interpolated, trend
+    names_from  = series,      # columns: average, deseasonalized
     values_from = mean_ppm
   ) %>%
   arrange(year)
@@ -128,9 +131,10 @@ co2_yearly_wide <- co2_long %>%
 head(co2_yearly_wide)
 
 ```
-What this did: Calculated annual means for each series, then spread them into separate columns so each row is a year with average, interpolated, and trend side-by-side.
+What this did: Calculated annual means for each series, then spread them into separate columns so each row is a year with average and deseasonalized CO₂ side-by-side.
 
-Build compact keys with unite(), then recover fields with separate()
+Build compact keys with `unite()`, then recover fields with `separate()`.
+
 Why: It’s common to create an ID like "YYYY-MM" for joins or labeling, then later split it back into usable numeric pieces.
 
 ```{r}
@@ -142,7 +146,7 @@ co2_ym <- co2_tbl %>%
 head(co2_ym)
 
 ```
-What this did: Created a ym key like "1988-07" while keeping year/month (because remove = FALSE).
+What this did: Created a `ym` key like `1988-7` while keeping year/month (because `remove = FALSE`). `unite()` does not add a leading zero to the month automatically.
 
 Split the key back out: 
 ```{r}
@@ -153,7 +157,7 @@ co2_ym_split <- co2_ym %>%
 head(co2_ym_split)
 
 ```
-What this did: Recovered year2 / month2 as numeric columns (handy if the key came from somewhere else and you need the parts back).
+What this did: Recovered `year2` / `month2` as numeric columns (handy if the key came from somewhere else and you need the parts back).
 
 ### Data visualization
 
@@ -183,7 +187,7 @@ co2_enriched %>%
 
 # The x-axes get cut off, which is annoying, but as an exploratory analysis we can leave it. 
 ```
-What is your interpretation of these historgrams?
+What is your interpretation of these histograms? Compare the center and spread of the monthly changes across decades.
 
 ### Common types of visualizations
 
@@ -196,7 +200,7 @@ What is your interpretation of these historgrams?
 ### Fun graph references:
 [Friends don't let friends make bad graphs](https://github.com/cxli233/FriendsDontLetFriends?tab=readme-ov-file)
 
-[R graph gallary](https://r-graph-gallery.com/)
+[R graph gallery](https://r-graph-gallery.com/)
 
 [R colors](https://www.nceas.ucsb.edu/sites/default/files/2020-04/colorPaletteCheatsheet.pdf)
 

@@ -8,7 +8,13 @@ suppressPackageStartupMessages({
 })
 
 # Data helpers and canonical path to the CO₂ file in this lab
-data_dir <- "data"
+# Resolve data paths both inside the full book and when this lab is knit alone.
+# These files are provided in labs/data/, not the large top-level data/ folder.
+data_dir <- if (file.exists("labs/data/co2_mm_mlo.txt")) {
+  "labs/data"
+} else {
+  "data"
+}
 path_data <- function(...) file.path(data_dir, ...)
 co2_path <- path_data("co2_mm_mlo.txt")
 ```
@@ -17,7 +23,7 @@ co2_path <- path_data("co2_mm_mlo.txt")
 ## Lab: Data manipulation and visualization using the Tidyverse (Student Version)
 
 **Data files**
-The lab expects a folder named **data/** next to this Rmd. Files included:
+The files are stored in `labs/data/` in the course repository (or `data/` if you knit this lab by itself from its own folder). Files included:
 
 ```
 data/499_GRN_ANT_mass_changes.csv
@@ -25,6 +31,7 @@ data/647_Global_Temperature_Data_File.txt
 data/N_seaice_extent_daily_v3.0.csv
 data/antarctica_mass_200204_202310.txt
 data/co2_mm_mlo.txt
+data/sealevel.txt
 ```
 
 ### Lesson Overview
@@ -42,7 +49,7 @@ Part of this lesson is a bit of a scavenger hunt for trying to understand the pu
 - Learn to discover and interpret essential metadata about how measurements are made
 - Interpret Data provenance, "Raw" and "Derived" data
 - Think about measurement uncertainty, resolution, and missing values in context of environmental science data
-- Reading in data from the web into the R.
+- Reading in locally saved data (and recognizing how to obtain data from the web).
 - Become familiar with variations in CSV / tabular data formats and how to handle them
 - Encountering missing data
 - Working with dates and date-time objects
@@ -76,17 +83,17 @@ So, where does this data come from? How does one measure atmospheric CO2 levels 
 
 **Data Provenance**
 
-Knowing where our data come from and how values are measured is essential to proper interpretation of the results.  Data scientists usually speak of *raw data* and *derived data*, but the intepretation of these terms is always relative.  Typically *raw* simply means "the data I started with" and *derived* "the data I produced."  Thus our "raw" data is almost always someone else's "derived" data, and understanding how they got to it can provide important insights to our analysis.  One of the first questions we should ask of any data is "where does it come from?"
+Knowing where our data come from and how values are measured is essential to proper interpretation of the results.  Data scientists usually speak of *raw data* and *derived data*, but the interpretation of these terms is always relative.  Typically *raw* simply means "the data I started with" and *derived* "the data I produced."  Thus our "raw" data is almost always someone else's "derived" data, and understanding how they got to it can provide important insights to our analysis.  One of the first questions we should ask of any data is "where does it come from?"
 
 In particular, we usually want to make note of three things:
 
-- 1. What is the uncertainty in the data?
-- 2. What is the resolution of the data?
-- 3. What do missing values mean?
+1. What is the uncertainty in the data?
+2. What is the resolution of the data?
+3. What do missing values mean?
 
 **1.  What is the uncertainty in the data?**
 
-Almost all measurements come with some degree of uncertainty, or measurement error.  Often we will not be able to know this precisely. Rather, we seek a a qualtiative understanding of the measurement process to give us some idea of the relative importance of errors in the measurement process influencing the value.  We may later be able to infer a more precise description of measurement error from the data itself, but this will always require assumptions about both the data-generating process itself.
+Almost all measurements come with some degree of uncertainty, or measurement error.  Often we will not be able to know this precisely. Rather, we seek a qualitative understanding of the measurement process to give us some idea of the relative importance of errors in the measurement process influencing the value.  We may later be able to infer a more precise description of measurement error from the data itself, but this will always require assumptions about both the data-generating process itself.
 
 **2. What is the resolution of the data?**
 
@@ -94,7 +101,7 @@ Derived data often summarize raw data in some way.  For instance, global climate
 
 **3. What do missing values mean?**
 
-Real world data almost always has missing values.  Here, it is important we try to understand *why* values are missing so we know how to handle them appropriately.  If there is a systematic reason behind why data are missing (say, days where snowfall or storms made the weather station inaccessible) they could bias our analysis (underestimating extreme cold days, say).  If data are missing for an unrelated reason (the scientist is sick, or the instrument fails) then we may be more justified in simply ommitting the data.  Often we cannot know the exact reason certain data are missing and this is just something we must keep in mind as a caveat to our infererence. Frequently our results will be independent of missing data, and sometimes missing data can be accurately inferred from the data that is available.
+Real world data almost always has missing values.  Here, it is important we try to understand *why* values are missing so we know how to handle them appropriately.  If there is a systematic reason behind why data are missing (say, days where snowfall or storms made the weather station inaccessible) they could bias our analysis (underestimating extreme cold days, say).  If data are missing for an unrelated reason (the scientist is sick, or the instrument fails) then we may be more justified in simply omitting the data.  Often we cannot know the exact reason certain data are missing and this is just something we must keep in mind as a caveat to our inference. Frequently our results will be independent of missing data, and sometimes missing data can be accurately inferred from the data that is available.
 
 **Measuring C02 levels**
 
@@ -112,23 +119,24 @@ What is the resolution of the CO2 data? Already we see our data are not the actu
 
 **Missing values:**
 
-The last column of the data set tells us for how many days that month researchers collected data.  We see that they only started keeping track of this information in 1974, but have since been pretty diligent -- collecting data almost every day of the month (no breaks for weekends here!  What do you think accounts for the gaps?  How might you test your hypothesis?  Would these introduce bias to the monthly averages? Would that bias influence your conclusion about rising CO2 levels?)
+The `n_days` column of the data set tells us for how many days that month researchers collected data.  We see that they only started keeping track of this information in 1974, but have since been pretty diligent -- collecting data almost every day of the month (no breaks for weekends here!  What do you think accounts for the gaps?  How might you test your hypothesis?  Would these introduce bias to the monthly averages? Would that bias influence your conclusion about rising CO2 levels?)
 
 Spatially our Mauna Loa data has no aggregation -- the data is collected at only one location.  How might the data differ if it were aggregated from stations all over the globe?
 
 **Importing Data**
 
-**Goal.** Load the NOAA Mauna Loa monthly CO₂ file that is bundled with this lab at `data/co2_mm_mlo.txt`.
+**Goal.** Load the NOAA Mauna Loa monthly CO₂ file bundled with this lab at `labs/data/co2_mm_mlo.txt` (or `data/co2_mm_mlo.txt` when working inside the `labs/` folder).
 
 **Watch‑outs (why parsing is tricky):**
 - Lines starting with `#` are **comments** that describe the columns.
 - Some numeric columns use **sentinel codes** like `-9.99` to mean “missing” — we’ll convert those to real `NA`.
-- The file includes a `decimal_date`, but we’ll also construct a proper **`Date`** from `year` + `month` for plotting.
+- The file includes a `decimal_date`, which we can use to plot the time series (or convert `year` + `month` into a proper **`Date`** later).
+- The sixth data column is `n_days` (days measured), not a CO₂ trend. The fifth is `deseasonalized` CO₂.
 
 We’ll first try a naive import (to see the problems), then a fix that **tells R about comments**, and finally a tidyverse‑style read that
-**assigns column names**, **converts sentinels to `NA`**, and **adds a `Date` column**.
+**assigns column names** and **converts sentinels to `NA`**.
 
-Our first task is to read this data into our R environment.  To this, we will use the `read.csv` function. Reading in a data file is called *parsing*, which sounds much more sophisticated.  For good reason too -- parsing different data files and formats is a cornerstone of all pratical data science research, and can often be the hardest step.
+Our first task is to read this data into our R environment.  To this, we will use the `read.csv` function. Reading in a data file is called *parsing*, which sounds much more sophisticated.  For good reason too -- parsing different data files and formats is a cornerstone of all practical data science research, and can often be the hardest step.
 
 So what do we need to know about this file in order to read it into R?
 
@@ -153,14 +161,14 @@ Seems like we need a more flexible way to load in the data to avoid further suff
 
 co2 <- read_table(co2_path, comment = "#",
                   col_names = c("year", "month", "decimal_date", 
-                                "average", "interpolated", "trend",
+                                "average", "deseasonalized", "n_days",
                                 "stdev_days", "uncertainty_average"),
                   col_types = c("iidddidd"),
                   na = c("-1", "-99.99", "-9.99", "-0.99"))
 co2
 ```
 
-Success! We have read in the data. Celebrate!
+Success! We have read in the data. Celebrate! Notice that the `deseasonalized` values are in ppm, but `n_days` is a count. Those columns should not go on the same CO₂ axis.
 
 ### Plotting Data with `ggplot`
 
@@ -183,14 +191,14 @@ But... it isn't quite as pretty as with ggplot. :/
 **Plotting multiple series**
 
 We often would like to plot several data values together for comparison,
-for example the average, interpolated and trend $CO_2$ data. We can do
+for example the average and deseasonalized $CO_2$ data. We can do
 this in three steps:
 
 1) subsetting the dataset to the columns desired for plotting
 
 ```{r}
 co2_sub <- co2 %>%
-    select(decimal_date, average, interpolated, trend)
+    select(decimal_date, average, deseasonalized)
 co2_sub %>% head()
 ```
 
@@ -198,7 +206,7 @@ co2_sub %>% head()
 2) rearranging the data into a "long" data table where the data values
 are stacked together in one column and there is a separate column that
 keeps track of whether the data came from the average,
-interpolated, or trend column. Notice by using the same name,
+or deseasonalized column. Notice by using the same name,
 we overwrite the original co2_sub
 
 
@@ -217,15 +225,15 @@ co2_sub %>%
   geom_line()
 ```
 
-Or we can take advantage of dplyr's nifty pipping abilities and
+Or we can take advantage of dplyr's nifty piping abilities and
 accomplish all of these steps in one block of code. Beyond being more
 succinct, this has the added benefit of avoiding creating a new object
 for the subsetted data.
 
 ```{r fig.height=3}
 co2 %>%
-  select(decimal_date, average, interpolated, trend) %>%
-  gather(series, ppmv, -decimal_date) %>%
+  select(decimal_date, average, deseasonalized) %>%
+  pivot_longer(-decimal_date, names_to = "series", values_to = "ppmv") %>%
   ggplot(aes(decimal_date, ppmv, col = series)) +  geom_line()
 ```
 
@@ -233,7 +241,7 @@ co2 %>%
 
 Our "Figure 1" shows three broad patterns:
 
-- A trend of steadily increasing CO2 concentration from 1950 to 2015
+- A trend of steadily increasing CO₂ concentration from 1958 through the end of the supplied record
 - Small, regular seasonal oscillation is visible in the data
 - Increase appears to be accelerating (convex curve)
 
@@ -245,18 +253,19 @@ Our "Figure 1" shows three broad patterns:
 
 Present-day climate data is often sampled at both finer temporal and spatial scales than we might be interested in when exploring long-term trends.  More frequent sampling can reveal higher-frequency trends, such as the seasonal pattern we observe in the CO2 record.  It can also reveal somewhat greater variability, picking up more random (stochastic) sources of variation such as weather patterns.
 
-To reveal long term trends it is frequently valuable to average out this high-frequency variation.  We could spend the whole course discussing ways such averaging or smoothing can be done, but instead we'll focus on the most common methods you will see already present in the climate data we examine.  The monthly record data we analyze here already shows some averaging.  How was this performed?
+To reveal long-term trends it is frequently valuable to average out this high-frequency variation.  We could spend the whole course discussing ways such averaging or smoothing can be done, but instead we'll focus on the most common methods you will see already present in the climate data we examine.  The monthly record data we analyze here already shows some averaging.  How was this performed?
 
 **Moving averages**
+
+Here we use a centered 12-month window: each point summarizes roughly a year of observations around that time. Windows containing missing values are left as `NA` rather than being treated as complete years.
 
 ```{r}
 co2 %>%
  mutate(annual = RcppRoll::roll_mean(average,
                                      n=12L,
-                                     align = "left",
+                                     align = "center",
                                      fill = NA,
-                                     na.rm=TRUE,
-                                     normalize=FALSE)) ->
+                                     na.rm = FALSE)) ->
   co2
 head(co2)
 ```
@@ -267,187 +276,213 @@ co2 %>% ggplot(aes(decimal_date)) +
   geom_line(aes(y=annual), col="red")
 ```
 
-### Lab 2 Questions: Exploring and visualizing more data realted to global climate change. 
+## Lab questions: Exploring and visualizing data related to global climate change {#lab3-questions}
 
-#### Question 1:
+**Jump to a question:** [1. Temperature data](#lab3-q1) · [2. Import temperature](#lab3-q2) · [3. Plot temperature](#lab3-q3) · [4. Warming pause?](#lab3-q4) · [5. Rolling averages](#lab3-q5) · [6. Ice sheets](#lab3-q6) · [7. Sea levels](#lab3-q7) · [8. Plot sea levels](#lab3-q8) · [9. Extra credit](#lab3-q9)
 
-Each of the last years has consecutively set new records on global climate.  In this section we will analyze global mean temperature data. [Data from](http://climate.nasa.gov/vital-signs/global-temperature)
+Questions 1–8 are the main lab; Question 9 is for graduate students or extra credit. Work through the questions in order because later questions reuse earlier datasets. Put written responses below **ANSWER:** and write R code in the provided code chunks. Each question also appears in the book's sidebar and in RStudio's document outline.
 
- -1a. Describe the data set. You can do additional searches to learn more about the data given the description on the data page is not detailed. 
+### Question 1: Understand the temperature data {#lab3-q1}
 
--- ANSWER: ...
+Recent years have set a number of global temperature records. In this section we will analyze global mean temperature data. [Data from](https://science.nasa.gov/earth/explore/earth-indicators/global-temperature/)
 
-- 1b. Describe what kind of column each data contains and what units it is measured in. 
-ANSWER: 
+**1a.** Describe the data set. You can do additional searches to learn more about the data given the description on the data page is not detailed.
 
+**ANSWER:** ...
+
+**1b.** Describe what kind of data each column contains and what units it is measured in.
+
+**ANSWER:** ...
 
 Then address our three key questions in understanding this data:
-- 1c. How are the measurements made? What is the associated measurement uncertainty?
 
-ANSWER: ...
+**1c.** How are the measurements made? What is the associated measurement uncertainty?
 
--1d.  What is the resolution of the data?
-ANSWER: ...
+**ANSWER:** ...
 
--1e. Are their missing values? How should they be handled?
-ANSWER: ... 
+**1d.** What is the resolution of the data?
 
-#### Question 2:
+**ANSWER:** ...
 
-- 2a: Construct the necessary R code to import and prepare for manipulation the [following data set](http://climate.nasa.gov/system/internal_resources/details/original/647_Global_Temperature_Data_File.txt) You may wish to re-label the columns to something easier to read/understand. 
+**1e.** Are there missing values? How should they be handled?
 
-```{r}
-temp <- read_table("https://data.giss.nasa.gov/gistemp/graphs/graph_data/Global_Mean_Estimates_based_on_Land_and_Ocean_Data/graph.txt",
-                   col_types = "idd", skip = 5, na = "*", col_names = c("Year", "Annual_Mean", "5-year_Mean"))
+**ANSWER:** ...
+
+### Question 2: Import global temperature {#lab3-q2}
+
+**2a.** Construct the necessary R code to import and prepare for manipulation the supplied NASA global temperature file, `647_Global_Temperature_Data_File.txt`. You may wish to re-label the columns to something easier to read/understand. The code below gives you a starting point; check its choices against the file header.
+
+```{r lab3_q2_import}
+temp <- read_table(path_data("647_Global_Temperature_Data_File.txt"),
+                   col_types = "idd", skip = 5, na = "*",
+                   col_names = c("year", "annual_mean", "lowess_5yr"))
 temp
 ```
 
-#### Question 3:
+### Question 3: Plot global temperature {#lab3-q3}
 
-- 3a. Plot the trend in global mean temperatures over time.  
-- 3b. Describe what you see in the plot and how you interpret the patterns you observe.
+**3a.** Plot the trend in global mean temperatures over time.
 
-```{r}
+**3b.** Describe what you see in the plot and how you interpret the patterns you observe.
+
+```{r lab3_q3_plot}
 ## your code here
 ```
 
-ANSWER...
+**ANSWER:** ...
 
-#### Question 4: Evaluating the evidence for a "Pause" in warming?
+### Question 4: Evaluate evidence for a warming “pause” {#lab3-q4}
 
-The [2013 IPCC Report](https://www.ipcc.ch/pdf/assessment-report/ar5/wg1/WG1AR5_SummaryVolume_FINAL.pdf) included a tentative observation of a "much smaller increasing trend" in global mean temperatures since 1998 than was observed previously.  This led to much discussion in the media about the existence of a "Pause" or "Hiatus" in global warming rates, as well as much research looking into where the extra heat could have gone.  (Examples discussing this question include articles in [The Guardian](http://www.theguardian.com/environment/2015/jun/04/global-warming-hasnt-paused-study-finds), [BBC News](http://www.bbc.com/news/science-environment-28870988), and [Wikipedia](https://en.wikipedia.org/wiki/Global_warming_hiatus)). 
+The [2013 IPCC Report](https://www.ipcc.ch/pdf/assessment-report/ar5/wg1/WG1AR5_SummaryVolume_FINAL.pdf) included a tentative observation of a "much smaller increasing trend" in global mean temperatures since 1998 than was observed previously. This led to much discussion in the media about the existence of a "Pause" or "Hiatus" in global warming rates, as well as much research looking into where the extra heat could have gone. (Examples discussing this question include articles in [The Guardian](http://www.theguardian.com/environment/2015/jun/04/global-warming-hasnt-paused-study-finds), [BBC News](http://www.bbc.com/news/science-environment-28870988), and [Wikipedia](https://en.wikipedia.org/wiki/Global_warming_hiatus)).
 
-- 4a. By examining the data here, what evidence do you find or not find for such a pause?  Present an written/graphical analysis of this data (using the tools & methods we have covered so far) to argue your case.  
+**4a.** By examining the data here, what evidence do you find or not find for such a pause? Present a written/graphical analysis of this data (using the tools & methods we have covered so far) to argue your case.
 
-```{r}
-
-
+```{r lab3_q4_evidence}
+## your code here
 ```
-ANSWER:...
 
-- 4b. What additional analyses or data sources would better help you refine your arguments?
+**ANSWER:** ...
 
-ANSWER: ...
+**4b.** What additional analyses or data sources would better help you refine your arguments?
 
-#### Question 5: Rolling averages
-    
--5a. What is the meaning of "5 year average" vs "annual average"?
-ANSWER: ...
+**ANSWER:** ...
 
--5b. Construct 5 year averages from the annual data.  Construct 10 & 20-year averages. Plot the different averages and describe what differences you see and why.  
+### Question 5: Rolling averages {#lab3-q5}
 
-```{r}
+A note on the temperature file: `annual_mean` gives annual temperature **anomalies** (°C relative to a reference period), not absolute temperatures. Its `lowess_5yr` column is a **LOWESS smooth**, which is not identical to the simple 5-year moving average you will calculate below.
+
+**5a.** What is the meaning of a "5-year average" vs. an "annual average"?
+
+**ANSWER:** ...
+
+**5b.** Construct 5-year averages from the annual data. Construct 10 & 20-year averages. Plot the different averages and describe what differences you see and why.
+
+```{r lab3_q5_rolling}
 ### your code here
 ```
 
-
-```{r}
+```{r lab3_q5_plot}
 ### your code here
 ```
 
-ANSWER:  ...
+**ANSWER:** ...
 
-#### Question 6: Melting Ice Sheets?
+### Question 6: Melting ice sheets? {#lab3-q6}
 
-- [Data description](http://climate.nasa.gov/vital-signs/land-ice/)
-- [Raw data file](http://climate.nasa.gov/system/internal_resources/details/original/499_GRN_ANT_mass_changes.csv)
+Use the pre-downloaded `499_GRN_ANT_mass_changes.csv` file in `labs/data/`.
 
+- [Data description](https://science.nasa.gov/earth/explore/earth-indicators/ice-sheets/)
+- [Raw data source](https://science.nasa.gov/earth/explore/earth-indicators/ice-sheets/) (the supplied local file is used for the lab)
 
-- 6a. Describe the data set: what are the columns and units? Where do the numbers come from? 
+**6a.** Describe the data set: what are the columns and units? Where do the numbers come from?
 
-ANSWER: ...
+**ANSWER:** ...
 
-- 6b.  What is the uncertainty in measurement? Resolution of the data? Interpretation of missing values?
+**6b.** What is the uncertainty in measurement? Resolution of the data? Interpretation of missing values?
 
-ANSWER: 
+**ANSWER:**
 - Uncertainty: ...
-- Resolution: ...  
+- Resolution: ...
 - Missing data: ...
 
-- 6c. Construct the necessary R code to import this data set as a tidy `Table` object.
-```{r}
+**6c.** Construct the necessary R code to import this data set as a tidy `Table` object.
+
+```{r lab3_q6_import}
 ### check your working directory!
 ### your code
 ```
 
-- 6d: Plot the data and describe the trends you observe.
+**6d.** Plot the data and describe the trends you observe.
 
-```{r}
+```{r lab3_q6_plot}
 ### your code
 ```
-ANSWER: ...
 
-Isn't this fun?! 
+**ANSWER:** ...
 
-#### Question 7: Rising Sea Levels?
+Isn't this fun?!
+
+### Question 7: Rising sea levels? {#lab3-q7}
 
 - [Data description](https://science.nasa.gov/earth/explore/earth-indicators/sea-leve/)
-- Raw data file: pre-downloaded as sealevel.txt
+- Raw data file: pre-downloaded as `sealevel.txt` in `labs/data/`
 
-- 7a. Describe the data set: what are the columns and units? 
-ANSWER:
+**7a.** Describe the data set: what are the columns and units?
 
-- 7b. Where do these data come from (try googling if the description isn't satisfactory)? 
-ANSWER: 
-- 7c. What is the uncertainty in measurement? Resolution of the data? Interpretation of missing values?
+**ANSWER:** ...
 
-ANSWER:  
+**7b.** Where do these data come from (try googling if the description isn't satisfactory)?
+
+**ANSWER:** ...
+
+**7c.** What is the uncertainty in measurement? Resolution of the data? Interpretation of missing values?
+
+**ANSWER:**
 - Uncertainty: ...
 - Resolution: ...
--Missing data: ...
+- Missing data: ...
 
-#### Question 8:
+### Question 8: Import and plot sea level {#lab3-q8}
 
-- 8a. Construct the necessary R code to import this data set as a tidy `Table` object.
-```{r}
+Use `sealevel.txt` from Question 7.
+
+**8a.** Construct the necessary R code to import this data set as a tidy `Table` object.
+
+```{r lab3_q8_import}
 ### your code
 ```
 
-- 8b. Plot the data.
+**8b.** Plot the data.
 
-```{r}
+```{r lab3_q8_plot}
 ### your code
 ```
 
-- 8c. Describe the trends you observe.
+**8c.** Describe the trends you observe.
 
-ANSWER: ...
+**ANSWER:** ...
 
-### Demo: Exploring Seasonal Oscillations
+## Demo: Exploring Seasonal Oscillations
 
-Circling back to our CO2 data from Mauna Loa, let's practice summarizing our data in different ways. 
+Circling back to our CO2 data from Mauna Loa, let's practice summarizing our data in different ways.
 
 - Demonstrate that the periodic behavior truly is seasonal
 - What month is the maximum? What is the minimum?
 - What do you think could explain the seasonal cycle observed here?
 
-```{r}
+```{r lab3_seasonality}
 ### Seasonal oscillation
 co2 %>%
   group_by(year) %>%
   ### Note we need month[which.max] since not all years have all 12 months
   summarise(max_month = month[which.max(average)],
             min_month = month[which.min(average)]) %>%
-  gather(id, value, -year) %>%
+  pivot_longer(-year, names_to = "id", values_to = "value") %>%
   ggplot(aes(value, fill=id)) + stat_count()
 ```
 
-### Question 9 (Gradaute student or Extra credit) : Summarize the data of your choice. 
+## Extra credit
 
-Using any of the datasets from this demo/lab (co2, icesheets, temp etc.) come up with an interesting question to ask that necessitates you to summarize the data in some way, make a visualization, and answer your question. 
+### Question 9 (Graduate students or extra credit): Summarize a dataset of your choice {#lab3-q9}
 
-- 9a. What dataset are you using? What is your question?
+Using any of the datasets from this demo/lab (co2, icesheets, temp etc.) come up with an interesting question to ask that necessitates you to summarize the data in some way, make a visualization, and answer your question.
 
-- 9b. Summarize your data to answer your question. 
+**9a.** What dataset are you using? What is your question?
 
-```{r}
+**ANSWER:** ...
 
+**9b.** Summarize your data to answer your question.
+
+```{r lab3_q9_summary}
+### your code here
 ```
 
-- 9c. Plot your data
-```{r}
+**9c.** Plot your data.
 
+```{r lab3_q9_plot}
+### your code here
 ```
 
-- 9d. Interpret you plot. What is the answer to your question?
-ANSWER: ...
+**9d.** Interpret your plot. What is the answer to your question?
+
+**ANSWER:** ...
