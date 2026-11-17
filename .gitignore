@@ -5,7 +5,7 @@
 .DS_Store
 
 # Bookdown intermediate/compiled output (regenerable; not needed to build)
-/docs/
+
 /_book/
 /_bookdown_files/
 /*_files/
@@ -15,6 +15,4 @@
 /data-science-for-environment.md
 /data-science-for-environment.html
 
-# NOTE: Do NOT ignore _bookdown.yml, _output.yml, _common.R,
-#       chapter .Rmd sources, labs/, demos/, readings/, fig/, or src/.
-# Add data/ separately following course instructions.
+

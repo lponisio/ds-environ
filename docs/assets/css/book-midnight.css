@@ -1,0 +1,137 @@
+/*
+ * Midnight-inspired bookdown/GitBook styling.
+ * Matches the color palette of GitHub Pages' jekyll-theme-midnight.
+ * The Jekyll theme itself cannot style generated bookdown pages.
+ *
+ * Scoping to .color-theme-2 keeps GitBook's built-in White and Sepia
+ * reading modes available via the font-settings menu.
+ */
+
+/* Page and navigation. */
+.book.color-theme-2,
+.book.color-theme-2 .book-body,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section {
+  background: #252525;
+  color: #f0e7d5;
+}
+
+.book.color-theme-2 .book-summary {
+  background: #1c1c1c;
+  border-right: 1px solid #444;
+  color: #f0e7d5;
+}
+.book.color-theme-2 .book-summary ul.summary li a,
+.book.color-theme-2 .book-summary ul.summary li span {
+  color: #ddd4c2;
+}
+.book.color-theme-2 .book-summary ul.summary li a:hover,
+.book.color-theme-2 .book-summary ul.summary li.active > a,
+.book.color-theme-2 .book-summary ul.summary li.active > a:hover {
+  background: #30302d;
+  color: #ffcc00;
+}
+.book.color-theme-2 .book-summary ul.summary li.divider {
+  background: #444;
+}
+.book.color-theme-2 .book-header {
+  background: #2a2a29;
+  color: #e8e8e8;
+  border-bottom: 1px solid #434343;
+}
+.book.color-theme-2 .book-header a,
+.book.color-theme-2 .book-header .btn {
+  color: #f0e7d5;
+}
+.book.color-theme-2 .book-header a:hover,
+.book.color-theme-2 .book-header .btn:hover {
+  color: #ffcc00;
+}
+.book.color-theme-2 .navigation,
+.book.color-theme-2 .navigation:hover {
+  color: #f0e7d5;
+}
+
+/* Chapter text and hyperlinks. */
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal {
+  color: #f0e7d5;
+}
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal h1,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal h2,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal h3,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal h4,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal h5,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal h6 {
+  color: #e8e8e8;
+}
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal a {
+  color: #ffcc00;
+}
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal a:hover {
+  color: #ffeb9b;
+}
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal blockquote {
+  border-left: 3px solid #ffcc00;
+  color: #ddd4c2;
+  background: transparent;
+}
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal hr {
+  background: #494949;
+}
+
+/* Keep code readable and visually distinct from prose. */
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal pre,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal pre.sourceCode,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal pre.r {
+  background: #191919;
+  border: 1px solid #414141;
+  color: #efefef;
+  border-radius: 4px;
+}
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal pre code,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal pre.sourceCode code {
+  background: transparent;
+  color: inherit;
+}
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal :not(pre) > code {
+  background: #383838;
+  color: #ffe18c;
+  border: 1px solid #494949;
+  border-radius: 3px;
+  padding: 0.1em 0.3em;
+}
+
+/* Tables, questions, and inline form elements. */
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal table {
+  color: #f0e7d5;
+}
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal th {
+  background: #333;
+  color: #f2ebdc;
+  border-color: #555;
+}
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal td {
+  background: #292929;
+  border-color: #444;
+}
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal tr:nth-child(even) td {
+  background: #303030;
+}
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal input,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal textarea {
+  background: #191919;
+  border: 1px solid #666;
+  color: #f0e7d5;
+}
+.book.color-theme-2 .book-search input {
+  background: #292929;
+  color: #f0e7d5;
+  border-color: #565656;
+}
+
+/* Accessible focus for keyboard navigation. */
+.book.color-theme-2 a:focus-visible,
+.book.color-theme-2 button:focus-visible,
+.book.color-theme-2 input:focus-visible {
+  outline: 2px solid #ffcc00;
+  outline-offset: 2px;
+}
