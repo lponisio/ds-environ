@@ -8,21 +8,21 @@ are on a Mac) or in your Programs if you are on Windows.
 There are four windows in RStudio that we will refer to throughout the
 workshop
 
-1. *The R Script*: Typically the upper left hand corner of RSutdio.
+1. *The R Script*: Typically the upper-left pane of RStudio.
    This is where you write R code that you can save and reuse later.
 2. *The R Console*: Typically in the lower left hand corner. This is
    where you execute R code.
 3. *The R Environment*: Typically in the upper right hand corner. This
-   is where you can see defined variables.
-4. *R "Information"*: Typically in the lower right hand corner. This
+   is where you can see the objects created in your R session.
+4. *R "Output"*: Typically in the lower right hand corner. This
    is where you see plots, help and other R information.
 
-For all the work in this class we will be typing code in the R
-script and then executing it in the R console.  For simple commands
+For all the work in this class we will be typing code in an R
+script (or an R Markdown code chunk) and then executing it in the R console.  For simple commands
 (e.g. `2 + 2`) this may seem over the top, but writing in a script will help all of your work be reproducible! Think of the script as your lab
 notebook.
 
-**TIP**: Some helpful R studio shortcuts
+**TIP**: Some helpful RStudio shortcuts (see the [official RStudio pane guide](https://docs.posit.co/ide/user/ide/guide/ui/ui-panes.html))
 1. Run the current line of selection
    - Windows: `Ctrl-Enter`
    - Mac: `Command-Enter`
@@ -32,8 +32,7 @@ notebook.
 
 ###  Individual things
 
-The most basic component of any programming language are "things",
-also called variables or objects.
+The most basic components of a program are values ("things") and the objects we create to store them.
 
 The most common basic "things" in R are numerics, characters,
 logicals, and some special objects of various types (e.g. lists,
@@ -49,8 +48,7 @@ lesson.
 ```
 
 ###  Assignment statements 
-Things can be stored as variables using `<-`.  `=` also works, but R
-programmers are picky about `<-` sometimes called "carrot". 
+Values can be assigned to names using `<-` (pronounced "gets" or "assignment arrow"). `=` can also assign values in many contexts, but `<-` clearly separates assignment from named function arguments. R indexes vectors starting at **1**, not 0. 
 
 ```{r}
 # Numeric
@@ -111,20 +109,17 @@ A function is a block of code with a specific input(s) and output. There are tho
 
 ```
 
-To find out what a function does, type the `?` before the function
-name.
+To find out what a function does, type `?` before the function name; look for **Usage**, **Arguments**, and **Value** in the help page.
 
 ```{r}
 
 ```
 
-> **Tip**: Sometimes the R help can be pretty unhelpful.  The best
-> option then (or maybe before you even use the R help, is to Google
-> it!). Here are a list of sites that we find very helpful:
+> **Tip**: R help pages can be hard to read at first. Searching for examples can help, but check that an online answer uses current syntax. Useful resources include:
 
 > 
->   1. [Stack Overflow](http://stackoverflow.com/)
->   2. [R for Data Science](http://r4ds.had.co.nz/)
+>   1. [Stack Overflow](https://stackoverflow.com/questions/tagged/r)
+>   2. [R for Data Science (2nd edition)](https://r4ds.hadley.nz/) [@Wickham2023R4DS]
 
 Many useful functions are in external packages and you need to install
 them and load them into the R environment.  For example, what if we
@@ -135,7 +130,7 @@ wanted to figure out how to do a negative binomial regression in R?
 
 ```
 
-Hmmm, that probably didn't work for you because the function lives in an external package called `lme4`.  We need to install package and then load the package.
+That may not work yet because the function lives in an external package called `lme4`. We need to install the package **once**, then load it in each new R session with `library(lme4)`. We do not install packages during book compilation.
 
 ```{r optional-lme4-install, eval=FALSE}
 # Run interactively ONCE (not as part of knitting the book):
@@ -149,7 +144,7 @@ datasets!  That is one of the huge advantages of R, everyone can
 contribute.
 
 ###  Groups of things
-**Vectors 1D** 
+**Vectors (1D)** 
 We can create groups of things with functions. A simple group is a vector, similar to a column of data.
 
 ```{r}
@@ -163,7 +158,7 @@ test.scores*10
 
 ```
 
-**Matrices 2D**
+**Matrices (2D)**
 
 All elements must be the same class. Matrices are great for storing the results of simulations (like what we will be doing today).
 
@@ -172,9 +167,9 @@ parasite.screenings <- matrix(sample(0:1, 100, replace=TRUE), ncol=10)
 parasite.screenings[1,] <- 10
 ```
 
-**Dataframes 2D**
+**Data frames (2D)**
 
-Dataframes can have columns of different classes. We will not be using dataframes today, but most data is stored in dataframes because data for a project is not either all numeric or characters.
+Data frames can have columns of different types. We will not be using data frames much today, but they are a good fit for field observations that combine site names, abundance counts, dates, and other variables.
 
 ```{r}
 # data frames
@@ -197,9 +192,9 @@ bee.surveys$species[1]
 
 ```
 
-**Lists, N-dimensional**
+**Lists (components of different types and sizes)**
 
-Lists can have components of different dimensions and classes. Dataframes are special lists where all the components are vectors with the same length. We will not be using these today but they may be relevant for your final projects because they are so flexible. 
+Lists can contain components of different sizes, dimensions, and types. Data frames are special lists where the columns have the same number of rows. We will not be using these today but they may be relevant for your final projects because they are so flexible. 
 
 ```{r}
 # lists 
@@ -212,8 +207,7 @@ all.bee.data[[2]]
 
 ```
 
-You can create an empty vector with `vector()`. (By default the mode
-is `logical`, but that can be changed to any class of thing you need). 
+You can create a vector of a specified length with `vector()`. By default its mode is `logical`; `vector("numeric", 10)` instead creates ten zeros. Pre-allocating a vector before a long loop avoids having to repeatedly grow it. 
 
 ```{r}
 # Empty vector with a type and length
@@ -221,7 +215,7 @@ is `logical`, but that can be changed to any class of thing you need).
 a <- vector(mode="numeric", length=100)
 ```
 
-You can add elements to vectors as well using `c()`
+You can join values into a vector using `c()`. Remember that a newly created numeric vector already contains zeros, so `vector("numeric", 1)` is not an empty (length-zero) vector.
 
 ```{r}
 # Make an empty vector
@@ -241,7 +235,7 @@ x + y
 
 ```
     
-You can then look at specific things in the vector by specifying the *index*
+You can then select specific entries of a vector by their *index*. In R, `z[1]` is the first value and `z[length(z)]` is the last; `z[0]` is empty.
 
 ```{r}
 # Look at the first thing. Index 1
@@ -307,7 +301,7 @@ a & b
 a | b
 ```
 
-You can also use comparisons to subset vectors or matrices. This is called logical indexing.  For example, let's get an vector that only contains values greater than 2
+You can also use comparisons to subset vectors or matrices. This is called **logical indexing**. For example, let's select only the values greater than 2. Note that logical indexing of a matrix with a single condition returns a vector; row/column dimensions are not preserved.
 
 ```{r}
 # Vector logical indexing 
@@ -355,7 +349,7 @@ What is the value of char?
 # char
 ```
 
-You can sum a collection of numbers with a loop (though this could be more quickly done using a `sum()`, but just for example purposes.
+You can sum a collection of numbers with a loop (although `sum()` is simpler for this particular task).
 
 ```{r}
 # Sum all of the values in a collection using a for loop
@@ -381,7 +375,7 @@ for(i in wordrange){
 
 ```
     
-Once we start looping through large numbers of values it is often better to plot the data.  We will cover this in much more detail next week, but here is a quick example.
+Once we start looping through large numbers of values it is often easier to interpret results with a plot. We will cover plotting in more detail next week, but here is a quick example.
 
 ```{r}
 x <- 1:100
@@ -425,7 +419,7 @@ if(num > 100){
 print('...after conditional')
 ```
 
-We can also chain several tests together using else if{}
+We can also chain several tests together using `else if (...) { ... }`.
 The following R code uses else if to print the sign of a number.
 
 ```{r}
@@ -443,7 +437,7 @@ if(num > 0){
 
 ```
 
-We can also combine tests using and and (&) or (|). and is only true if both Questions are TRUE:
+We can also combine logical conditions using `&` (and) or `|` (or). `&` is `TRUE` only if both conditions are `TRUE`:
 
 ```{r}
 # if num1 is greater than 0 AND num2 is greater than or equal to 0, print "Both questions are true", else print "at least one question is false"
@@ -459,7 +453,7 @@ if(num1 > 0 & num2 >= 0){
 
 ```
 
-Or TRUE if one or the other Question is TRUE:
+`|` is `TRUE` if either condition is `TRUE`:
 
 ```{r}
 # if num1 is greater than 0 OR num 2 is greater than or equal to 0, print "at least one questions is true", else print "both questions are false"
@@ -476,9 +470,9 @@ if(num1 > 0 | num2 >= 0){
 **Writing functions**
 One way to write a program is to simply string together commands, like the ones described above, in a long file, and then to run that file to generate your results. This may work, but it can be cognitively difficult to follow the logic of programs written in this style. Also, it does not allow you to reuse your code easily - for example, what if we wanted to run our logistic growth model for several different choices of initial parameters?
 
-The most important ways to "chunk" code into more manageable pieces is to create functions and then to gather these functions into modules, and eventually packages The R packages that you download from CRAN essentially contain collections of functions, though they also contain datasets and high level chunks called objects. Below we will discuss how to create functions in R. Functions are good for making code more **reusable**, **readable**, and **maintainable**.
+One important way to "chunk" code into more manageable pieces is to create functions and then gather related functions into scripts or packages. R packages contain functions and may also contain datasets and other objects. Below we will discuss how to create functions in R. Functions are good for making code more **reusable**, **readable**, and **maintainable**.
 
-We can create a function to do whatever we like. We need to give it a same, define its inputs (arguments) and its outputs (return expression). 
+We can create a function to do whatever we like. We need to give it a name, define its inputs (arguments), and decide what value it should return. 
 
 ```{r}
 # make a function called spread that subtracts the min from the max for a numeric vector
@@ -509,7 +503,7 @@ A function has a few crucial parts:
 
 1. A name (`convert_fahr_to_celsius`)
 2. Arguments (`fahr_temp`)
-3. A return value (`cel_temp`).  One feature unique to R is that the return statement is not required. R automatically returns whichever variable is on the last line of the body of the function. But, is it makes it much easier to understand a function if a return statement is defined explicitly so its best practice to include one.
+3. A return value (`cel_temp`).  One feature unique to R is that the return statement is not required. R automatically returns whichever variable is on the last line of the body of the function. An explicit `return()` can make the intended output especially clear to beginners, although it is not required.
 
 Next, we get to use the function. You pass in *arguments* to the function. 
     

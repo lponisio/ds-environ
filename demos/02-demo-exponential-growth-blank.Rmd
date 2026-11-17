@@ -12,9 +12,9 @@ Exponential growth assumes the population changes proportionally to its current 
 \[
 N_t \;=\; N_0 \, e^{r t},
 \]
-where \(N_0\) is the initial size and \(r\) is the **per‑time growth rate**.
+where \(N_0\) is the initial size and \(r\) is the **per-time growth rate**. Positive \(r\) implies growth and negative \(r\) implies decline; there is no density dependence in this model.
 
-- **Doubling time:** \(T_d = \dfrac{\ln 2}{r}\) (time until \(N_t\) doubles).  
+- **Doubling time:** \(T_d = \dfrac{\ln 2}{r}\) for \(r>0\) (time until \(N_t\) doubles).  
 - **Time to threshold \(N^\*\):** \(t^\* = \dfrac{\ln(N^\*/N_0)}{r}\).
 
 ---
@@ -120,17 +120,19 @@ legend("topleft", legend = c(paste("r =", r1), paste("r =", r2)),
 
 ### In class challenge
 
-1) Change `r` to from a number < $-1$ to a number $>$ 1, trying 10 different numbers. HINT: use a for loop.  Describe what the different `r` do to the population dynamics. 
+1) Change `r` from a negative to a positive number, trying 10 different numbers (for example, -0.1 to 1). HINT: use a for loop.  Describe what the different `r` do to the population dynamics. 
 
 
 ```{r}
 
 ```
 
-2) Another type of "population" can grow exponentially is the population of infected individuals. We have a separate model for their growth known as SIR models (susceptible-infected-recovered), but when a infectious disease is first introduced to a population, it grows exponentially because no one is immune (i.e., via getting sick and recovering or getting vaccinated) `r`.  Explore the population trajectory of measles if no one in Eugene were vaccinated, and one infected person was introduced (N0=1). How long would it take for the entire population of  178,786 to be sick? 
+2) The number of infectious cases can grow approximately exponentially **early in an outbreak**. More realistic SIR models also track susceptible and recovered individuals. In a hypothetical, wholly susceptible population of 178,786, begin with one case (`N0 = 1`). **When does an unconstrained exponential curve reach 178,786?** This is a mathematical benchmark, *not* a prediction of how long it would take for everyone to become sick. 
 
 ```{r}
 
 ```
 
-![R₀ illustration](../fig/r0.png){width=60%}
+Here \(R_0\) is the expected number of secondary cases in a fully susceptible population, and \(T_g\) is the generation interval. Under the simple assumption of a fixed generation interval, \(r \approx \ln(R_0)/T_g\). For comparison with the completed demo, use an *illustrative* interval of 12 days, not a claimed universal value.
+
+![Conceptual distinction between the reproduction number and the growth rate.](fig/unit1-reproduction-and-growth.png){width=95%}

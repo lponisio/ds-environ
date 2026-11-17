@@ -12,10 +12,10 @@ Exponential growth assumes the population changes proportionally to its current 
 \[
 N_t \;=\; N_0 \, e^{r t},
 \]
-where \(N_0\) is the initial size and \(r\) is the **per‑time growth rate**.
+where \(N_0\) is the initial size and \(r\) is the **per-time growth rate** (with units such as day\(^{-1}\)). With \(r>0\), the population grows; with \(r<0\), it declines. This model assumes the per-capita growth rate stays constant, with no density dependence.
 
-- **Doubling time:** \(T_d = \dfrac{\ln 2}{r}\) (time until \(N_t\) doubles).  
-- **Time to threshold \(N^\*\):** \(t^\* = \dfrac{\ln(N^\*/N_0)}{r}\).
+- **Doubling time:** \(T_d = \dfrac{\ln 2}{r}\) for \(r>0\) (time until \(N_t\) doubles; a declining population instead has a *halving time*).  
+- **Time to threshold \(N^\*\):** \(t^\* = \dfrac{\ln(N^\*/N_0)}{r}\), when the threshold is reachable in the direction of growth. These are **continuous-time** expressions; the displayed curves sample them at discrete times.
 
 ---
 
@@ -114,7 +114,7 @@ legend("topleft", legend = c(paste("r =", r1), paste("r =", r2)),
 
 ### In class challenge
 
-1) Change `r` to from a number < $-1$ to a number $>$ 1, trying 10 different numbers. HINT: use a for loop.  Describe what the different `r` do to the population dynamics. 
+1) Change `r` from a negative to a positive number, trying 10 different numbers (for example, -0.1 to 1). HINT: use a for loop.  Describe what the different `r` do to the population dynamics. 
 
 ```{r}
 
@@ -146,20 +146,19 @@ legend("topleft", legend = round(rvals, 2),
 ```
 
 
-2) Another type of "population" can grow exponentially is the population of infected individuals. We have a separate model for their growth known as SIR models (susceptible-infected-recovered), but when a infectious disease is first introduced to a population, it grows exponentially because no one is immune (i.e., via getting sick and recovering or getting vaccinated) `r`.  Explore the population trajectory of measles if no one in Eugene were vaccinated, and one infected person was introduced (N0=1). How long would it take for the entire population of  178,786 to be sick? 
+2) Another quantity that can grow approximately exponentially **early in an outbreak** is the number of infectious cases. A more realistic model of an outbreak tracks susceptible, infected, and recovered individuals (an **SIR model**). The exponential approximation is useful before susceptible individuals become depleted, but it cannot predict when an entire city would be infected.
 
-- R0 = basic reproduction number (average number of secondary infections per infected person),
+For this hypothetical exercise, suppose one infectious individual is introduced into a wholly susceptible population of 178,786. **At what time would a simple, unconstrained exponential curve reach 178,786?** Treat that time as a mathematical benchmark, **not** a prediction that everyone will be sick at once. We are deliberately not incorporating immunity, recovery, heterogeneous contact, or intervention. 
 
-- r = exponential growth rate (per time unit, e.g., per day),
+- \(R_0\) = basic reproduction number (expected secondary infections from one infectious person in a fully susceptible population),
 
-- Tg = mean generation interval (average time between infections in a transmission chain).
+- \(r\) = early exponential growth rate (per time unit, e.g., per day),
 
-r = Tg / ln(R0)
+- \(T_g\) = generation interval (time between infection in one person and their secondary cases).
 
-Tg  is generally assumed to be around 12. 
+For a **simplifying assumption of a fixed generation interval**, \(r \approx \ln(R_0) / T_g\). This is an approximation, not a general identity for every generation-interval distribution. We use **12 days as an illustrative interval** for the calculation below; changing that assumption changes the result.
 
-
-![R₀ illustration](../fig/r0.png){width=60%}
+![Conceptual distinction between the reproduction number and the growth rate.](fig/unit1-reproduction-and-growth.png){width=95%}
 
 ```{r}
 calcTstar <- function(Nstar, N0, r){
@@ -187,10 +186,11 @@ calcTstar(Nstar = 178786, N0 = 1, r = r)
 
 ## can also plot without the log = y, but it is easier to see the cutoff this way
 plot(t, N, type = "l", log = "y", ylab = "Infected", xlab = "Days",
-     main = "Early exponential growth of measles (no immunity)")
+     main = "Hypothetical early exponential projection (not an SIR model)")
 abline(h = 178786, col = "red", lty = 2)
 
-## It will take about two months (~66 days)
+## The unconstrained exponential curve crosses the benchmark near day 66.
+## This does NOT mean the entire city would be infected by then.
 
 ```
 

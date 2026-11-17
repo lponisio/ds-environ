@@ -16,4 +16,24 @@ if (length(missing)) {
 message("Rendering a fresh HTML book (no previous compiled files required)...")
 bookdown::render_book(input = "index.Rmd", output_format = "bookdown::gitbook",
                       clean = TRUE)
+# Explicitly copy static teaching resources referenced by the child Rmd files.
+# Markdown images are normally copied by bookdown, but this also ensures
+# that the embedded PDF is present when serving the finished docs/ website.
+unit1_resources <- c(
+  "readings/reading-Alston2020.pdf",
+  "fig/unit1-data-structures.png",
+  "fig/unit1-logistic-trajectories.png",
+  "fig/unit1-reproduction-and-growth.png"
+)
+for (resource in unit1_resources) {
+  if (!file.exists(resource)) {
+    warning("Unit 1 resource not found: ", resource)
+    next
+  }
+  target <- file.path("docs", resource)
+  dir.create(dirname(target), recursive = TRUE, showWarnings = FALSE)
+  if (!file.copy(resource, target, overwrite = TRUE)) {
+    warning("Could not copy unit 1 resource: ", resource)
+  }
+}
 message("Book built: open docs/index.html in your browser.")

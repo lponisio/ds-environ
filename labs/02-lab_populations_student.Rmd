@@ -15,28 +15,26 @@ knitr::opts_chunk$set(comment = NA)
 
 ### Lesson Overview
 
-The goals of this modules is to refine your knowledge of the basic, core concepts of programming that transcend languages, how they fit together, and how you can use them to become a better scientist. We will practice these concepts by modeling the logistic growth of a population. 
+The goal of this module is to strengthen your knowledge of basic programming concepts that transfer across languages, how they fit together, and how you can use them to become a better scientist. We will practice these concepts by modeling the logistic growth of a population. 
 
 **Conservation/ecology Topics**
 
-- Simulate population dynamics under logistic growth, and how a catastrophes alter those dynamics. 
+- Simulate population dynamics under logistic growth and explore how catastrophes alter those dynamics. 
 
 **Computational Topics**
 
 
 By the end of this R lesson, you will be able to:
 
--  Gain familiarity with the 6 of the 7 core elements shared by all
-    programming languages.
+-  Gain familiarity with six of the seven core programming concepts discussed in the lecture.
 -  Use R to write simple functions that use these core elements.
--  Make and save simple plots using basic plots.
+-  Make and save simple plots using base R.
 
 We encourage you to make liberal use of your fellow students, GE, and professor as we proceed through these modules. We will work in pairs. 
 
 ### Review: The Seven Core Concepts
 
-As noted by Greg Wilson (the founder of Software Carpentry), every
-programming language shares seven core elements:
+As described by Greg Wilson and Software Carpentry, we can organize programming into seven core ideas [@SoftwareCarpentry2012]:
 
 1.  Individual things (the number 2, the character 'hello')
 2.  Commands that operate on things (the + symbol, the `length` function)
@@ -59,11 +57,15 @@ programming language shares seven core elements:
 
 Logistic growth of a population: Throughout this lesson, we will successively build towards calculating the logistic growth of a population of bees in a meadow (or some less exciting vertebrate, if you prefer).
 
-A commonly used discrete time equation for logistic population growth is
+A commonly used **discrete-time** equation for logistic population growth is
 
- $$n(t + 1) = n(t) + r*n(t) [1 - n(t) / K]$$
+$$n(t + 1) = n(t) + r\,n(t)\left[1 - \frac{n(t)}{K}\right]$$
 
-where n(t) is the population size at time t, r is the net per capita growth rate, and K is the carrying capacity of the habitat.
+where \(n(t)\) is the population size at time \(t\), \(r\) is the growth parameter *per time step*, and \(K\) is the carrying capacity of the habitat. The term \(1-n(t)/K\) reduces growth as the population approaches the carrying capacity. If the population is well below \(K\), growth is positive; at \(n(t)=K\), the change is zero. In a discrete-time model, sufficiently large values of \(r\) can cause overshooting or oscillation rather than smooth approach to \(K\) [@May1976].
+
+![Two example trajectories of the discrete-time logistic model with the same initial population and carrying capacity but different growth parameters.](fig/unit1-logistic-trajectories.png){width=95%}
+
+**Indexing reminder:** R vectors start at index **1**, not zero. We will use `n[1]` for the first stored population size, even when discussing an initial population mathematically called \(n_0\). We use time steps 1–100 in the code so the indexes and times agree.
 
 To get started, write R expressions that do the following:
 
@@ -75,7 +77,7 @@ To get started, write R expressions that do the following:
 
 ###  Question 2: Using operators and functions
 
-- 2a. Create the variable `n1` (n at t=1) and calculate it's value using the logistic growth equation Do the same for `n2` and `n3`.
+- 2a. Create the variable `n1` (n at t=1) and calculate its value using the logistic growth equation. Do the same for `n2` and `n3`.
 
  n(t + 1) = n(t) + r*n(t) [1 - n(t) / K]
 
@@ -97,7 +99,7 @@ To get started, write R expressions that do the following:
     
 ###  Question 3: Storing and indexing data
 
-- 3a.  Create a vector where `n0`, `n1`, `n2` and `n3` are stored, instead of as separate individual variables by creating an empty vector using the syntax `n <- vector("numeric", 4)`, and then assigning each index. You could get the same result using `c()`, but practice using `vector()` and indexing instead.
+- 3a. Store `n0`, `n1`, `n2`, and `n3` in a single vector instead of separate variables. Pre-allocate it using `n <- vector("numeric", 4)` (this creates four zeros), then assign each value by its index. You could also use `c()`, but practice indexing and pre-allocation here.
 
 ```{r}
 # your code here
@@ -109,7 +111,7 @@ To get started, write R expressions that do the following:
 # your code here
 ```
 
-- 3c. Extract the last value of your n vector in two different ways: first, by using the index for the last item in the vector, and second, with out "hard coding" the index and instead using a function to work out the index for the last element.  HINT: the `length()` function may be useful.
+- 3c. Extract the last value of your n vector in two different ways: first, by using the index for the last item in the vector, and second, without "hard coding" the index and instead using a function to work out the index for the last element.  HINT: the `length()` function may be useful.
 
 ```{r}
 # your code here
@@ -117,19 +119,19 @@ To get started, write R expressions that do the following:
 
 ###  Question 4: Storing data and logical indexing
 
-- 4a.  Pre-allocate an vector called n containing 100 blank space (i.e. 0s) as if we were going to fill in 100 time steps. 
+- 4a. Pre-allocate a numeric vector called `n` containing 100 entries (initially zeros), one for each of 100 time steps. 
 
 ```{r}
 # your code here
 ```
 
-- 4b. Imagine that each discrete time step actually represents 1 day. Create an vector `t` storing 100 time step from 2 to 100. For example, `t[1]` should be 2 `t[2]` should be 3, etc.
+- 4b. Imagine that each discrete time step represents one day. Create a vector `t` containing the **99 update indices** from 2 through 100. For example, `t[1]` should be 2, `t[2]` should be 3, etc. Why do we have 99 updates but 100 stored population sizes?
 
 ```{r}
 # your code here
 ```
 
-- 4c. Use the logistic growth equation to fill in the first 5 elements of n by hand. Assume the initial population size at t=1 is 10. 
+- 4c. Set `n[1]` to the initial population size of 10, then use the logistic equation to fill in `n[2]` through `n[5]` by hand. The result for each time step depends on the population at the previous step. 
 
 Logistic growth equation:
 n(t + 1) = n(t) + r*n(t)[1 - n(t) / K]
@@ -140,7 +142,7 @@ n(t + 1) = n(t) + r*n(t)[1 - n(t) / K]
 
 Rather painful! Hard to imagine we could fill in the rest without making a mistake with our indexing. In the next Question of the lab we will learn how to repeat ourselves without copy-pasting like in the above.
 
-- 4d. Use logical indexing to extract the value of `n` corresponding to a `t` of 3.
+- 4d. Use logical indexing to identify the entry of `t` equal to 3, then use that time value as an index to extract the corresponding value of `n`. (Hint: `t` contains 99 indices but `n` contains 100 values, so do not apply a 99-element logical vector directly to `n`.)
 
 ```{r}
 # your code here
@@ -148,15 +150,15 @@ Rather painful! Hard to imagine we could fill in the rest without making a mista
 
 ###  Question 5: Using loops to repeat calculations
 
-Exciting next step, let's get smart about our calculations of `nt`. Building on what you did in Question 5, do the following:
+Exciting next step: let's automate our calculation of `n`. Building on what you did in Question 4, do the following:
 
-- 5a. Write a for loop to fill in the values of `nt` for 100 time steps.  Loop over the values of the t, and use each step vector to index the vector `n`. (Why does the t vector start at 2 and not at 1?)
+- 5a. Write a `for` loop to fill in the values of `n` for the remaining time steps. Loop over the values of `t` (2 through 100), using each value as the index of `n` that you are updating. (Why does `t` start at 2 and not at 1?)
 
 ```{r}
 # your code here
 ```
 
-- 5b. Plot the vector `n`. HINT: You will want t to start at 1 for the plot so it can include n(1) which we set above but did not include in the for loop because you need to start with an initial population before growing logistically. 
+- 5b. Plot `n` against the full sequence of times 1 through 100. HINT: The loop used `t <- 2:100`, but the graph should include the initial value at time 1 as well. 
 
 ```{r}
 # your code here
@@ -185,8 +187,8 @@ Let's introduce some element of randomness into our logistic growth model to bet
 # your code here
 ```
 
-- 6b. Using your logical variable `cata`, add an if statement to your for loop that checks whether `cata` is true in each time step.  If it is true, set the population back to the size at n[0]. Otherwise, perform the usual logistic growth calculation.
-HINT: `cata` will need to be within the for loop so it change values each iteration.
+- 6b. Using your logical variable `cata`, add an `if` statement to the `for` loop that checks whether a catastrophe occurs at each time step. If it does, reset the population to the **initial population size, `n0`** (or `n[1]` if you have kept it unchanged). Otherwise, perform the usual logistic growth calculation.
+HINT: `cata` must be generated **inside** the loop to get a new random draw on each iteration. Remember that `n[0]` is empty in R.
 
 ```{r}
 # your code here
@@ -198,7 +200,7 @@ HINT: `cata` will need to be within the for loop so it change values each iterat
 # your code here
 ```
 
-- 6d. Now that you have the vector `n`, count the number of time steps in which the population was above 50. Although you can do this with a for loop (loop through each value of `nt`, check if it is > 50, and if so increment a counter), you can do this in one line with a simple logical operation. HINT: If you take the sum of a logical vector (using `sum()`), it will give you the number of `TRUE` values (since a `TRUE` is considered to be a 1, and False is a 0).
+- 6d. Now that you have the vector `n`, count the number of time steps in which the population was above 50. Although you can do this with a `for` loop (checking each value of `n` and incrementing a counter), you can do it in one line with a logical operation. HINT: If you take the sum of a logical vector (using `sum()`), it will give you the number of `TRUE` values (since a `TRUE` is considered to be a 1, and False is a 0).
 
 ```{r}
 # your code here
@@ -206,7 +208,7 @@ HINT: `cata` will need to be within the for loop so it change values each iterat
 
 ###  Question 7: Creating a logistic growth function
 
-- 7a. Finally, let's turn our logistic growth model into a function that we can use over and over again.  Let's start with writing a function to calculate n(t+1). It should take n(t), r, and K as agrguments and return n(t+1). 
+- 7a. Finally, let's turn our logistic growth model into a function that we can reuse. Start by writing a function to calculate \(n(t+1)\). It should take \(n(t)\), `r`, and `K` as arguments and return \(n(t+1)\). 
 
 Reminder of the logistic growth equation:
  n(t + 1) = n(t) + r*n(t) [1 - n(t) / K]
@@ -215,7 +217,7 @@ Reminder of the logistic growth equation:
 # your code here
 ```
  
-- 7b. Create function called `logistic_growth` that takes four arguments: `r`, `K`, `n0`, `p` (the probability of a catastrophe), and nsteps (the length of the t vector). Make `p` a default argument with a default value of 0.1. Have your function recreate your answer for question 7b above (simulate a catastrophe, grow the population if no catastrope occurs). Have your function return the `n` and `t`  matrix.
+- 7b. Create a function called `logistic_growth` with **five** arguments: `r`, `K`, `n0`, `p` (the probability of a catastrophe), and `nsteps` (the number of stored time steps, including the initial value). Make `p` a default argument with a default value of 0.1. Have your function recreate your loop from Question **6b** (simulate a catastrophe or grow the population otherwise). Return a two-column **matrix or data frame** containing time `t` and population size `n`. Give the columns informative names.
  
 - 7c. Write a nice comment describing what your function does. In addition, use comments with full sentences to describe the intention of each section of code. 
 
@@ -231,14 +233,15 @@ Store the returned results and make a plot from it.
 # your code here
 ```
 
-- 7e. Explore different values of p and see how it changes the trajectory. Describe what happens.
+- 7e. Explore different values of `p` and see how they change the trajectories. Describe what happens. Consider using `set.seed()` before a run so you can reproduce the same sequence of random events when debugging.
 ANSWER: .... 
 
 ### Question 8 (Extra credit or graduate students)
 
-** Analyze and simulate a discrete-time predator–prey system.**
-1) simulate dynamics for two parameter sets,
-2) visualize trajectories in time 
+**Analyze and simulate a discrete-time predator–prey system.**
+
+1. Simulate dynamics for two parameter sets.
+2. Visualize trajectories through time. 
 
 We use logistic prey growth, a linear functional response, and linear predator mortality:
 \[
@@ -247,10 +250,10 @@ N_{t+1} &= N_t + r\,N_t\left(1-\frac{N_t}{K}\right) - a\,N_t P_t,\\
 P_{t+1} &= P_t + e\,a\,N_t P_t - m\,P_t,
 \end{aligned}
 \]
-where \(N_t\) = prey abundance, \(P_t\) = predator abundance, and parameters \(r,K,a,e,m>0\).
+where \(N_t\) = prey abundance, \(P_t\) = predator abundance, and parameters \(r,K,a,e,m>0\). The prey follow logistic growth but are consumed by predators; predators gain from consuming prey and lose individuals to mortality. The two equations must be updated **simultaneously using the previous time step's values**, not by using a newly updated prey value to calculate predators.
 
-- 8a: Use the parameter set below and initial conditions \(N_0=100,\;P_0=20\). Simulate for \(T=200\) steps. Make a time-series plot of \(N_t\) and \(P_t\)
+- 8a: Use \(r=0.5\), \(K=250\), \(a=0.008\), \(e=0.08\), and \(m=0.12\), with initial conditions \(N_0=100,\;P_0=20\). Simulate for \(T=200\) updates (so you have 201 values including the initial condition). Make a time-series plot of \(N_t\) and \(P_t\).
 
-- 8b: Repeat the simulation with **higher predator mortality** \(m=0.28\) (others unchanged). Compare the dynamics to part (a) including the visualization. 
+- 8b: Repeat the simulation with **higher predator mortality**, \(m=0.28\) (all other parameters unchanged). Compare the dynamics with part (a), including the visualization. 
 
-- 8c: What phenomenon of predator-prey dynamics does this illustrate? 
+- 8c: What does this illustrate about the conditions required for predator persistence? Are the two parameter sets ecologically different? 
